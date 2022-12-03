@@ -1,7 +1,7 @@
 package Interfaces;
 
-import ENUMS.EquipmentSlot;
+import ENUMS.EquipmentSlots;
 
-public interface IWeapon extends IItem {
-  public static final EquipmentSlot EquipmentSlot = ENUMS.EquipmentSlot.WEAPON;
+public interface IWeapon extends IEquipment {
+  public static final EquipmentSlots EquipmentSlot = ENUMS.EquipmentSlots.WEAPON;
 }

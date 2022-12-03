@@ -1,17 +1,39 @@
 package Hero;
 
-import ENUMS.HeroType;
+import java.util.EnumMap;
+import java.util.EnumSet;
+
+import ENUMS.*;
+import Equipment.EquippedItems;
+import Interfaces.IEquipment;
 import Interfaces.IEquipmentManager;
+import Interfaces.IHero;
 
-public class Hero {
-  private String name;
+public class Hero implements IHero, IEquipmentManager {
   private int level = 1;
-  private HeroType heroType;
-  private IEquipmentManager equipped;
+  private String name;
+  private HeroTypes heroType;
+  private EnumMap<LevelAttributes, Integer> levelAttributes;
+  private EnumSet<ArmorTypes> validArmorTypes;
+  private EnumSet<WeaponTypes> validWeaponTypes;
 
-  private String validWeaponTypes;
-  private String validArmorTypes;
-  private boolean levelAttributes;
+  private EquippedItems equipped = new EquippedItems();
+
+  public boolean equip(IEquipment item) {
+    return true;
+  };
+
+  public boolean unEquip(IEquipment item) {
+    return true;
+  };
+
+  public boolean displayItems() {
+    return true;
+  }
+
+  public boolean displayArmorAttributes() {
+    return true;
+  }
 
   public String getName() {
     return name;
@@ -21,41 +43,34 @@ public class Hero {
     return level;
   }
 
-  public String getValidWeaponTypes() {
+  public EnumSet<WeaponTypes> getValidWeaponTypes() {
     return validWeaponTypes;
   }
 
-  public String getValidArmorTypes() {
+  public EnumSet<ArmorTypes> getValidArmorTypes() {
     return validArmorTypes;
   }
 
-  public boolean getLevelAttributes() {
+  public EnumMap<LevelAttributes, Integer> getLevelAttributes() {
     return levelAttributes;
   }
 
   private Hero(HeroBuilder builder) {
     this.name = builder.name;
+    this.heroType = builder.heroType;
+
+    this.levelAttributes = heroType.getLevelAttributes();
+    this.validWeaponTypes = WeaponTypes.getValidTypes(builder.heroType);
+    this.validArmorTypes = ArmorTypes.getValidTypes(builder.heroType);
   }
 
   public static class HeroBuilder {
     private String name;
-    private boolean levelAttributes;
-    // private int level = 1;
-    // private String equipment;
-    // private String validWeaponTypes;
-    // private String validArmorTypes;
+    private HeroTypes heroType;
 
-    public HeroBuilder(String name) {
+    public HeroBuilder(String name, HeroTypes heroType) {
       this.name = name;
-      // this.level = level;
-      // this.equipment = equipment;
-      // this.validWeaponTypes = validWeaponTypes;
-      // this.validArmorTypes = validArmorTypes;
-    }
-
-    public HeroBuilder setLevelAttributes(boolean levelAttributes) {
-      this.levelAttributes = levelAttributes;
-      return this;
+      this.heroType = heroType;
     }
 
     public Hero build() {

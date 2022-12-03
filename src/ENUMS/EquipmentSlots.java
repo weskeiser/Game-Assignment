@@ -1,6 +1,6 @@
 package ENUMS;
 
-public enum EquipmentSlot {
+public enum EquipmentSlots {
   WEAPON,
   HEAD,
   BODY,
