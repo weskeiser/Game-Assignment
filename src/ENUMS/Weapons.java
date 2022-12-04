@@ -7,7 +7,6 @@ public enum Weapons {
 
   private WeaponTypes weaponType;
   private int levelRequirement;
-  private int multiplier;
   private String name;
   private String description;
 

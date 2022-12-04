@@ -3,6 +3,7 @@ package Interfaces;
 import java.util.EnumMap;
 import java.util.EnumSet;
 import ENUMS.ArmorTypes;
+import ENUMS.EquipmentSlots;
 import ENUMS.HeroAttributes;
 import ENUMS.WeaponTypes;
 
@@ -21,4 +22,6 @@ public interface GameCharacter {
   EnumSet<ArmorTypes> getValidArmorTypes();
 
   EnumMap<HeroAttributes, Integer> getHeroAttributes();
+
+  EnumMap<EquipmentSlots, Equipment> getEquippedItems();
 }

@@ -10,53 +10,61 @@ import Interfaces.*;
 public class Hero implements GameCharacter, InventoryManager, EquipmentManager {
   private int level = 1;
   private String name;
-  private HeroTypes heroType;
+  private HeroType heroType;
   private EnumMap<HeroAttributes, Integer> heroAttributes;
-  private EnumSet<ArmorTypes> validArmorTypes;
-  private EnumSet<WeaponTypes> validWeaponTypes;
   private ArrayList<Item> inventory = new ArrayList<Item>(15);
   private EnumMap<EquipmentSlots, Equipment> equippedItems = new EnumMap<EquipmentSlots, Equipment>(
       EquipmentSlots.class);
 
+  @Override
+  public EnumMap<EquipmentSlots, Equipment> getEquippedItems() {
+    return equippedItems;
+  }
+
+  @Override
   public void loot(Item item) {
     boolean inventorised = InventoryManager.insert(inventory, item);
     System.out.println(inventorised);
   }
 
+  @Override
   public String getName() {
     return name;
   }
 
+  @Override
   public int getLevel() {
     return level;
   }
 
-  public EnumSet<WeaponTypes> getValidWeaponTypes() {
-    return validWeaponTypes;
-  }
-
-  public EnumSet<ArmorTypes> getValidArmorTypes() {
-    return validArmorTypes;
-  }
-
+  @Override
   public EnumMap<HeroAttributes, Integer> getHeroAttributes() {
     return heroAttributes;
   }
 
-  private Hero(HeroBuilder builder) {
-    this.name = builder.name;
-    this.heroType = builder.heroType;
+  @Override
+  public EnumSet<WeaponTypes> getValidWeaponTypes() {
+    return heroType.getValidWeaponTypes();
+  }
 
-    this.heroAttributes = heroType.getStartingAttributes();
-    this.validWeaponTypes = WeaponTypes.getValidTypes(builder.heroType);
-    this.validArmorTypes = ArmorTypes.getValidTypes(builder.heroType);
+  @Override
+  public EnumSet<ArmorTypes> getValidArmorTypes() {
+    return heroType.getValidArmorTypes();
+  }
+
+  private Hero(HeroBuilder builder) {
+    name = builder.name;
+    heroType = builder.heroType;
+
+    heroType.init();
+    heroAttributes = heroType.getStartingAttributes();
   }
 
   public static class HeroBuilder {
     private String name;
-    private HeroTypes heroType;
+    private HeroType heroType;
 
-    public HeroBuilder(String name, HeroTypes heroType) {
+    public HeroBuilder(String name, HeroType heroType) {
       this.name = name;
       this.heroType = heroType;
     }
