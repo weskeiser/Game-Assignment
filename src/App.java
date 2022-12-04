@@ -2,32 +2,18 @@ import ENUMS.HeroTypes;
 import ENUMS.Weapons;
 import Equipment.Weapon;
 import Hero.Hero;
+import Interfaces.GameCharacter;
 import Interfaces.Item;
 
 public class App {
     public static void main(String[] args) throws Exception {
-        Hero mando = new Hero.HeroBuilder("Mando", HeroTypes.WARRIOR).build();
+        GameCharacter mando = new Hero.HeroBuilder("Mando", HeroTypes.WARRIOR).build();
 
-        Item GreatAxe = new Weapon.WeaponBuilder(Weapons.GREATAXE).build();
+        System.out.println(
 
-        mando.loot(GreatAxe);
-        mando.loot(GreatAxe);
-        mando.loot(GreatAxe);
-        mando.loot(GreatAxe);
-        mando.loot(GreatAxe);
-        mando.loot(GreatAxe);
-        mando.loot(GreatAxe);
-        mando.loot(GreatAxe);
-        mando.loot(GreatAxe);
-        mando.loot(GreatAxe);
-        mando.loot(GreatAxe);
-        mando.loot(GreatAxe);
-        mando.loot(GreatAxe);
-        mando.loot(GreatAxe);
-        mando.loot(GreatAxe);
-        mando.loot(GreatAxe);
-        mando.loot(GreatAxe);
+                mando.getHeroAttributes());
 
-        // mando.insertIntoInventory(GreatAxe);
+        // Item GreatAxe = new Weapon.WeaponBuilder(Weapons.GREATAXE).build();
+
     }
 }

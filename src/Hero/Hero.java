@@ -11,7 +11,7 @@ public class Hero implements GameCharacter, InventoryManager, EquipmentManager {
   private int level = 1;
   private String name;
   private HeroTypes heroType;
-  private EnumMap<LevelAttributes, Integer> levelAttributes;
+  private EnumMap<HeroAttributes, Integer> heroAttributes;
   private EnumSet<ArmorTypes> validArmorTypes;
   private EnumSet<WeaponTypes> validWeaponTypes;
   private ArrayList<Item> inventory = new ArrayList<Item>(15);
@@ -39,15 +39,15 @@ public class Hero implements GameCharacter, InventoryManager, EquipmentManager {
     return validArmorTypes;
   }
 
-  public EnumMap<LevelAttributes, Integer> getLevelAttributes() {
-    return levelAttributes;
+  public EnumMap<HeroAttributes, Integer> getHeroAttributes() {
+    return heroAttributes;
   }
 
   private Hero(HeroBuilder builder) {
     this.name = builder.name;
     this.heroType = builder.heroType;
 
-    this.levelAttributes = heroType.getStartingAttributes();
+    this.heroAttributes = heroType.getStartingAttributes();
     this.validWeaponTypes = WeaponTypes.getValidTypes(builder.heroType);
     this.validArmorTypes = ArmorTypes.getValidTypes(builder.heroType);
   }

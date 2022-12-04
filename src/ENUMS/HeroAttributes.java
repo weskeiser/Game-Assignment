@@ -1,6 +1,6 @@
 package ENUMS;
 
-public enum LevelAttributes {
+public enum HeroAttributes {
   STRENGTH,
   DEXTERITY,
   INTELLIGENCE;
