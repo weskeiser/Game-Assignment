@@ -1,12 +1,14 @@
 package Equipment;
 
 import Interfaces.IWeapon;
+import Interfaces.Item;
 import ENUMS.Weapons;
 import ENUMS.WeaponTypes;
 
 public class Weapon implements IWeapon {
   private Weapons weapon;
 
+  @Override
   public String inspect() {
     return weapon.getDescription();
   }
@@ -19,7 +21,7 @@ public class Weapon implements IWeapon {
     return weapon.getWeaponType();
   }
 
-  public String displayName() {
+  public String displayItemName() {
     return weapon.getName();
   }
 

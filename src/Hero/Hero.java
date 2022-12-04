@@ -1,38 +1,26 @@
 package Hero;
 
+import java.util.ArrayList;
 import java.util.EnumMap;
 import java.util.EnumSet;
 
 import ENUMS.*;
-import Equipment.EquippedItems;
-import Interfaces.IEquipment;
-import Interfaces.IEquipmentManager;
-import Interfaces.IHero;
+import Interfaces.*;
 
-public class Hero implements IHero, IEquipmentManager {
+public class Hero implements GameCharacter, InventoryManager, EquipmentManager {
   private int level = 1;
   private String name;
   private HeroTypes heroType;
   private EnumMap<LevelAttributes, Integer> levelAttributes;
   private EnumSet<ArmorTypes> validArmorTypes;
   private EnumSet<WeaponTypes> validWeaponTypes;
+  private ArrayList<Item> inventory = new ArrayList<Item>(15);
+  private EnumMap<EquipmentSlots, Equipment> equippedItems = new EnumMap<EquipmentSlots, Equipment>(
+      EquipmentSlots.class);
 
-  private EquippedItems equipped = new EquippedItems();
-
-  public boolean equip(IEquipment item) {
-    return true;
-  };
-
-  public boolean unEquip(IEquipment item) {
-    return true;
-  };
-
-  public boolean displayItems() {
-    return true;
-  }
-
-  public boolean displayArmorAttributes() {
-    return true;
+  public void loot(Item item) {
+    boolean inventorised = InventoryManager.insert(inventory, item);
+    System.out.println(inventorised);
   }
 
   public String getName() {
@@ -59,7 +47,7 @@ public class Hero implements IHero, IEquipmentManager {
     this.name = builder.name;
     this.heroType = builder.heroType;
 
-    this.levelAttributes = heroType.getLevelAttributes();
+    this.levelAttributes = heroType.getStartingAttributes();
     this.validWeaponTypes = WeaponTypes.getValidTypes(builder.heroType);
     this.validArmorTypes = ArmorTypes.getValidTypes(builder.heroType);
   }

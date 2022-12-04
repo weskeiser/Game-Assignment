@@ -6,10 +6,12 @@ import ENUMS.ArmorTypes;
 import ENUMS.LevelAttributes;
 import ENUMS.WeaponTypes;
 
-public interface IHero {
+public interface GameCharacter {
   public String getName();
 
   public int getLevel();
+
+  public void loot(Item item);
 
   public EnumSet<WeaponTypes> getValidWeaponTypes();
 
