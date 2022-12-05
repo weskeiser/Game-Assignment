@@ -2,20 +2,27 @@ package Interfaces;
 
 import java.util.EnumMap;
 import java.util.EnumSet;
+
 import ENUMS.ArmorTypes;
-import ENUMS.EquipmentSlots;
 import ENUMS.HeroAttributes;
 import ENUMS.WeaponTypes;
+import Equipment.Weapon;
 
 public interface GameCharacter {
 
-  String name = null;
+  void display();
 
-  String getName();
+  void wield(Weapon weapon);
 
-  int getLevel();
+  void dropItem(Item item);
+
+  void addToInventory(Item item);
+
+  void showInventory();
 
   void loot(Item item);
+
+  void showEquippedItems();
 
   EnumSet<WeaponTypes> getValidWeaponTypes();
 
@@ -23,5 +30,12 @@ public interface GameCharacter {
 
   EnumMap<HeroAttributes, Integer> getHeroAttributes();
 
-  EnumMap<EquipmentSlots, Equipment> getEquippedItems();
+  Item getInventoryItemByIdx(int index);
+
+  String getName();
+
+  int getLevel();
+
+  int levelUp();
+
 }

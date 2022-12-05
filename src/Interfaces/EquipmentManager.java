@@ -1,20 +1,24 @@
 package Interfaces;
 
-public interface EquipmentManager {
+import Equipment.Weapon;
 
-  public static boolean equip(Equipment item) {
+public interface EquipmentManager extends ItemManager {
+
+  void wield(Weapon weapon);
+
+  static boolean equip(Equipment item) {
     return true;
   };
 
-  public static boolean unEquip(Equipment item) {
+  static boolean unEquip(Equipment item) {
     return true;
   };
 
-  public static boolean displayItems() {
+  static boolean displayItems() {
     return true;
   };
 
-  public static boolean displayArmorAttributes() {
+  static boolean displayArmorAttributes() {
     return true;
   };
 

@@ -6,5 +6,5 @@ public interface Item {
     return "This item has no description. It appears the dev needs more coffee..";
   };
 
-  public String displayItemName();
+  public String getName();
 }

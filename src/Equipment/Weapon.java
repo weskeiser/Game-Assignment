@@ -2,10 +2,12 @@ package Equipment;
 
 import Interfaces.IWeapon;
 import ENUMS.Weapons;
+import ENUMS.EquipmentSlots;
 import ENUMS.WeaponTypes;
 
 public class Weapon implements IWeapon {
   private Weapons weapon;
+  private EquipmentSlots slot = EquipmentSlots.WEAPON;
 
   @Override
   public String inspect() {
@@ -23,7 +25,7 @@ public class Weapon implements IWeapon {
   }
 
   @Override
-  public String displayItemName() {
+  public String getName() {
     return weapon.getName();
   }
 
