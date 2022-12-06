@@ -10,13 +10,6 @@ public enum Weapons {
   private String name;
   private String description;
 
-  Weapons(int levelRequirement, WeaponTypes weaponType, String name, String description) {
-    this.levelRequirement = levelRequirement;
-    this.weaponType = weaponType;
-    this.name = new String(name);
-    this.description = new String(description);
-  }
-
   public WeaponTypes getWeaponType() {
     return weaponType;
   }
@@ -31,5 +24,12 @@ public enum Weapons {
 
   public String getDescription() {
     return description;
+  }
+
+  Weapons(int levelRequirement, WeaponTypes weaponType, String name, String description) {
+    this.levelRequirement = levelRequirement;
+    this.weaponType = weaponType;
+    this.name = new String(name);
+    this.description = new String(description);
   }
 }

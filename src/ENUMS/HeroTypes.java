@@ -2,57 +2,50 @@ package ENUMS;
 
 import java.util.EnumMap;
 import java.util.EnumSet;
-
 import Interfaces.HeroType;
 
 public enum HeroTypes implements HeroType {
   WARRIOR() {
     @Override
-    public void init() {
-      this.startingAttributes = this.createAttributeMap(5, 2, 1);
+    public EnumMap<HeroAttributes, Integer> init() {
       this.levelAttributes = this.createAttributeMap(3, 2, 1);
       this.validWeaponTypes = EnumSet.of(WeaponTypes.AXE, WeaponTypes.HAMMER, WeaponTypes.SWORD);
       this.validArmorTypes = EnumSet.of(ArmorTypes.PLATE, ArmorTypes.MAIL);
+      return createAttributeMap(5, 2, 1);
     }
   },
   ROGUE {
     @Override
-    public void init() {
-      this.startingAttributes = this.createAttributeMap(2, 6, 1);
+    public EnumMap<HeroAttributes, Integer> init() {
       this.levelAttributes = this.createAttributeMap(1, 4, 1);
       this.validWeaponTypes = EnumSet.of(WeaponTypes.DAGGER, WeaponTypes.SWORD);
       this.validArmorTypes = EnumSet.of(ArmorTypes.LEATHER, ArmorTypes.MAIL);
+      return createAttributeMap(2, 6, 1);
     }
   },
   RANGER {
     @Override
-    public void init() {
-      this.startingAttributes = this.createAttributeMap(1, 7, 1);
+    public EnumMap<HeroAttributes, Integer> init() {
       this.levelAttributes = this.createAttributeMap(1, 5, 1);
       this.validWeaponTypes = EnumSet.of(WeaponTypes.BOW);
       this.validArmorTypes = EnumSet.of(ArmorTypes.LEATHER, ArmorTypes.MAIL);
+      return createAttributeMap(1, 7, 1);
     }
   },
   MAGE {
     @Override
-    public void init() {
-      this.startingAttributes = this.createAttributeMap(1, 1, 8);
+    public EnumMap<HeroAttributes, Integer> init() {
       this.levelAttributes = this.createAttributeMap(1, 1, 5);
       this.validWeaponTypes = EnumSet.of(WeaponTypes.STAFF, WeaponTypes.WAND);
       this.validArmorTypes = EnumSet.of(ArmorTypes.CLOTH);
+      return createAttributeMap(1, 1, 8);
 
     }
   };
 
   EnumMap<HeroAttributes, Integer> levelAttributes;
-  EnumMap<HeroAttributes, Integer> startingAttributes;
   EnumSet<WeaponTypes> validWeaponTypes;
   EnumSet<ArmorTypes> validArmorTypes;
-
-  @Override
-  public EnumMap<HeroAttributes, Integer> getStartingAttributes() {
-    return startingAttributes;
-  }
 
   @Override
   public EnumMap<HeroAttributes, Integer> getLevelAttributes() {

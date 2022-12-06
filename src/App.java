@@ -20,14 +20,11 @@ public class App {
         mando.wield(axe);
         // mando.wield(axe);
         // mando.wield(axe);
-        mando.showEquippedItems();
         mando.showInventory();
 
         mando.addToInventory(GreatAxe);
         mando.addToInventory(GreatAxe);
-        mando.showInventory();
         mando.dropItem(GreatAxe);
-        mando.showInventory();
 
         mando.display();
         // mando.wield(GreatAxe);

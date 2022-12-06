@@ -1,6 +1,5 @@
 package Hero;
 
-import java.lang.constant.DirectMethodHandleDesc.Kind;
 import java.util.*;
 import ENUMS.*;
 import Interfaces.*;
@@ -8,6 +7,12 @@ import Equipment.*;
 import Exceptions.*;
 
 public class Hero implements GameCharacter, InventoryManager, EquipmentManager {
+  public static final String resetC = "\u001B[0m";
+  public static final String redC = "\u001b[35m";
+  public static final String greenC = "\u001B[32m";
+  public static final String blueC = "\u001B[34m";
+  public static final String yellowC = "\u001b[33m";
+
   private int level = 1;
   private String name;
   private HeroType heroType;
@@ -23,46 +28,6 @@ public class Hero implements GameCharacter, InventoryManager, EquipmentManager {
     } catch (Throwable err) {
       throw (err);
     }
-  }
-
-  public void display() {
-    System.out.println("\n@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@\n");
-    System.out
-        .println("/~/~/~/~/~/ " + heroType.toString() + ": " + name + " (lvl." + level + ") \\~\\~\\~\\~\\~\\\n");
-    showHeroAttributes();
-    showInventory();
-    showEquippedItems();
-    System.out.println("\n@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@\n");
-  }
-
-  void showHeroAttributes() {
-    StringBuilder keyBuilder = new StringBuilder();
-    StringBuilder valueBuilder = new StringBuilder();
-    keyBuilder.append("   ~");
-
-    heroAttributes.forEach((k, v) -> {
-      keyBuilder.append(" " + k + " ~");
-      valueBuilder.append(v + "          ");
-    });
-
-    System.out.println(keyBuilder.toString() + "\n        " + valueBuilder.toString());
-
-  }
-
-  @Override
-  public void showInventory() {
-    StringBuilder builder = new StringBuilder();
-    Object[] inv = inventory.toArray();
-    builder.append("\n~~~ INVENTORY (" + inv.length + "/15)  ~~~\n");
-
-    for (int i = 0; i < inv.length; i++) {
-      builder.append("~ " + (i + 1) + ". ");
-      builder.append(((Item) inv[i]).getName() + "\n");
-    }
-
-    builder.append("~~~~~~~~~~~~~~~~~~~~~~~~~");
-
-    System.out.println(builder.toString());
   }
 
   @Override
@@ -89,22 +54,6 @@ public class Hero implements GameCharacter, InventoryManager, EquipmentManager {
     this.level++;
     System.out.println(this.level);
     return this.level;
-  }
-
-  @Override
-  public void showEquippedItems() {
-    StringBuilder builder = new StringBuilder();
-
-    builder.append("\n~~~ Equipped Items ~~~\n");
-
-    equippedItems.forEach((k, v) -> {
-      builder.append("~ " + k.toString() + ": ");
-      builder.append(v.getName() + "\n");
-    });
-
-    builder.append("~~~~~~~~~~~~~~~~~~~~~~");
-
-    System.out.println(builder.toString());
   }
 
   @Override
@@ -232,12 +181,74 @@ public class Hero implements GameCharacter, InventoryManager, EquipmentManager {
     }
   };
 
+  @Override
+  public void display() {
+    System.out.println("\n" + blueC + "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
+    System.out.println(blueC + "||||||||||||||||||||||||||||||||||||||||||||||\n");
+    System.out
+        .println(
+            blueC + "/~/~/" + "   >> " + resetC + name + blueC + " <<   |  " + resetC + heroType.toString()
+                + blueC + " lvl." + yellowC + level + blueC + "  \\~\\~\\\n");
+    showHeroAttributes();
+    showInventory();
+    showEquippedItems();
+    System.out.println(blueC + "||||||||||||||||||||||||||||||||||||||||||||||");
+    System.out.println(blueC + "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@\n");
+  }
+
+  void showHeroAttributes() {
+    StringBuilder keyBuilder = new StringBuilder();
+    StringBuilder valueBuilder = new StringBuilder();
+    keyBuilder.append(blueC + "   ~");
+
+    heroAttributes.forEach((k, v) -> {
+      keyBuilder.append(" " + greenC + k + blueC + " ~");
+      valueBuilder.append(yellowC + v + "          ");
+    });
+
+    System.out.println(keyBuilder.toString() + "\n        " + valueBuilder.toString());
+
+  }
+
+  @Override
+  public void showInventory() {
+    StringBuilder builder = new StringBuilder();
+    Object[] inv = inventory.toArray();
+
+    builder.append("\n" + blueC + "~~~~~~~~~~~~" + resetC + " INVENTORY " + redC + "(" + yellowC + inv.length + "/15"
+        + redC + ")" + blueC + " ~~~~~~~~~~~~\n");
+
+    for (int i = 0; i < inv.length; i++) {
+      builder.append(blueC + "~~~~~~~~~~~~ " + redC + (i + 1) + ". ");
+      builder.append(yellowC + ((Item) inv[i]).getName() + "\n");
+    }
+
+    builder.append(blueC + "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+
+    System.out.println(builder.toString());
+  }
+
+  @Override
+  public void showEquippedItems() {
+    StringBuilder builder = new StringBuilder();
+
+    builder.append("\n" + blueC + "~~~~~~~~~~~~" + resetC + " EQUIPPED " + blueC + "~~~~~~~~~~~~~~~~~~~~\n");
+
+    equippedItems.forEach((k, v) -> {
+      builder.append(blueC + "~~~~~~~~~~~~ " + redC + k.toString() + ": ");
+      builder.append(yellowC + v.getName() + "\n");
+    });
+
+    builder.append(blueC + "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+
+    System.out.println(builder.toString());
+  }
+
   private Hero(HeroBuilder builder) {
     name = builder.name;
     heroType = builder.heroType;
 
-    heroType.init();
-    heroAttributes = heroType.getStartingAttributes();
+    heroAttributes = heroType.init();
 
   }
 

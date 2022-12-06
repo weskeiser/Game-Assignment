@@ -3,6 +3,6 @@ package ENUMS;
 public enum EquipmentSlots {
   WEAPON,
   HEAD,
-  BODY,
+  TORSO,
   LEGS;
 }
