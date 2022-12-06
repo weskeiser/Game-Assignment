@@ -1,9 +1,9 @@
-import ENUMS.HeroTypes;
-import ENUMS.Weapons;
-import Equipment.Weapon.Weapon;
-import Hero.Hero;
-import Interfaces.GameCharacter;
-import Interfaces.Item;
+import GameCharacters.GameCharacter;
+import GameCharacters.Hero.Hero;
+import GameCharacters.Hero.HeroTypes;
+import Items.Item;
+import Items.Equipment.Weapon.Weapon;
+import Items.Equipment.Weapon.Weapons;
 
 public class App {
     public static void main(String[] args) throws Exception {
