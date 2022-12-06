@@ -1,13 +1,16 @@
-package Equipment;
+package Equipment.Weapon;
 
 import Interfaces.IWeapon;
-import ENUMS.Weapons;
-import ENUMS.EquipmentSlots;
-import ENUMS.WeaponTypes;
+import ENUMS.*;
 
 public class Weapon implements IWeapon {
   private Weapons weapon;
-  private EquipmentSlots slot = EquipmentSlots.WEAPON;
+  private EquipmentSlots equipmentSlot = EquipmentSlots.WEAPON;
+
+  @Override
+  public EquipmentSlots getEquipmentSlot() {
+    return equipmentSlot;
+  }
 
   @Override
   public String inspect() {
@@ -20,7 +23,7 @@ public class Weapon implements IWeapon {
   }
 
   @Override
-  public WeaponTypes getWeaponType() {
+  public WeaponTypes getEquipmentType() {
     return weapon.getWeaponType();
   }
 

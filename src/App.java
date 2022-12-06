@@ -1,6 +1,6 @@
 import ENUMS.HeroTypes;
 import ENUMS.Weapons;
-import Equipment.Weapon;
+import Equipment.Weapon.Weapon;
 import Hero.Hero;
 import Interfaces.GameCharacter;
 import Interfaces.Item;
@@ -17,7 +17,7 @@ public class App {
 
         mando.loot(GreatAxe);
         Weapon axe = (Weapon) mando.getInventoryItemByIdx(0);
-        mando.wield(axe);
+        mando.equip(axe);
         // mando.wield(axe);
         // mando.wield(axe);
         mando.showInventory();

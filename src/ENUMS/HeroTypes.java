@@ -2,6 +2,8 @@ package ENUMS;
 
 import java.util.EnumMap;
 import java.util.EnumSet;
+
+import Equipment.Weapon.WeaponTypes;
 import Interfaces.HeroType;
 
 public enum HeroTypes implements HeroType {

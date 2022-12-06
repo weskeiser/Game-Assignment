@@ -1,6 +1,6 @@
-package ENUMS;
+package Equipment.Weapon;
 
-import Interfaces.WeaponType;
+import Interfaces.EquipmentType;
 
 public enum WeaponTypes implements WeaponType {
   AXE,

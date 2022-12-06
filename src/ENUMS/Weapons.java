@@ -1,5 +1,7 @@
 package ENUMS;
 
+import Equipment.Weapon.WeaponTypes;
+
 public enum Weapons {
   WOODEN_SWORD(1, WeaponTypes.SWORD, "Wooden sword", "A sword fit for a novice."),
   GREATAXE(3, WeaponTypes.AXE, "GreatAxe", "A powerful axe from the depths of Azure"),

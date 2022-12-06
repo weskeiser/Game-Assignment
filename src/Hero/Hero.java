@@ -3,7 +3,8 @@ package Hero;
 import java.util.*;
 import ENUMS.*;
 import Interfaces.*;
-import Equipment.*;
+import Equipment.Weapon.Weapon;
+import Equipment.Weapon.WeaponTypes;
 import Exceptions.*;
 
 public class Hero implements GameCharacter, InventoryManager, EquipmentManager {
@@ -138,15 +139,15 @@ public class Hero implements GameCharacter, InventoryManager, EquipmentManager {
   }
 
   @Override
-  public void wield(Weapon weapon) {
+  public void equip(Equipment equipment) {
     try {
-      this.wield(weapon, inventory, equippedItems, level, heroType);
+      this.equip(equipment, inventory, equippedItems, level, heroType);
     } catch (Throwable err) {
       System.out.println(err.getMessage());
     }
   }
 
-  private void wield(Weapon weapon,
+  private void equip(Equipment equipment,
       List<Item> inventory,
       EnumMap<EquipmentSlots, Equipment> equippedItems,
       int heroLevel,
@@ -154,28 +155,33 @@ public class Hero implements GameCharacter, InventoryManager, EquipmentManager {
       throws InvalidWeaponException, InventoryException {
 
     try {
-      if (!inventory.remove(weapon)) {
+      if (!inventory.remove(equipment)) {
         throw new InventoryException(InventoryExceptionMsg.NOT_FOUND);
       }
 
-      if (weapon.getLevelRequirement() > heroLevel) {
-        throw new InvalidWeaponException(InvalidWeaponExceptionMsg.LEVEL_REQUIREMENT);
-      }
+      switch (equipment.getEquipmentSlot()) {
+        case WEAPON:
+          if (equipment.getLevelRequirement() > heroLevel) {
+            throw new InvalidWeaponException(InvalidWeaponExceptionMsg.LEVEL_REQUIREMENT);
+          }
 
-      if (!((EnumSet<WeaponTypes>) heroType.getValidWeaponTypes()).contains(weapon.getWeaponType())) {
-        throw new InvalidWeaponException(InvalidWeaponExceptionMsg.WRONG_TYPE);
-      }
+          if (!((EnumSet<WeaponTypes>) heroType.getValidWeaponTypes()).contains(equipment.getEquipmentType())) {
+            throw new InvalidWeaponException(InvalidWeaponExceptionMsg.WRONG_TYPE);
+          }
 
-      // Replace with unequip method
-      Item unwielded = equippedItems.remove(EquipmentSlots.WEAPON);
-      if (unwielded instanceof Weapon) {
-        addToInventory((Weapon) unwielded);
-      }
-      // Replace with unequip method ^^^^
+          // Replace with unequip method
+          Item unwielded = equippedItems.remove(EquipmentSlots.WEAPON);
+          if (unwielded instanceof Weapon) {
+            addToInventory((Weapon) unwielded);
+          }
+          // Replace with unequip method ^^^^
 
-      equippedItems.put(EquipmentSlots.WEAPON, weapon);
-      System.out.println("wielded weapon");
-      System.out.println(equippedItems);
+          equippedItems.put(EquipmentSlots.WEAPON, equipment);
+          System.out.println("wielded weapon");
+          System.out.println(equippedItems);
+
+        default:
+      }
     } catch (InvalidWeaponException err) {
       throw err;
     }

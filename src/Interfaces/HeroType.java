@@ -5,7 +5,7 @@ import java.util.EnumSet;
 
 import ENUMS.ArmorTypes;
 import ENUMS.HeroAttributes;
-import ENUMS.WeaponTypes;
+import Equipment.Weapon.WeaponTypes;
 
 public interface HeroType {
   EnumMap<HeroAttributes, Integer> init();

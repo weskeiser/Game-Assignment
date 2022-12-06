@@ -1,14 +1,8 @@
 package Interfaces;
 
-import Equipment.Weapon;
-
 public interface EquipmentManager extends ItemManager {
 
-  void wield(Weapon weapon);
-
-  static boolean equip(Equipment item) {
-    return true;
-  };
+  void equip(Equipment item);
 
   static boolean unEquip(Equipment item) {
     return true;
