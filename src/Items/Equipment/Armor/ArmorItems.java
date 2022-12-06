@@ -1,14 +1,19 @@
-package Items.Equipment.Weapon;
+package Items.Equipment.Armor;
 
-public enum Weapons {
-  WOODEN_SWORD(1, "Wooden sword", WeaponType.SWORD, "A sword fit for a novice."),
-  GREATAXE(3, "GreatAxe", WeaponType.AXE, "A powerful axe from the depths of Azure"),
-  ;
+import Items.Equipment.EquipmentSlot;
+
+public enum ArmorItems {
+  ROYAL_MAIL(7, "Royal mail.", ArmorType.MAIL, "This piece of armor arrived by post.", EquipmentSlot.TORSO),;
 
   private int levelRequirement;
   private String name;
-  private WeaponType weaponType;
+  private ArmorType armorType;
   private String description;
+  private EquipmentSlot equipmentSlot;
+
+  public EquipmentSlot getEquipmentSlot() {
+    return equipmentSlot;
+  }
 
   public int getLevelRequirement() {
     return levelRequirement;
@@ -18,8 +23,8 @@ public enum Weapons {
     return name;
   }
 
-  public WeaponType getWeaponType() {
-    return weaponType;
+  public ArmorType getArmorType() {
+    return armorType;
   }
 
   public double getDamageMultiplier() {
@@ -49,10 +54,11 @@ public enum Weapons {
     return description;
   }
 
-  Weapons(int levelRequirement, String name, WeaponType weaponType, String description) {
+  ArmorItems(int levelRequirement, String name, ArmorType armorType, String description, EquipmentSlot equipmentSlot) {
     this.levelRequirement = levelRequirement;
     this.name = name;
-    this.weaponType = weaponType;
+    this.armorType = armorType;
     this.description = description;
+    this.equipmentSlot = equipmentSlot;
   }
 }

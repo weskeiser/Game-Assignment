@@ -1,8 +1,11 @@
 package Items.Equipment.Armor;
 
-public enum ArmorTypes {
+import Items.Equipment.EquipmentSlot;
+
+public enum ArmorType {
   CLOTH,
   LEATHER,
   MAIL,
   PLATE;
+
 }

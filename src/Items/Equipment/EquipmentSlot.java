@@ -1,6 +1,6 @@
 package Items.Equipment;
 
-public enum EquipmentSlots {
+public enum EquipmentSlot {
   WEAPON,
   HEAD,
   TORSO,

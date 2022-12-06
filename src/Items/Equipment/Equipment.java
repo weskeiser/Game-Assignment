@@ -1,12 +1,15 @@
 package Items.Equipment;
 
 import Items.Item;
-import Items.Equipment.Weapon.WeaponTypes;
 
 public interface Equipment extends Item {
+
+  <E extends Enum<E>> E getEquipmentType();
+
+  EquipmentSlot getEquipmentSlot();
+
   int getLevelRequirement();
 
-  EquipmentSlots getEquipmentSlot();
+  void printLevelRequirement();
 
-  Enum getEquipmentType();
 }

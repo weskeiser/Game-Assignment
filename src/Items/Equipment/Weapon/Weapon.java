@@ -1,20 +1,19 @@
 package Items.Equipment.Weapon;
 
-import ENUMS.*;
-import Items.Equipment.EquipmentSlots;
+import Items.Equipment.Equipment;
+import Items.Equipment.EquipmentSlot;
 
-public class Weapon implements IWeapon {
+public class Weapon implements Equipment {
   private Weapons weapon;
-  private EquipmentSlots equipmentSlot = EquipmentSlots.WEAPON;
+  private EquipmentSlot equipmentSlot = EquipmentSlot.WEAPON;
 
   @Override
-  public EquipmentSlots getEquipmentSlot() {
+  public EquipmentSlot getEquipmentSlot() {
     return equipmentSlot;
   }
 
-  @Override
-  public String inspect() {
-    return weapon.getDescription();
+  public double getDamageMultiplier() {
+    return weapon.getDamageMultiplier();
   }
 
   @Override
@@ -23,13 +22,28 @@ public class Weapon implements IWeapon {
   }
 
   @Override
-  public WeaponTypes getEquipmentType() {
+  public WeaponType getEquipmentType() {
     return weapon.getWeaponType();
   }
 
   @Override
   public String getName() {
     return weapon.getName();
+  }
+
+  @Override
+  public void inspect() {
+    System.out.println(weapon.getDescription());
+  }
+
+  @Override
+  public void printLevelRequirement() {
+    System.out.println(getLevelRequirement());
+  }
+
+  @Override
+  public void printName() {
+    System.out.println(getName());
   }
 
   private Weapon(WeaponBuilder builder) {

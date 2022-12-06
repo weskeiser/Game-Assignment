@@ -1,7 +1,11 @@
 package Items.Equipment.Weapon;
 
-import Items.Equipment.EquipmentType;
-
-public interface WeaponType extends EquipmentType {
-
+public enum WeaponType {
+  AXE,
+  HAMMER,
+  SWORD,
+  DAGGER,
+  BOW,
+  STAFF,
+  WAND;
 }

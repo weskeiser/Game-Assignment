@@ -1,8 +1,16 @@
 package GameCharacters.Hero;
 
-public interface HeroAttribute {
+public enum HeroAttribute {
+  STRENGTH,
+  DEXTERITY,
+  INTELLIGENCE;
 
-  // add two instances and return sum
-  // increase instance by x
-  // level up
+  int getDamagingAttribute() {
+    return 4;
+
+  };
 }
+
+// add two instances and return sum
+// increase instance by x
+// level up

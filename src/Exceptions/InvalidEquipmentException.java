@@ -1,10 +1,9 @@
 package Exceptions;
 
-public class InvalidArmorException extends Throwable {
-
+public class InvalidEquipmentException extends Throwable {
   public enum Messages {
-    LEVEL_REQUIREMENT("Level is insufficient for this piece of armor."),
-    WRONG_TYPE("This type of armor is not available for your class."),
+    LEVEL_REQUIREMENT("Your hero is too noob for this equipment."),
+    SLOT_EMPTY("Equipment slot is already empty."),
     ;
 
     String errorMessage;
@@ -18,7 +17,7 @@ public class InvalidArmorException extends Throwable {
     }
   }
 
-  public InvalidArmorException(Messages err) {
+  public InvalidEquipmentException(Messages err) {
     super(err.msg());
   }
 
