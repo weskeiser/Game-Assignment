@@ -3,6 +3,12 @@ package Game.Items.Equipment.Weapon;
 public enum Weapons {
   WOODEN_SWORD(1, "Wooden sword", WeaponType.SWORD, "A sword fit for a novice."),
   GREATAXE(3, "GreatAxe", WeaponType.AXE, "A powerful axe from the depths of Azure"),
+
+  MAKESHIFT_BOW(3, "Crooked bow", WeaponType.BOW, "A hurried.. work of art.. "),
+  CROOKED_BOW(3, "Crooked bow", WeaponType.BOW, "A bit crooked, but it does the job."),
+
+  CRACKED_WAND(1, "Cracked wand", WeaponType.WAND, "A wand that has seen better days.")
+
   ;
 
   private int levelRequirement;

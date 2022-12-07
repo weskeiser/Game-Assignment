@@ -4,33 +4,38 @@ import java.util.*;
 
 import Game.Exceptions.*;
 import Game.GameCharacters.GameCharacter;
-import Game.GameCharacters.Actions.CombatManager;
-import Game.Items.Item;
-import Game.Items.Lootable;
+import Game.Items.*;
 import Game.Items.Equipment.*;
 import Game.Items.Equipment.Weapon.*;
+import Game.GameCharacters.*;
+import Game.GameCharacters.Actions.CombatManager;
 
-public class Hero implements GameCharacter, EquipmentManager, CombatManager {
+public class Hero implements GameCharacter, EquipmentManager, CombatManager, Remains {
   public static final String resetC = "\u001B[0m";
   public static final String redC = "\u001b[35m";
   public static final String greenC = "\u001B[32m";
   public static final String blueC = "\u001B[34m";
   public static final String yellowC = "\u001b[33m";
 
+  private GameCharacter defeatedBy = null;
+  private List<Lootable> remains;
+
   private int level = 1;
+  private double health = 100;
   private String name;
   private HeroType heroType;
-  private int health = 100;
   private EnumMap<HeroAttribute, Integer> heroAttributes;
+
   private List<Item> inventory = new ArrayList<Item>(15);
   private EnumMap<EquipmentSlot, Equipment> equippedItems = new EnumMap<EquipmentSlot, Equipment>(
       EquipmentSlot.class);
 
-  private Weapon getEquippedWeapon() throws InvalidWeaponException {
+  @Override
+  public Weapon getEquippedWeapon() throws InvalidWeaponException {
     try {
       Weapon equippedWeapon = (Weapon) equippedItems.get(EquipmentSlot.WEAPON);
 
-      if (!(equippedWeapon instanceof Weapon)) {
+      if (equippedWeapon == null) {
         throw new InvalidWeaponException(InvalidWeaponException.Messages.NO_WEAPON);
       }
 
@@ -40,43 +45,62 @@ public class Hero implements GameCharacter, EquipmentManager, CombatManager {
     }
   }
 
-  private double calculateMaxHit() {
-    Weapon equippedWeapon = null;
+  @Override
+  public void finalBlow(GameCharacter defeator) {
+    health = 0;
+    defeatedBy = defeator;
 
-    try {
-      Weapon fetched = getEquippedWeapon();
-      equippedWeapon = fetched;
-    } catch (Throwable err) {
-      System.out.println(err.getMessage());
+    Iterator<Equipment> equpmentIterator = equippedItems.values().iterator();
+    while (equpmentIterator.hasNext()) {
+      remains.add((Lootable) equpmentIterator.next());
     }
+    equippedItems.clear();
 
-    HeroAttribute damagingAttribute = heroType.getDamagingAttribute();
-    int attributeDamage = heroAttributes.get(damagingAttribute);
-
-    double weaponDamage = (equippedWeapon != null) ? equippedWeapon.getDamageMultiplier() : 1;
-
-    System.out.println("Calculated damage: " + weaponDamage * (1 + attributeDamage / 100));
-    return weaponDamage * (1 + attributeDamage / 100);
+    inventory.forEach((item) -> {
+      remains.add((Lootable) item);
+    });
+    inventory.clear();
   }
 
   @Override
-  public void attack(GameCharacter foe) {
-    double maxHit = calculateMaxHit();
+  public void showLoot(GameCharacter investigator) {
+    if (investigator != defeatedBy) {
+      System.out.println(LootException.Messages.NOT_YOURS);
+      return;
+    }
 
-    foe.defendYourself(maxHit);
+    System.out.println(remains);
   }
 
-  private void takeDamage(double maxHit) {
+  @Override
+  public GameCharacter getDefeator() {
+    return defeatedBy;
+  }
 
+  @Override
+  public double getMaxHit() {
+    return getMaxHit(this);
+  }
+
+  private void takeDamage(double damage) {
+    health = health - damage;
   };
 
   @Override
-  public void defendYourself(double maxHit) {
-    System.out.println("Owwwww!!");
+  public void defend(double maxHit, GameCharacter foe) {
+    if (health < maxHit) {
+      finalBlow(foe);
+      return;
+    }
+
     takeDamage(maxHit);
   };
 
   @Override
+  public CharacterType getCharacterType() {
+    return heroType;
+  }
+
   public Item getInventoryItemByIdx(int index) {
     try {
       return (Item) inventory.toArray()[index];
@@ -112,13 +136,11 @@ public class Hero implements GameCharacter, EquipmentManager, CombatManager {
   }
 
   @Override
-  public void loot(Lootable loot) {
-    try {
-      addToInventory(inventory, loot);
-      loot = null;
-    } catch (InventoryException err) {
-      System.out.println(err.getMessage());
-    }
+  public Lootable takeItem(Lootable lootItem) throws LootException {
+    boolean taken = remains.remove(lootItem);
+    if (!taken)
+      throw new LootException(LootException.Messages.NOT_FOUND);
+    return lootItem;
   }
 
   @Override
@@ -142,7 +164,7 @@ public class Hero implements GameCharacter, EquipmentManager, CombatManager {
   @Override
   public void unEquip(EquipmentSlot equipmentSlot) {
     try {
-      this.unEquip(equipmentSlot, equippedItems, inventory);
+      unEquip(equipmentSlot, equippedItems, inventory);
     } catch (Throwable err) {
       System.out.println(err.getMessage());
     }
@@ -151,7 +173,7 @@ public class Hero implements GameCharacter, EquipmentManager, CombatManager {
   @Override
   public void equip(Equipment equipment) {
     try {
-      this.equip(equipment, inventory, equippedItems, level, heroType);
+      equip(equipment, inventory, equippedItems, level, heroType);
     } catch (Throwable err) {
       System.out.println(err.getMessage());
     }
@@ -246,6 +268,7 @@ public class Hero implements GameCharacter, EquipmentManager, CombatManager {
 
     heroAttributes = heroType.init();
 
+    addToInventory(new Weapon.WeaponBuilder(heroType.starterWeapon).build());
   }
 
   public static class HeroBuilder {

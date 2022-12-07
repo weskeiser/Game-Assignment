@@ -1,14 +1,11 @@
 package Game.GameCharacters.Hero;
 
-public enum HeroAttribute {
+import Game.GameCharacters.CharacterAttribute;
+
+public enum HeroAttribute implements CharacterAttribute {
   STRENGTH,
   DEXTERITY,
   INTELLIGENCE;
-
-  int getDamagingAttribute() {
-    return 4;
-
-  };
 }
 
 // add two instances and return sum
