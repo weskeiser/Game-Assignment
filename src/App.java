@@ -1,22 +1,38 @@
 import Game.Game;
-import Game.GameCharacters.GameCharacter;
-import Game.GameCharacters.Remains;
 import Game.GameCharacters.Hero.Hero;
-import Game.GameCharacters.Hero.HeroType;
-import Game.Items.Lootable;
-import Game.Items.Equipment.Armor.Armor;
-import Game.Items.Equipment.Armor.ArmorItems;
-import Game.Items.Equipment.Weapon.Weapon;
-import Game.Items.Equipment.Weapon.Weapons;
+import Game.Items.Equipment.EquipmentSlot;
 
 public class App {
     public static void main(String[] args) throws Exception {
-        GameCharacter troll = Game.newMage("Troll");
+        Hero troll = Game.newMage("Troll");
 
-        troll.levelUp();
-        troll.levelUp();
+        // Armor royalMail = new Armor.ArmorBuilder(Mail.ROYAL_MAIL).build();
+        // System.out.println(royalMail);
 
-        troll.display();
+        troll.showInventory();
+        troll.showEquippedItems();
+
+        troll.equip(0);
+
+        troll.showInventory();
+        troll.showEquippedItems();
+
+        troll.unEquip(EquipmentSlot.WEAPON);
+
+        troll.showInventory();
+        troll.showEquippedItems();
+
+        troll.equip(0);
+
+        troll.showInventory();
+        troll.showEquippedItems();
+
+        troll.unEquip(EquipmentSlot.WEAPON);
+
+        troll.showInventory();
+        troll.showEquippedItems();
+
+        troll.getTotalAttributes();
 
     }
 }

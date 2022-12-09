@@ -1,8 +1,6 @@
 package Game.GameCharacters.Hero;
 
-import Game.GameCharacters.CharacterAttribute;
-
-public enum HeroAttribute implements CharacterAttribute {
+public enum CharacterAttribute {
   STRENGTH,
   DEXTERITY,
   INTELLIGENCE;

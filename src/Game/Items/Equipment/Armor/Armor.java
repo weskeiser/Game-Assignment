@@ -1,11 +1,14 @@
 package Game.Items.Equipment.Armor;
 
+import java.util.EnumMap;
+
+import Game.GameCharacters.Hero.CharacterAttribute;
 import Game.Items.Lootable;
 import Game.Items.Equipment.Equipment;
 import Game.Items.Equipment.EquipmentSlot;
 
-public class Armor implements Equipment, Lootable {
-  private ArmorItems armor;
+public class Armor implements Equipment<ArmorType>, Lootable {
+  private ArmorItem armor;
   private EquipmentSlot equipmentSlot;
 
   @Override
@@ -18,10 +21,9 @@ public class Armor implements Equipment, Lootable {
     return armor.getArmorType();
   }
 
-  @Override
-  public double getDamageMultiplier() {
-    return armor.getDamageMultiplier();
-  }
+  public EnumMap<CharacterAttribute, Integer> getArmorAttributes() {
+    return armor.getArmorAttributes();
+  };
 
   @Override
   public EquipmentSlot getEquipmentSlot() {
@@ -48,15 +50,20 @@ public class Armor implements Equipment, Lootable {
     System.out.println(getLevelRequirement());
   }
 
+  public void init() {
+
+  }
+
   private Armor(ArmorBuilder builder) {
     this.armor = builder.armor;
+    armor.init();
     this.equipmentSlot = armor.getEquipmentSlot();
   }
 
   public static class ArmorBuilder {
-    private ArmorItems armor;
+    private ArmorItem armor;
 
-    public ArmorBuilder(ArmorItems armor) {
+    public ArmorBuilder(ArmorItem armor) {
       this.armor = armor;
     }
 

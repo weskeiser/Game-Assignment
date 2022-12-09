@@ -3,45 +3,59 @@ package Game.GameCharacters.Hero;
 import java.util.*;
 
 import Game.Exceptions.*;
-import Game.GameCharacters.GameCharacter;
 import Game.Items.*;
 import Game.Items.Equipment.*;
+import Game.Items.Equipment.Armor.Armor;
 import Game.Items.Equipment.Weapon.*;
 import Game.GameCharacters.*;
-import Game.GameCharacters.Actions.CombatManager;
 
-public class Hero implements GameCharacter, EquipmentManager, CombatManager, Remains {
-  public static final String resetC = "\u001B[0m";
-  public static final String redC = "\u001b[35m";
-  public static final String greenC = "\u001B[32m";
-  public static final String blueC = "\u001B[34m";
-  public static final String yellowC = "\u001b[33m";
+public class Hero implements HeroCharacter, InventoryManager, EquipmentManager, CombatManager, Remains {
+
+  private String name;
+  private HeroType heroType;
 
   private GameCharacter defeatedBy = null;
   private List<Lootable> remains;
 
-  private int level = 1;
   private double health = 100;
-  private String name;
-  private HeroType heroType;
-  private EnumMap<HeroAttribute, Integer> heroAttributes;
+  private int experienceToLevel = 30;
+  private int experience = 0;
+  private int level = 1;
+  private EnumMap<CharacterAttribute, Integer> heroAttributes;
 
   private List<Item> inventory = new ArrayList<Item>(15);
   private EnumMap<EquipmentSlot, Equipment> equippedItems = new EnumMap<EquipmentSlot, Equipment>(
       EquipmentSlot.class);
 
+  public Item getFromInventory(int index) throws InventoryException {
+    try {
+      return getFromInventory(inventory, index);
+    } catch (Throwable err) {
+      throw err;
+    }
+  }
+
+  public EnumMap<CharacterAttribute, Integer> getTotalAttributes() {
+    return getTotalAttributes(heroType, equippedItems);
+  }
+
   @Override
   public Weapon getEquippedWeapon() throws InvalidWeaponException {
-    try {
-      Weapon equippedWeapon = (Weapon) equippedItems.get(EquipmentSlot.WEAPON);
+    Weapon equippedWeapon = (Weapon) equippedItems.get(EquipmentSlot.WEAPON);
 
-      if (equippedWeapon == null) {
-        throw new InvalidWeaponException(InvalidWeaponException.Messages.NO_WEAPON);
-      }
+    if (equippedWeapon == null) {
+      throw new InvalidWeaponException(InvalidWeaponException.Messages.NO_WEAPON);
+    }
 
-      return equippedWeapon;
-    } catch (InvalidWeaponException err) {
-      throw err;
+    return equippedWeapon;
+  }
+
+  @Override
+  public void gainExperience(int expGain) {
+    experience += expGain;
+    if (experience >= experienceToLevel) {
+      levelUp();
+      experienceToLevel = (int) (experienceToLevel * 1.5);
     }
   }
 
@@ -111,11 +125,11 @@ public class Hero implements GameCharacter, EquipmentManager, CombatManager, Rem
 
   @Override
   public int levelUp() {
-    EnumMap<HeroAttribute, Integer> levelAttributes = heroType.getLevelAttributes();
+    EnumMap<CharacterAttribute, Integer> levelAttributes = heroType.getLevelAttributes();
 
-    int strength = levelAttributes.get(HeroAttribute.STRENGTH);
-    int dexterity = levelAttributes.get(HeroAttribute.DEXTERITY);
-    int intelligence = levelAttributes.get(HeroAttribute.INTELLIGENCE);
+    int strength = levelAttributes.get(CharacterAttribute.STRENGTH);
+    int dexterity = levelAttributes.get(CharacterAttribute.DEXTERITY);
+    int intelligence = levelAttributes.get(CharacterAttribute.INTELLIGENCE);
 
     this.heroAttributes.replaceAll((k, v) -> {
       switch (k) {
@@ -152,6 +166,10 @@ public class Hero implements GameCharacter, EquipmentManager, CombatManager, Rem
     }
   }
 
+  public int getFreeInventorySlots() {
+    return 15 - inventory.size();
+  }
+
   @Override
   public void dropItem(Item item) {
     try {
@@ -171,16 +189,17 @@ public class Hero implements GameCharacter, EquipmentManager, CombatManager, Rem
   };
 
   @Override
-  public void equip(Equipment equipment) {
+  public void equip(int inventoryIndex) {
     try {
-      equip(equipment, inventory, equippedItems, level, heroType);
+      Equipment itemFromInventory = (Equipment) getFromInventory(inventoryIndex);
+      equip(itemFromInventory, inventory, equippedItems, level, heroType);
     } catch (Throwable err) {
       System.out.println(err.getMessage());
     }
   }
 
   @Override
-  public EnumMap<HeroAttribute, Integer> getHeroAttributes() {
+  public EnumMap<CharacterAttribute, Integer> getHeroAttributes() {
     return heroAttributes;
   }
 
@@ -230,36 +249,12 @@ public class Hero implements GameCharacter, EquipmentManager, CombatManager, Rem
 
   @Override
   public void showInventory() {
-    StringBuilder builder = new StringBuilder();
-    Object[] inv = inventory.toArray();
-
-    builder.append("\n" + blueC + "~~~~~~~~~~~~" + resetC + " INVENTORY " + redC + "(" + yellowC + inv.length + "/15"
-        + redC + ")" + blueC + " ~~~~~~~~~~~~\n");
-
-    for (int i = 0; i < inv.length; i++) {
-      builder.append(blueC + "~~~~~~~~~~~~ " + redC + (i + 1) + ". ");
-      builder.append(yellowC + ((Item) inv[i]).getName() + "\n");
-    }
-
-    builder.append(blueC + "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
-
-    System.out.println(builder.toString());
+    showInventory(inventory);
   }
 
   @Override
   public void showEquippedItems() {
-    StringBuilder builder = new StringBuilder();
-
-    builder.append("\n" + blueC + "~~~~~~~~~~~~" + resetC + " EQUIPPED " + blueC + "~~~~~~~~~~~~~~~~~~~~\n");
-
-    equippedItems.forEach((k, v) -> {
-      builder.append(blueC + "~~~~~~~~~~~~ " + redC + k.toString() + ": ");
-      builder.append(yellowC + v.getName() + "\n");
-    });
-
-    builder.append(blueC + "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
-
-    System.out.println(builder.toString());
+    showEquippedItems(equippedItems);
   }
 
   private Hero(HeroBuilder builder) {

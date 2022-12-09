@@ -1,34 +1,32 @@
 package Game;
 
 import Game.Exceptions.LootException;
-import Game.GameCharacters.GameCharacter;
-import Game.GameCharacters.Remains;
-import Game.GameCharacters.Hero.Hero;
-import Game.GameCharacters.Hero.HeroType;
-import Game.Items.Item;
-import Game.Items.Lootable;
+import Game.GameCharacters.*;
+import Game.GameCharacters.Hero.*;
+import Game.Items.*;
 
 public interface Game {
 
-  static GameCharacter newWarrior(String name) {
+  static Hero newWarrior(String name) {
     return new Hero.HeroBuilder(name, HeroType.WARRIOR).build();
   }
 
-  static GameCharacter newRogue(String name) {
+  static Hero newRogue(String name) {
     return new Hero.HeroBuilder(name, HeroType.ROGUE).build();
   }
 
-  static GameCharacter newRanger(String name) {
+  static Hero newRanger(String name) {
     return new Hero.HeroBuilder(name, HeroType.RANGER).build();
   }
 
-  static GameCharacter newMage(String name) {
+  static Hero newMage(String name) {
     return new Hero.HeroBuilder(name, HeroType.MAGE).build();
   }
 
-  static void loot(Remains remains, GameCharacter looter, Lootable lootItem) {
+  static void loot(Remains remains, Hero looter, Lootable lootItem) {
     try {
-      // check inventory space
+      if (looter.getFreeInventorySlots() <= 0)
+        throw new LootException(LootException.Messages.FULL_INVENTORY);
 
       if (looter != remains.getDefeator())
         throw new LootException(LootException.Messages.NOT_YOURS);
@@ -42,6 +40,15 @@ public interface Game {
 
   static void attack(GameCharacter defender, GameCharacter attacker) {
     double maxHit = attacker.getMaxHit();
+
+    // randomise actual hit
+
+    int actualHit = (int) maxHit;
+
+    if (attacker.getCharacterType() instanceof HeroType) {
+      ((Hero) attacker).gainExperience(actualHit);
+    }
+
     defender.defend(maxHit, attacker);
   };
 

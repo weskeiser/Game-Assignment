@@ -4,7 +4,7 @@ import Game.Items.Lootable;
 import Game.Items.Equipment.Equipment;
 import Game.Items.Equipment.EquipmentSlot;
 
-public class Weapon implements Equipment, Lootable {
+public class Weapon implements Equipment<WeaponType>, Lootable {
   private Weapons weapon;
   private EquipmentSlot equipmentSlot = EquipmentSlot.WEAPON;
 
@@ -13,7 +13,6 @@ public class Weapon implements Equipment, Lootable {
     return equipmentSlot;
   }
 
-  @Override
   public double getDamageMultiplier() {
     return weapon.getDamageMultiplier();
   }

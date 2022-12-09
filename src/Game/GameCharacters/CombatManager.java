@@ -1,7 +1,6 @@
-package Game.GameCharacters.Actions;
+package Game.GameCharacters;
 
-import Game.GameCharacters.CharacterAttribute;
-import Game.GameCharacters.GameCharacter;
+import Game.GameCharacters.Hero.CharacterAttribute;
 import Game.Items.Equipment.Weapon.Weapon;
 
 public interface CombatManager {
@@ -15,7 +14,7 @@ public interface CombatManager {
       Weapon fetched = gameCharacter.getEquippedWeapon();
       equippedWeapon = fetched;
     } catch (Throwable err) {
-      System.out.println(err.getMessage());
+      // System.out.println(err.getMessage());
     }
 
     CharacterAttribute damagingAttribute = gameCharacter.getCharacterType().getDamagingAttribute();
@@ -25,7 +24,6 @@ public interface CombatManager {
 
     System.out.println("Calculated damage: " + weaponDamage * (1 + attributeDamage / 100));
     return weaponDamage * (1 + attributeDamage / 100);
-
   }
 
 }

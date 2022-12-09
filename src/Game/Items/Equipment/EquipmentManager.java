@@ -5,13 +5,10 @@ import java.util.*;
 import Game.Exceptions.*;
 import Game.GameCharacters.Hero.HeroType;
 import Game.Items.Item;
-import Game.Items.Equipment.Armor.ArmorType;
+import Game.Items.Equipment.Armor.*;
 import Game.Items.Equipment.Weapon.*;
-import Game.Items.Inventory.InventoryManager;
 
-public interface EquipmentManager extends InventoryManager {
-
-  void equip(Equipment equipment);
+public interface EquipmentManager {
 
   default void equip(Equipment equipment,
       List<Item> inventory,
@@ -20,37 +17,45 @@ public interface EquipmentManager extends InventoryManager {
       HeroType heroType)
       throws Throwable {
 
-    try {
-      if (!inventory.remove(equipment)) {
-        throw new InventoryException(InventoryException.Messages.NOT_FOUND);
-      }
-
-      if (equipment.getLevelRequirement() > heroLevel) {
-        throw new InvalidEquipmentException(InvalidEquipmentException.Messages.LEVEL_REQUIREMENT);
-      }
-
-      switch (equipment.getEquipmentSlot()) {
-        case WEAPON:
-          if (!((EnumSet<WeaponType>) heroType.getValidWeaponTypes()).contains(equipment.getEquipmentType())) {
-            throw new InvalidWeaponException(InvalidWeaponException.Messages.WRONG_TYPE);
-          }
-
-          unEquip(EquipmentSlot.WEAPON, equippedItems, inventory);
-          equippedItems.put(EquipmentSlot.WEAPON, equipment);
-
-        default:
-          if (!((EnumSet<ArmorType>) heroType.getValidArmorTypes()).contains(equipment.getEquipmentType())) {
-            throw new InvalidArmorException(InvalidArmorException.Messages.WRONG_TYPE);
-          }
-
-          unEquip(equipment.getEquipmentSlot(), equippedItems, inventory);
-          equippedItems.put(equipment.getEquipmentSlot(), equipment);
-
-      }
-
-    } catch (Throwable err) {
-      throw err;
+    if (!inventory.remove(equipment)) {
+      throw new InventoryException(InventoryException.Messages.NOT_FOUND);
     }
+
+    if (equipment.getLevelRequirement() > heroLevel) {
+      throw new InvalidEquipmentException(InvalidEquipmentException.Messages.LEVEL_REQUIREMENT);
+    }
+
+    switch (equipment.getEquipmentSlot()) {
+      case WEAPON:
+        if (!((EnumSet<WeaponType>) heroType.getValidWeaponTypes()).contains(equipment.getEquipmentType())) {
+          throw new InvalidWeaponException(InvalidWeaponException.Messages.WRONG_TYPE);
+        }
+
+        try {
+          unEquip(EquipmentSlot.WEAPON, equippedItems, inventory);
+        } catch (Throwable err) {
+        }
+
+        equippedItems.put(EquipmentSlot.WEAPON, (Weapon) equipment);
+
+        System.out.println("You equip a " + equipment.getName() + " from your inventory.");
+
+        break;
+
+      // All armor slots
+      default:
+        if (!((EnumSet<ArmorType>) heroType.getValidArmorTypes()).contains(equipment.getEquipmentType())) {
+          throw new InvalidArmorException(InvalidArmorException.Messages.WRONG_TYPE);
+        }
+
+        try {
+          unEquip(equipment.getEquipmentSlot(), equippedItems, inventory);
+        } catch (Throwable err) {
+        }
+
+        equippedItems.put(equipment.getEquipmentSlot(), (Armor) equipment);
+    }
+
   };
 
   default void unEquip(EquipmentSlot equipmentSlot,
@@ -58,27 +63,33 @@ public interface EquipmentManager extends InventoryManager {
       List<Item> inventory)
       throws Throwable {
 
-    try {
-      Equipment unEquipped = equippedItems.remove(equipmentSlot);
+    Equipment unEquipped = equippedItems.get(equipmentSlot);
 
-      if (unEquipped instanceof Equipment) {
-        addToInventory(inventory, unEquipped);
-        System.out.println(unEquipped.getName() + " was unequipped and added to the inventory.");
-      } else {
-        throw new InvalidEquipmentException(InvalidEquipmentException.Messages.SLOT_EMPTY);
-      }
+    if (unEquipped == null)
+      throw new InvalidEquipmentException(InvalidEquipmentException.Messages.SLOT_EMPTY);
 
-    } catch (Throwable err) {
-      System.out.println(err.getMessage());
+    if (inventory.size() >= 15) {
+      throw new InventoryException(InventoryException.Messages.INVENTORY_FULL);
     }
+
+    equippedItems.remove(equipmentSlot);
+
+    if (unEquipped instanceof Weapon) {
+      inventory.add((Weapon) unEquipped);
+    } else if (unEquipped instanceof Armor) {
+
+      inventory.add((Armor) unEquipped);
+    }
+
+    System.out.println(unEquipped.getName() + " was unequipped and added to the inventory.");
   };
 
-  static boolean displayItems() {
-    return true;
-  };
+  // static boolean displayItems() {
+  // return true;
+  // };
 
-  static boolean displayArmorAttributes() {
-    return true;
-  };
+  // static boolean displayArmorAttributes() {
+  // return true;
+  // };
 
 }

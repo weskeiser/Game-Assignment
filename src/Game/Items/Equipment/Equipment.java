@@ -2,13 +2,13 @@ package Game.Items.Equipment;
 
 import Game.Items.Item;
 
-public interface Equipment extends Item {
+public interface Equipment<T> extends Item {
 
-  EquipmentType getEquipmentType();
+  T getEquipmentType();
 
   EquipmentSlot getEquipmentSlot();
 
-  double getDamageMultiplier();
+  // double getDamageMultiplier();
 
   int getLevelRequirement();
 

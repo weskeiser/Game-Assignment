@@ -3,7 +3,8 @@ package Game.Exceptions;
 public class LootException extends Throwable {
   public enum Messages {
     NOT_FOUND("Item not found in loot pile."),
-    NOT_YOURS("This loot pile does not belong to you.");
+    NOT_YOURS("This loot pile does not belong to you."),
+    FULL_INVENTORY("Your inventory is full.");
     ;
 
     String errorMessage;
