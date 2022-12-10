@@ -2,10 +2,10 @@ package Game.Items.Equipment.Armor.Mail;
 
 import java.util.EnumMap;
 
+import Game.GameCharacters.CharacterAttribute;
 import Game.Items.Equipment.EquipmentSlot;
 import Game.Items.Equipment.Armor.ArmorItem;
 import Game.Items.Equipment.Armor.ArmorType;
-import Game.GameCharacters.Hero.CharacterAttribute;
 
 public enum Mail implements ArmorItem {
   ROYAL_MAIL() {
@@ -26,6 +26,7 @@ public enum Mail implements ArmorItem {
   String description;
   EquipmentSlot equipmentSlot;
   EnumMap<CharacterAttribute, Integer> armorAttributes;
+  // TODO: Make all armorAttributes enum maps double instead of integer
 
   public EnumMap<CharacterAttribute, Integer> getArmorAttributes() {
     return armorAttributes;
@@ -58,11 +59,10 @@ public enum Mail implements ArmorItem {
 
   void applyArmorAttributeMultiplier() {
     armorAttributes.put(CharacterAttribute.STRENGTH,
-        armorAttributes.get(CharacterAttribute.STRENGTH) * levelRequirement);
+        (1 + armorAttributes.get(CharacterAttribute.STRENGTH) / 100) * (levelRequirement / 10 + 1));
     armorAttributes.put(CharacterAttribute.DEXTERITY,
-        armorAttributes.get(CharacterAttribute.DEXTERITY) * levelRequirement);
+        (1 + armorAttributes.get(CharacterAttribute.DEXTERITY) / 100) * (levelRequirement / 10 + 1));
     armorAttributes.put(CharacterAttribute.INTELLIGENCE,
-        armorAttributes.get(CharacterAttribute.INTELLIGENCE) * levelRequirement);
+        (1 + armorAttributes.get(CharacterAttribute.INTELLIGENCE) / 100) * (levelRequirement / 10 + 1));
   }
-
 }

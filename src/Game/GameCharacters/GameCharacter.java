@@ -4,7 +4,6 @@ import java.util.EnumMap;
 import java.util.List;
 
 import Game.Exceptions.InvalidWeaponException;
-import Game.GameCharacters.Hero.CharacterAttribute;
 import Game.GameCharacters.Hero.HeroType;
 import Game.Items.Item;
 import Game.Items.Equipment.Equipment;
@@ -64,6 +63,8 @@ public interface GameCharacter {
   int getLevel();
 
   double getMaxHit();
+
+  void takeDamage(double damage);
 
   Weapon getEquippedWeapon() throws InvalidWeaponException;
 

@@ -1,24 +1,12 @@
 package Game.GameCharacters.Villain;
 
-import java.util.ArrayList;
-import java.util.EnumMap;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 
-import Game.Exceptions.InvalidWeaponException;
-import Game.Exceptions.LootException;
-import Game.GameCharacters.CharacterType;
-import Game.GameCharacters.CombatManager;
-import Game.GameCharacters.GameCharacter;
-import Game.GameCharacters.Remains;
-import Game.GameCharacters.Hero.CharacterAttribute;
-import Game.GameCharacters.Hero.HeroType;
-import Game.Items.InventoryManager;
-import Game.Items.Item;
-import Game.Items.Lootable;
-import Game.Items.Equipment.Equipment;
-import Game.Items.Equipment.EquipmentManager;
-import Game.Items.Equipment.EquipmentSlot;
+import Game.Exceptions.*;
+import Game.GameCharacters.*;
+import Game.GameCharacters.Hero.*;
+import Game.Items.*;
+import Game.Items.Equipment.*;
 import Game.Items.Equipment.Weapon.Weapon;
 
 public class Villain implements GameCharacter, InventoryManager, EquipmentManager, CombatManager, Remains {
@@ -33,7 +21,7 @@ public class Villain implements GameCharacter, InventoryManager, EquipmentManage
   private int experienceToLevel = 30;
   private int experience = 0;
   private int level = 1;
-  private EnumMap<CharacterAttribute, Integer> heroAttributes;
+  private EnumMap<CharacterAttribute, Integer> characterAttributes;
 
   private List<Item> inventory = new ArrayList<Item>(15);
   private EnumMap<EquipmentSlot, Equipment> equippedItems = new EnumMap<EquipmentSlot, Equipment>(
@@ -63,8 +51,18 @@ public class Villain implements GameCharacter, InventoryManager, EquipmentManage
   }
 
   @Override
+  public void takeDamage(double damage) {
+    health = health - damage;
+  };
+
+  @Override
   public void defend(double maxHit, GameCharacter foe) {
-    // TODO Auto-generated method stub
+    if (health < maxHit) {
+      finalBlow(foe);
+      return;
+    }
+
+    takeDamage(maxHit);
   }
 
   @Override
@@ -125,7 +123,7 @@ public class Villain implements GameCharacter, InventoryManager, EquipmentManage
 
   @Override
   public EnumMap<CharacterAttribute, Integer> getHeroAttributes() {
-    return heroAttributes;
+    return characterAttributes;
   }
 
   @Override
@@ -159,7 +157,7 @@ public class Villain implements GameCharacter, InventoryManager, EquipmentManage
     name = builder.name;
     heroType = builder.heroType;
 
-    heroAttributes = heroType.init();
+    characterAttributes = heroType.init();
 
     // addToInventory(new Weapon.WeaponBuilder(heroType.starterWeapon).build());
   }

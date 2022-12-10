@@ -1,4 +1,4 @@
-package Game.GameCharacters.Hero;
+package Game.GameCharacters;
 
 public enum CharacterAttribute {
   STRENGTH,

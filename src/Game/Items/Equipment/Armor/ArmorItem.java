@@ -2,7 +2,7 @@ package Game.Items.Equipment.Armor;
 
 import java.util.EnumMap;
 
-import Game.GameCharacters.Hero.CharacterAttribute;
+import Game.GameCharacters.CharacterAttribute;
 import Game.Items.Equipment.EquipmentSlot;
 
 public interface ArmorItem {

@@ -5,7 +5,6 @@ import java.util.*;
 import Game.Exceptions.*;
 import Game.Items.*;
 import Game.Items.Equipment.*;
-import Game.Items.Equipment.Armor.Armor;
 import Game.Items.Equipment.Weapon.*;
 import Game.GameCharacters.*;
 
@@ -96,7 +95,8 @@ public class Hero implements HeroCharacter, InventoryManager, EquipmentManager, 
     return getMaxHit(this);
   }
 
-  private void takeDamage(double damage) {
+  @Override
+  public void takeDamage(double damage) {
     health = health - damage;
   };
 

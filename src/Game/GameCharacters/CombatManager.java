@@ -1,6 +1,5 @@
 package Game.GameCharacters;
 
-import Game.GameCharacters.Hero.CharacterAttribute;
 import Game.Items.Equipment.Weapon.Weapon;
 
 public interface CombatManager {
