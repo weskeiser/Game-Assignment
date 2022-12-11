@@ -5,7 +5,7 @@ import Game.Items.Equipment.Equipment;
 import Game.Items.Equipment.EquipmentSlot;
 
 public class Weapon implements Equipment<WeaponType>, Lootable {
-  private Weapons weapon;
+  private WeaponItem weapon;
   private EquipmentSlot equipmentSlot = EquipmentSlot.WEAPON;
 
   @Override
@@ -52,9 +52,9 @@ public class Weapon implements Equipment<WeaponType>, Lootable {
   }
 
   public static class WeaponBuilder {
-    private Weapons weapon;
+    private WeaponItem weapon;
 
-    public WeaponBuilder(Weapons weapon) {
+    public WeaponBuilder(WeaponItem weapon) {
       this.weapon = weapon;
     }
 

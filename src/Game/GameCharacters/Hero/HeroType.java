@@ -6,8 +6,8 @@ import java.util.EnumSet;
 import Game.GameCharacters.CharacterAttribute;
 import Game.GameCharacters.CharacterType;
 import Game.Items.Equipment.Armor.ArmorType;
+import Game.Items.Equipment.Weapon.WeaponItem;
 import Game.Items.Equipment.Weapon.WeaponType;
-import Game.Items.Equipment.Weapon.Weapons;
 
 public enum HeroType implements CharacterType, HeroInitiator {
   WARRIOR() {
@@ -16,7 +16,7 @@ public enum HeroType implements CharacterType, HeroInitiator {
       this.validWeaponTypes = EnumSet.of(WeaponType.AXE, WeaponType.HAMMER, WeaponType.SWORD);
       this.validArmorTypes = EnumSet.of(ArmorType.PLATE, ArmorType.MAIL);
       this.damagingAttribute = CharacterAttribute.STRENGTH;
-      this.starterWeapon = Weapons.WOODEN_SWORD;
+      this.starterWeapon = WeaponItem.WOODEN_SWORD;
       return createAttributeMap(5, 2, 1);
     }
   },
@@ -26,7 +26,7 @@ public enum HeroType implements CharacterType, HeroInitiator {
       this.validWeaponTypes = EnumSet.of(WeaponType.DAGGER, WeaponType.SWORD);
       this.validArmorTypes = EnumSet.of(ArmorType.LEATHER, ArmorType.MAIL);
       this.damagingAttribute = CharacterAttribute.DEXTERITY;
-      this.starterWeapon = Weapons.WOODEN_SWORD;
+      this.starterWeapon = WeaponItem.WOODEN_SWORD;
       return createAttributeMap(2, 6, 1);
     }
   },
@@ -36,7 +36,7 @@ public enum HeroType implements CharacterType, HeroInitiator {
       this.validWeaponTypes = EnumSet.of(WeaponType.BOW);
       this.validArmorTypes = EnumSet.of(ArmorType.LEATHER, ArmorType.MAIL);
       this.damagingAttribute = CharacterAttribute.DEXTERITY;
-      this.starterWeapon = Weapons.MAKESHIFT_BOW;
+      this.starterWeapon = WeaponItem.MAKESHIFT_BOW;
       return createAttributeMap(1, 7, 1);
     }
   },
@@ -46,7 +46,7 @@ public enum HeroType implements CharacterType, HeroInitiator {
       this.validWeaponTypes = EnumSet.of(WeaponType.STAFF, WeaponType.WAND);
       this.validArmorTypes = EnumSet.of(ArmorType.CLOTH);
       this.damagingAttribute = CharacterAttribute.INTELLIGENCE;
-      this.starterWeapon = Weapons.CRACKED_WAND;
+      this.starterWeapon = WeaponItem.CRACKED_WAND;
       return createAttributeMap(1, 1, 8);
 
     }
@@ -56,9 +56,9 @@ public enum HeroType implements CharacterType, HeroInitiator {
   EnumSet<WeaponType> validWeaponTypes;
   EnumSet<ArmorType> validArmorTypes;
   CharacterAttribute damagingAttribute;
-  Weapons starterWeapon;
+  WeaponItem starterWeapon;
 
-  public Weapons getStarterWeapon() {
+  public WeaponItem getStarterWeapon() {
     return starterWeapon;
   }
 

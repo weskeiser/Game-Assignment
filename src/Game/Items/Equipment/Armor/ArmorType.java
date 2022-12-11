@@ -1,6 +1,7 @@
 package Game.Items.Equipment.Armor;
 
 import java.util.EnumMap;
+import java.util.Map;
 
 import Game.GameCharacters.CharacterAttribute;
 
@@ -21,11 +22,9 @@ public enum ArmorType {
   }
 
   public EnumMap<CharacterAttribute, Integer> createAttributeMap(int strength, int dexterity, int intelligence) {
-    EnumMap<CharacterAttribute, Integer> attributeMap = new EnumMap<CharacterAttribute, Integer>(
-        CharacterAttribute.class);
-    attributeMap.put(CharacterAttribute.STRENGTH, strength);
-    attributeMap.put(CharacterAttribute.DEXTERITY, dexterity);
-    attributeMap.put(CharacterAttribute.INTELLIGENCE, intelligence);
-    return attributeMap;
+    return new EnumMap<>(Map.ofEntries(
+        Map.entry(CharacterAttribute.STRENGTH, strength),
+        Map.entry(CharacterAttribute.DEXTERITY, dexterity),
+        Map.entry(CharacterAttribute.INTELLIGENCE, intelligence)));
   }
 }

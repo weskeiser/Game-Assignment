@@ -3,7 +3,7 @@ package Game.Items;
 import java.util.List;
 
 import Game.Exceptions.InventoryException;
-import Game.Exceptions.InventoryException.Messages;
+import Game.Exceptions.InventoryException.InventoryErrMessages;
 import Game.Items.Equipment.Armor.Armor;
 import Game.Items.Equipment.Weapon.Weapon;
 
@@ -11,7 +11,7 @@ public interface InventoryManager {
 
   default void addToInventory(List<Item> inventory, Item item) throws InventoryException {
     if (inventory.size() >= 15) {
-      throw new InventoryException(InventoryException.Messages.INVENTORY_FULL);
+      throw new InventoryException(InventoryErrMessages.NO_SPACE);
     }
 
     if (item instanceof Weapon) {
@@ -23,11 +23,13 @@ public interface InventoryManager {
     }
   };
 
+  public Item getFromInventory(int index) throws InventoryException;
+
   default Item getFromInventory(List<Item> inventory, int index) throws InventoryException {
     Item retrievedItem = inventory.get(index);
 
     if (retrievedItem == null)
-      throw new InventoryException(Messages.NOT_FOUND);
+      throw new InventoryException(InventoryErrMessages.NOT_FOUND);
 
     return retrievedItem;
 
@@ -35,7 +37,7 @@ public interface InventoryManager {
 
   default void dropItem(List<Item> inventory, Item item) throws InventoryException {
     if (!inventory.remove(item))
-      throw new InventoryException(InventoryException.Messages.NOT_FOUND);
+      throw new InventoryException(InventoryErrMessages.NOT_FOUND);
 
     System.out.println(item.getName() + " was dropped.");
   };

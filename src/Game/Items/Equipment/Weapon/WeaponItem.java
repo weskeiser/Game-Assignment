@@ -1,6 +1,6 @@
 package Game.Items.Equipment.Weapon;
 
-public enum Weapons {
+public enum WeaponItem {
   WOODEN_SWORD(1, "Wooden sword", WeaponType.SWORD, "A sword fit for a novice."),
   GREATAXE(3, "GreatAxe", WeaponType.AXE, "A powerful axe from the depths of Azure"),
 
@@ -56,7 +56,7 @@ public enum Weapons {
     return description;
   }
 
-  Weapons(int levelRequirement, String name, WeaponType weaponType, String description) {
+  WeaponItem(int levelRequirement, String name, WeaponType weaponType, String description) {
     this.levelRequirement = levelRequirement;
     this.name = name;
     this.weaponType = weaponType;

@@ -1,5 +1,6 @@
 package Game.GameCharacters;
 
+import Game.Exceptions.InvalidEquipmentException;
 import Game.Items.Equipment.Weapon.Weapon;
 
 public interface CombatManager {
@@ -12,8 +13,8 @@ public interface CombatManager {
     try {
       Weapon fetched = gameCharacter.getEquippedWeapon();
       equippedWeapon = fetched;
-    } catch (Throwable err) {
-      // System.out.println(err.getMessage());
+    } catch (InvalidEquipmentException err) {
+      // Expected behaviour, no handling needed.
     }
 
     CharacterAttribute damagingAttribute = gameCharacter.getCharacterType().getDamagingAttribute();

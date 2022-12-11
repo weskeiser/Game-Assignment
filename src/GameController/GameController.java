@@ -1,29 +1,33 @@
-package Game;
+package GameController;
 
+import Game.Exceptions.InventoryException;
 import Game.Exceptions.LootException;
-import Game.GameCharacters.*;
-import Game.GameCharacters.Hero.*;
-import Game.Items.*;
+import Game.GameCharacters.GameCharacter;
+import Game.GameCharacters.Remains;
+import Game.GameCharacters.Hero.Hero;
+import Game.GameCharacters.Hero.HeroType;
+import Game.Items.Item;
+import Game.Items.Lootable;
 
-public interface Game {
+public class GameController {
 
-  static Hero newWarrior(String name) {
+  public Hero newWarrior(String name) {
     return new Hero.HeroBuilder(name, HeroType.WARRIOR).build();
   }
 
-  static Hero newRogue(String name) {
+  public Hero newRogue(String name) {
     return new Hero.HeroBuilder(name, HeroType.ROGUE).build();
   }
 
-  static Hero newRanger(String name) {
+  public Hero newRanger(String name) {
     return new Hero.HeroBuilder(name, HeroType.RANGER).build();
   }
 
-  static Hero newMage(String name) {
+  public Hero newMage(String name) {
     return new Hero.HeroBuilder(name, HeroType.MAGE).build();
   }
 
-  static void loot(Remains remains, Hero looter, Lootable lootItem) {
+  public void loot(Remains remains, Hero looter, Lootable lootItem) {
     try {
       if (looter.getFreeInventorySlots() <= 0)
         throw new LootException(LootException.Messages.FULL_INVENTORY);
@@ -33,12 +37,16 @@ public interface Game {
 
       remains.takeItem(lootItem);
       looter.addToInventory((Item) lootItem);
-    } catch (Throwable err) {
+
+    } catch (LootException err) {
+      System.out.println(err.getMessage());
+
+    } catch (InventoryException err) {
       System.out.println(err.getMessage());
     }
   }
 
-  static void attack(GameCharacter defender, GameCharacter attacker) {
+  public void attack(GameCharacter defender, GameCharacter attacker) {
     double maxHit = attacker.getMaxHit();
 
     // randomise actual hit

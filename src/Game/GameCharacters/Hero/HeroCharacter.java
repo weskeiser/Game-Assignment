@@ -3,6 +3,7 @@ package Game.GameCharacters.Hero;
 import java.util.EnumMap;
 import java.util.List;
 
+import Game.Exceptions.InventoryException;
 import Game.GameCharacters.GameCharacter;
 import Game.Items.Item;
 import Game.Items.Equipment.Equipment;
@@ -11,7 +12,7 @@ import Game.Items.Equipment.EquipmentSlot;
 public interface HeroCharacter extends GameCharacter {
   int getFreeInventorySlots();
 
-  void dropItem(Item item);
+  void dropItem(Item item) throws InventoryException;
 
   void showInventory();
 

@@ -2,11 +2,16 @@ package Game.Items.Equipment;
 
 import java.util.*;
 
-import Game.Exceptions.*;
+import Game.Exceptions.InvalidEquipmentException;
+import Game.Exceptions.InvalidEquipmentException.EquipmentErrMessages;
+import Game.Exceptions.InventoryException;
+import Game.Exceptions.InventoryException.InventoryErrMessages;
 import Game.GameCharacters.Hero.HeroType;
 import Game.Items.Item;
-import Game.Items.Equipment.Armor.*;
-import Game.Items.Equipment.Weapon.*;
+import Game.Items.Equipment.Armor.Armor;
+import Game.Items.Equipment.Armor.ArmorType;
+import Game.Items.Equipment.Weapon.Weapon;
+import Game.Items.Equipment.Weapon.WeaponType;
 
 public interface EquipmentManager {
 
@@ -15,25 +20,27 @@ public interface EquipmentManager {
       EnumMap<EquipmentSlot, Equipment> equippedItems,
       int heroLevel,
       HeroType heroType)
-      throws Throwable {
+      throws InvalidEquipmentException, InventoryException {
 
     if (!inventory.remove(equipment)) {
-      throw new InventoryException(InventoryException.Messages.NOT_FOUND);
+      throw new InventoryException(InventoryErrMessages.NOT_FOUND);
     }
 
     if (equipment.getLevelRequirement() > heroLevel) {
-      throw new InvalidEquipmentException(InvalidEquipmentException.Messages.LEVEL_REQUIREMENT);
+      throw new InvalidEquipmentException(EquipmentErrMessages.LEVEL_REQUIREMENT);
     }
 
     switch (equipment.getEquipmentSlot()) {
       case WEAPON:
         if (!((EnumSet<WeaponType>) heroType.getValidWeaponTypes()).contains(equipment.getEquipmentType())) {
-          throw new InvalidWeaponException(InvalidWeaponException.Messages.WRONG_TYPE);
+          throw new InvalidEquipmentException(EquipmentErrMessages.WRONG_TYPE);
         }
 
         try {
           unEquip(EquipmentSlot.WEAPON, equippedItems, inventory);
-        } catch (Throwable err) {
+        } catch (InvalidEquipmentException err) {
+          // Just unequips current weapon if existing. Can maybe handle extraordinary
+          // events?
         }
 
         equippedItems.put(EquipmentSlot.WEAPON, (Weapon) equipment);
@@ -45,12 +52,14 @@ public interface EquipmentManager {
       // All armor slots
       default:
         if (!((EnumSet<ArmorType>) heroType.getValidArmorTypes()).contains(equipment.getEquipmentType())) {
-          throw new InvalidArmorException(InvalidArmorException.Messages.WRONG_TYPE);
+          throw new InvalidEquipmentException(EquipmentErrMessages.WRONG_TYPE);
         }
 
         try {
           unEquip(equipment.getEquipmentSlot(), equippedItems, inventory);
-        } catch (Throwable err) {
+        } catch (InvalidEquipmentException err) {
+          // Just unequips current weapon if existing. Can maybe handle extraordinary
+          // events?
         }
 
         equippedItems.put(equipment.getEquipmentSlot(), (Armor) equipment);
@@ -61,34 +70,30 @@ public interface EquipmentManager {
   default void unEquip(EquipmentSlot equipmentSlot,
       EnumMap<EquipmentSlot, Equipment> equippedItems,
       List<Item> inventory)
-      throws Throwable {
+      throws InvalidEquipmentException, InventoryException {
 
     Equipment unEquipped = equippedItems.get(equipmentSlot);
 
     if (unEquipped == null)
-      throw new InvalidEquipmentException(InvalidEquipmentException.Messages.SLOT_EMPTY);
+      throw new InvalidEquipmentException(EquipmentErrMessages.SLOT_EMPTY);
 
     if (inventory.size() >= 15) {
-      throw new InventoryException(InventoryException.Messages.INVENTORY_FULL);
+      throw new InventoryException(InventoryErrMessages.NO_SPACE);
     }
 
     equippedItems.remove(equipmentSlot);
 
     if (unEquipped instanceof Weapon) {
       inventory.add((Weapon) unEquipped);
-    } else if (unEquipped instanceof Armor) {
 
+    } else if (unEquipped instanceof Armor) {
       inventory.add((Armor) unEquipped);
     }
 
     System.out.println(unEquipped.getName() + " was unequipped and added to the inventory.");
   };
 
-  // static boolean displayItems() {
-  // return true;
-  // };
-
-  // static boolean displayArmorAttributes() {
+  // default boolean getArmorAttributes() {
   // return true;
   // };
 

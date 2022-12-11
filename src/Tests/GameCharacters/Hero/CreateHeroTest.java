@@ -1,47 +1,59 @@
 package Tests.GameCharacters.Hero;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
 
 import java.util.EnumMap;
 
 import org.junit.Test;
 
-import Game.Game;
-import Game.GameCharacters.Hero.HeroType;
 import Game.GameCharacters.CharacterAttribute;
 import Game.GameCharacters.Hero.Hero;
+import Game.GameCharacters.Hero.HeroType;
 
-public class NewHero {
+public class CreateHeroTest {
   String heroName = "TestHero name";
-  Hero testHero = Game.newMage(heroName);
+  Hero testHero = new Hero.HeroBuilder(heroName, HeroType.MAGE).build();
 
   @Test
-  public void heroNameIsCorrect() {
+  public void whenHeroCreated_nameIsCorrect() {
     String heroNameFromNewHero = testHero.getName();
     assertEquals(heroName, heroNameFromNewHero);
+
+    assertNotEquals("9823fsfdklj", heroNameFromNewHero);
   }
 
   @Test
-  public void startLevelIs1() {
+  public void whenHeroCreated_levelIsOne() {
     assertEquals(1, testHero.getLevel());
+
+    assertNotEquals(2, testHero.getLevel());
   }
 
   @Test
-  public void correctHeroStartingAttributes() {
+  public void givenHeroType_whenHeroCreated_heroAttributesAreCorrect() {
     HeroType heroType = (HeroType) testHero.getCharacterType();
 
     switch (heroType) {
       case WARRIOR:
         assertEquals(createAttributeMap(5, 2, 1), testHero.getHeroAttributes());
+
+        assertNotEquals(createAttributeMap(9, 9, 9), testHero.getHeroAttributes());
         break;
       case ROGUE:
         assertEquals(createAttributeMap(2, 6, 1), testHero.getHeroAttributes());
+
+        assertNotEquals(createAttributeMap(9, 9, 9), testHero.getHeroAttributes());
         break;
       case RANGER:
         assertEquals(createAttributeMap(1, 7, 1), testHero.getHeroAttributes());
+
+        assertNotEquals(createAttributeMap(9, 9, 9), testHero.getHeroAttributes());
         break;
       case MAGE:
         assertEquals(createAttributeMap(1, 1, 8), testHero.getHeroAttributes());
+
+        assertNotEquals(createAttributeMap(9, 9, 9), testHero.getHeroAttributes());
         break;
     }
   }

@@ -1,4 +1,4 @@
-package Game.Items.Equipment.Armor.Mail;
+package Game.Items.Equipment.Armor.ArmorItems;
 
 import java.util.EnumMap;
 
@@ -13,7 +13,7 @@ public enum Mail implements ArmorItem {
       name = "Royal mail";
       description = "This piece of armor arrived by post.";
       levelRequirement = 3;
-      armorType = armorType.MAIL;
+      armorType = ArmorType.MAIL;
       equipmentSlot = EquipmentSlot.TORSO;
       armorAttributes = armorType.getBaseArmorAttributes();
       applyArmorAttributeMultiplier();

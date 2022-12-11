@@ -1,9 +1,9 @@
 package Game.Exceptions;
 
 public class InventoryException extends Throwable {
-  public enum Messages {
-    INVENTORY_FULL("Could not add item. Inventory is full."),
-    INVENTORY_EMPTY("Could not drop item. Item not found."),
+  public enum InventoryErrMessages {
+    NO_SPACE("Could not add item. Inventory is full."),
+    EMPTY("Could not drop item. Item not found."),
     NOT_FOUND("Item not found in inventory."),
     ;
 
@@ -13,12 +13,12 @@ public class InventoryException extends Throwable {
       return errorMessage;
     }
 
-    Messages(String errorMessage) {
+    InventoryErrMessages(String errorMessage) {
       this.errorMessage = errorMessage;
     }
   }
 
-  public InventoryException(Messages err) {
+  public InventoryException(InventoryErrMessages err) {
     super(err.msg());
   }
 }
