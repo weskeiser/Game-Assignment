@@ -1,10 +1,10 @@
 package Game.Items.Equipment.Weapon;
 
-import Game.Items.Lootable;
-import Game.Items.Equipment.Equipment;
+import Game.Items.LootableItem;
 import Game.Items.Equipment.EquipmentSlot;
+import Game.Items.Equipment.Equippable;
 
-public class Weapon implements Equipment<WeaponType>, Lootable {
+public class Weapon implements Equippable, LootableItem {
   private WeaponItem weapon;
   private EquipmentSlot equipmentSlot = EquipmentSlot.WEAPON;
 
@@ -13,8 +13,9 @@ public class Weapon implements Equipment<WeaponType>, Lootable {
     return equipmentSlot;
   }
 
-  public double getDamageMultiplier() {
-    return weapon.getDamageMultiplier();
+  @Override
+  public WeaponType getEquipmentType() {
+    return weapon.getWeaponType();
   }
 
   @Override
@@ -23,8 +24,12 @@ public class Weapon implements Equipment<WeaponType>, Lootable {
   }
 
   @Override
-  public WeaponType getEquipmentType() {
-    return weapon.getWeaponType();
+  public void printLevelRequirement() {
+    System.out.println(getLevelRequirement());
+  }
+
+  public double getDamageMultiplier() {
+    return weapon.getDamageMultiplier();
   }
 
   @Override
@@ -35,11 +40,6 @@ public class Weapon implements Equipment<WeaponType>, Lootable {
   @Override
   public void inspect() {
     System.out.println(weapon.getDescription());
-  }
-
-  @Override
-  public void printLevelRequirement() {
-    System.out.println(getLevelRequirement());
   }
 
   @Override

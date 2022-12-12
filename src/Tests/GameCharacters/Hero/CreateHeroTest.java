@@ -5,6 +5,7 @@ import static org.junit.Assert.assertNotEquals;
 
 import java.util.EnumMap;
 
+import org.junit.After;
 import org.junit.Test;
 
 import Game.GameCharacters.CharacterAttribute;
@@ -15,8 +16,25 @@ public class CreateHeroTest {
   String heroName = "TestHero name";
   Hero testHero = new Hero.HeroBuilder(heroName, HeroType.MAGE).build();
 
+  public EnumMap<CharacterAttribute, Integer> createAttributeMap(int strength, int dexterity, int intelligence) {
+    EnumMap<CharacterAttribute, Integer> attributeMap = new EnumMap<>(CharacterAttribute.class);
+    attributeMap.put(CharacterAttribute.STRENGTH, strength);
+    attributeMap.put(CharacterAttribute.DEXTERITY, dexterity);
+    attributeMap.put(CharacterAttribute.INTELLIGENCE, intelligence);
+    return attributeMap;
+  }
+
+  //
+
+  @After
+  public void resetHero() {
+    testHero = new Hero.HeroBuilder(heroName, HeroType.MAGE).build();
+  }
+
+  //
+
   @Test
-  public void whenHeroCreated_nameIsCorrect() {
+  public void WhenHeroCreated_NameIsCorrect() {
     String heroNameFromNewHero = testHero.getName();
     assertEquals(heroName, heroNameFromNewHero);
 
@@ -24,14 +42,14 @@ public class CreateHeroTest {
   }
 
   @Test
-  public void whenHeroCreated_levelIsOne() {
+  public void WhenHeroCreated_LevelIsOne() {
     assertEquals(1, testHero.getLevel());
 
     assertNotEquals(2, testHero.getLevel());
   }
 
   @Test
-  public void givenHeroType_whenHeroCreated_heroAttributesAreCorrect() {
+  public void GivenHeroType_WhenHeroCreated_HeroAttributesAreCorrect() {
     HeroType heroType = (HeroType) testHero.getCharacterType();
 
     switch (heroType) {
@@ -56,14 +74,6 @@ public class CreateHeroTest {
         assertNotEquals(createAttributeMap(9, 9, 9), testHero.getHeroAttributes());
         break;
     }
-  }
-
-  public EnumMap<CharacterAttribute, Integer> createAttributeMap(int strength, int dexterity, int intelligence) {
-    EnumMap<CharacterAttribute, Integer> attributeMap = new EnumMap<>(CharacterAttribute.class);
-    attributeMap.put(CharacterAttribute.STRENGTH, strength);
-    attributeMap.put(CharacterAttribute.DEXTERITY, dexterity);
-    attributeMap.put(CharacterAttribute.INTELLIGENCE, intelligence);
-    return attributeMap;
   }
 
 }

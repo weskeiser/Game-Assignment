@@ -3,6 +3,7 @@ package Tests.Items.Equipment.Weapon;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 
+import org.junit.After;
 import org.junit.Test;
 
 import Game.Items.Equipment.EquipmentSlot;
@@ -15,13 +16,22 @@ public class CreateWeaponTest {
   // int requiredLevel = 3;
   // double damageMultiplier = 1.3;
 
+  // Expected constants
   String weaponName = "Cleaning staff";
   WeaponItem weapon = WeaponItem.CLEANING_STAFF;
   WeaponType weaponType = WeaponType.STAFF;
   int requiredLevel = 17;
   double damageMultiplier = 4.2;
 
+  // Test weapon
   Weapon testWeapon = new Weapon.WeaponBuilder(weapon).build();
+
+  @After
+  public void resetWeapon() {
+    testWeapon = new Weapon.WeaponBuilder(weapon).build();
+  }
+
+  //
 
   @Test
   public void whenWeaponCreated_nameIsCorrect() {

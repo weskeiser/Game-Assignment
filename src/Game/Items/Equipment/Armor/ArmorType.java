@@ -4,8 +4,9 @@ import java.util.EnumMap;
 import java.util.Map;
 
 import Game.GameCharacters.CharacterAttribute;
+import Game.Items.Equipment.EquipmentType;
 
-public enum ArmorType {
+public enum ArmorType implements EquipmentType {
   CLOTH(1, 1, 1),
   LEATHER(1, 1, 3),
   MAIL(2, 3, 1),

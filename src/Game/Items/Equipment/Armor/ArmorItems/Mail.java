@@ -1,6 +1,7 @@
 package Game.Items.Equipment.Armor.ArmorItems;
 
 import java.util.EnumMap;
+import java.util.Map;
 
 import Game.GameCharacters.CharacterAttribute;
 import Game.Items.Equipment.EquipmentSlot;
@@ -8,22 +9,40 @@ import Game.Items.Equipment.Armor.ArmorItem;
 import Game.Items.Equipment.Armor.ArmorType;
 
 public enum Mail implements ArmorItem {
+  STEEL_CHAIN_HOOD() {
+    public void init() {
+      name = "Steel chain hood";
+      description = "A chainhood made of steel.";
+      levelRequirement = 14;
+      equipmentSlot = EquipmentSlot.HEAD;
+      setArmorAttributes();
+    }
+  },
+
+  HOLY_CHAIN_HOOD() {
+    public void init() {
+      name = "Holy chain hood";
+      description = "This chain has peculiarly large holes..";
+      levelRequirement = 6;
+      equipmentSlot = EquipmentSlot.TORSO;
+      setArmorAttributes();
+    }
+  },
+
   ROYAL_MAIL() {
     public void init() {
       name = "Royal mail";
       description = "This piece of armor arrived by post.";
-      levelRequirement = 3;
-      armorType = ArmorType.MAIL;
+      levelRequirement = 22;
       equipmentSlot = EquipmentSlot.TORSO;
-      armorAttributes = armorType.getBaseArmorAttributes();
-      applyArmorAttributeMultiplier();
+      setArmorAttributes();
     }
   };
 
   String name;
-  int levelRequirement;
-  ArmorType armorType;
   String description;
+  int levelRequirement;
+  ArmorType armorType = ArmorType.MAIL;
   EquipmentSlot equipmentSlot;
   EnumMap<CharacterAttribute, Integer> armorAttributes;
   // TODO: Make all armorAttributes enum maps double instead of integer
@@ -52,17 +71,24 @@ public enum Mail implements ArmorItem {
     return description;
   }
 
-  // double multiplier;
-  // void setMultiplier() {
-  // multiplier = levelRequirement
-  // }
+  void setArmorAttributes() {
+    EnumMap<CharacterAttribute, Integer> baseArmorAttributes = armorType.getBaseArmorAttributes();
 
-  void applyArmorAttributeMultiplier() {
-    armorAttributes.put(CharacterAttribute.STRENGTH,
-        (1 + armorAttributes.get(CharacterAttribute.STRENGTH) / 100) * (levelRequirement / 10 + 1));
-    armorAttributes.put(CharacterAttribute.DEXTERITY,
-        (1 + armorAttributes.get(CharacterAttribute.DEXTERITY) / 100) * (levelRequirement / 10 + 1));
-    armorAttributes.put(CharacterAttribute.INTELLIGENCE,
-        (1 + armorAttributes.get(CharacterAttribute.INTELLIGENCE) / 100) * (levelRequirement / 10 + 1));
+    armorAttributes = new EnumMap<>(Map.ofEntries(
+
+        Map.entry(CharacterAttribute.STRENGTH,
+
+            (int) ((double) baseArmorAttributes.get(CharacterAttribute.STRENGTH)
+                * ((double) levelRequirement / 20))),
+
+        Map.entry(CharacterAttribute.DEXTERITY,
+
+            (int) ((double) baseArmorAttributes.get(CharacterAttribute.DEXTERITY)
+                * ((double) levelRequirement / 20))),
+
+        Map.entry(CharacterAttribute.INTELLIGENCE,
+
+            (int) ((double) baseArmorAttributes.get(CharacterAttribute.INTELLIGENCE)
+                * ((double) levelRequirement / 20)))));
   }
 }

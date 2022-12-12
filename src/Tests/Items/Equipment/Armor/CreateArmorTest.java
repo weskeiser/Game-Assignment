@@ -1,10 +1,12 @@
 package Tests.Items.Equipment.Armor;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
 
 import java.util.EnumMap;
 import java.util.Map;
 
+import org.junit.After;
 import org.junit.Test;
 
 import Game.GameCharacters.CharacterAttribute;
@@ -13,56 +15,51 @@ import Game.Items.Equipment.Armor.*;
 import Game.Items.Equipment.Armor.ArmorItems.Mail;
 
 public class CreateArmorTest {
-  ArmorType armorType = ArmorType.MAIL;
-  String armorName = "Royal mail";
-  ArmorItem royalMail = Mail.ROYAL_MAIL;
-  int requiredLevel = 3;
-  EnumMap<CharacterAttribute, Integer> baseArmorAttributes = createAttributeMap(2, 3, 1);
+  // Expected constants
+  final ArmorItem ROYAL_MAIL = Mail.ROYAL_MAIL;
+  final ArmorType ARMOR_TYPE = ArmorType.MAIL;
+  final EquipmentSlot EQUIPMENT_SLOT = EquipmentSlot.TORSO;
+  final String ARMOR_NAME = "Royal mail";
+  final int REQUIRED_LEVEL = 22;
 
-  // armorAttributes.put(CharacterAttribute.STRENGTH,
-  // armorAttributes.get(CharacterAttribute.STRENGTH) * levelRequirement);
-  // armorAttributes.put(CharacterAttribute.DEXTERITY,
-  // armorAttributes.get(CharacterAttribute.DEXTERITY) * levelRequirement);
-  // armorAttributes.put(CharacterAttribute.INTELLIGENCE,
-  // armorAttributes.get(CharacterAttribute.INTELLIGENCE) * levelRequirement);
-  // }
+  // Test armor
+  Armor testArmor = new Armor.ArmorBuilder(ROYAL_MAIL).build();
 
-  Armor testArmor = new Armor.ArmorBuilder(royalMail).build();
+  @After
+  public void resetArmor() {
+    testArmor = new Armor.ArmorBuilder(ROYAL_MAIL).build();
+  }
+
+  //
 
   @Test
-  public void whenArmorCreated_nameIsCorrect() {
-    assertEquals(armorName, testArmor.getName());
+  public void WhenArmorCreated_NameIsCorrect() {
+    assertEquals(ARMOR_NAME, testArmor.getName());
 
     assertNotEquals("saldkjf98sadf239", testArmor.getName());
-    System.out.println(testArmor.getArmorAttributes());
   }
 
   @Test
-  public void whenArmorCreated_requiredLevelIsCorrect() {
-    assertEquals(requiredLevel, testArmor.getLevelRequirement());
-
-    assertNotEquals(2, testArmor.getLevelRequirement());
-    assertNotEquals(4, testArmor.getLevelRequirement());
+  public void WhenArmorCreated_RequiredLevelIsCorrect() {
+    assertEquals(REQUIRED_LEVEL, testArmor.getLevelRequirement());
   }
 
   @Test
-  public void whenArmorCreated_equipmentSlotIsCorrect() {
-    assertEquals(EquipmentSlot.TORSO, testArmor.getEquipmentSlot());
-
-    assertNotEquals(EquipmentSlot.LEGS, testArmor.getEquipmentSlot());
+  public void WhenArmorCreated_EquipmentSlotIsCorrect() {
+    assertEquals(EQUIPMENT_SLOT, testArmor.getEquipmentSlot());
   }
 
   @Test
-  public void whenArmorCreated_armorTypeIsCorrect() {
-    assertEquals(armorType, testArmor.getEquipmentType());
-
-    assertNotEquals(ArmorType.CLOTH, testArmor.getEquipmentType());
+  public void WhenArmorCreated_ArmorTypeIsCorrect() {
+    assertEquals(ARMOR_TYPE, testArmor.getEquipmentType());
   }
 
   @Test
-  public void whenArmorCreated_armorAttributesCorrect() {
-    assertTrue(false);
+  public void WhenArmorCreated_ArmorAttributesCorrect() {
+    assertEquals(createAttributeMap(2, 3, 1), testArmor.getArmorAttributes());
   }
+
+  // Helpers
 
   public EnumMap<CharacterAttribute, Integer> createAttributeMap(int strength, int dexterity, int intelligence) {
     return new EnumMap<>(Map.ofEntries(

@@ -18,7 +18,5 @@ public interface ArmorItem {
 
   public EnumMap<CharacterAttribute, Integer> getArmorAttributes();
 
-  // public double getDamageMultiplier();
-
   public String getDescription();
 }

@@ -9,7 +9,7 @@ import Game.Items.Equipment.Weapon.WeaponType;
 public interface CharacterType {
   public CharacterAttribute getDamagingAttribute();
 
-  public EnumMap<CharacterAttribute, Integer> getLevelAttributes();
+  public EnumMap<CharacterAttribute, Integer> getLevelingAttributes();
 
   public EnumSet<WeaponType> getValidWeaponTypes();
 

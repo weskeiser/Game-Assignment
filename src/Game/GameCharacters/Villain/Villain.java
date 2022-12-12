@@ -2,9 +2,9 @@ package Game.GameCharacters.Villain;
 
 import java.util.*;
 
-import Game.Exceptions.*;
+import Game.Exceptions.LootException;
 import Game.GameCharacters.*;
-import Game.GameCharacters.Hero.*;
+import Game.GameCharacters.Hero.HeroType;
 import Game.Items.*;
 import Game.Items.Equipment.*;
 import Game.Items.Equipment.Weapon.Weapon;
@@ -15,7 +15,7 @@ public class Villain implements GameCharacter, InventoryManager, EquipmentManage
   private HeroType heroType;
 
   private GameCharacter defeatedBy = null;
-  private List<Lootable> remains;
+  private List<LootableItem> remains;
 
   private double health = 100;
   private int experienceToLevel = 30;
@@ -24,11 +24,11 @@ public class Villain implements GameCharacter, InventoryManager, EquipmentManage
   private EnumMap<CharacterAttribute, Integer> characterAttributes;
 
   private List<Item> inventory = new ArrayList<Item>(15);
-  private EnumMap<EquipmentSlot, Equipment> equippedItems = new EnumMap<EquipmentSlot, Equipment>(
+  private EnumMap<EquipmentSlot, Equippable> equippedItems = new EnumMap<EquipmentSlot, Equippable>(
       EquipmentSlot.class);
 
   @Override
-  public Lootable takeItem(Lootable lootItem) throws LootException {
+  public LootableItem takeItem(LootableItem lootItem) throws LootException {
     boolean taken = remains.remove(lootItem);
     if (!taken)
       throw new LootException(LootException.Messages.NOT_FOUND);
@@ -86,14 +86,14 @@ public class Villain implements GameCharacter, InventoryManager, EquipmentManage
     health = 0;
     defeatedBy = defeator;
 
-    Iterator<Equipment> equpmentIterator = equippedItems.values().iterator();
+    Iterator<Equippable> equpmentIterator = equippedItems.values().iterator();
     while (equpmentIterator.hasNext()) {
-      remains.add((Lootable) equpmentIterator.next());
+      remains.add((LootableItem) equpmentIterator.next());
     }
     equippedItems.clear();
 
     inventory.forEach((item) -> {
-      remains.add((Lootable) item);
+      remains.add((LootableItem) item);
     });
     inventory.clear();
 

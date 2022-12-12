@@ -1,10 +1,10 @@
 package Game.GameCharacters;
 
 import Game.Exceptions.LootException;
-import Game.Items.Lootable;
+import Game.Items.LootableItem;
 
 public interface Remains {
-  Lootable takeItem(Lootable item) throws LootException;
+  LootableItem takeItem(LootableItem item) throws LootException;
 
   void showLoot(GameCharacter investigator);
 

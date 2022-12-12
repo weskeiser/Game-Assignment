@@ -16,7 +16,7 @@ public class Hero implements HeroCharacter, InventoryManager, EquipmentManager, 
   private HeroType heroType;
 
   private GameCharacter defeatedBy = null;
-  private List<Lootable> remains;
+  private List<LootableItem> remains = new ArrayList<>();
 
   private double health = 100;
   private int experienceToLevel = 30;
@@ -25,25 +25,14 @@ public class Hero implements HeroCharacter, InventoryManager, EquipmentManager, 
   private EnumMap<CharacterAttribute, Integer> heroAttributes;
 
   private List<Item> inventory = new ArrayList<Item>(15);
-  private EnumMap<EquipmentSlot, Equipment> equippedItems = new EnumMap<>(EquipmentSlot.class);
-
-  public Item getInventoryItemByIdx(int index) throws InventoryException {
-    try {
-      Item fetched = (Item) inventory.toArray()[index];
-      if (fetched == null)
-        throw new InventoryException(InventoryErrMessages.NOT_FOUND);
-      return fetched;
-    } catch (InventoryException err) {
-      throw (err);
-    }
-  }
+  private EnumMap<EquipmentSlot, Equippable> equippedItems = new EnumMap<>(EquipmentSlot.class);
 
   @Override
-  public Item getFromInventory(int index) throws InventoryException {
+  public Item findInventoryItem(int index) throws InventoryException {
     try {
-      return getFromInventory(inventory, index);
-    } catch (InventoryException err) {
-      throw err;
+      return inventory.get(index);
+    } catch (IndexOutOfBoundsException err) {
+      throw new InventoryException(InventoryErrMessages.NOT_FOUND);
     }
   }
 
@@ -73,19 +62,8 @@ public class Hero implements HeroCharacter, InventoryManager, EquipmentManager, 
 
   @Override
   public void finalBlow(GameCharacter defeator) {
-    health = 0;
-    defeatedBy = defeator;
-
-    Iterator<Equipment> equpmentIterator = equippedItems.values().iterator();
-    while (equpmentIterator.hasNext()) {
-      remains.add((Lootable) equpmentIterator.next());
-    }
-    equippedItems.clear();
-
-    inventory.forEach((item) -> {
-      remains.add((Lootable) item);
-    });
-    inventory.clear();
+    finalBlow(defeator, health, defeatedBy,
+        equippedItems, remains, inventory);
   }
 
   @Override
@@ -130,11 +108,11 @@ public class Hero implements HeroCharacter, InventoryManager, EquipmentManager, 
 
   @Override
   public int levelUp() {
-    EnumMap<CharacterAttribute, Integer> levelAttributes = heroType.getLevelAttributes();
+    EnumMap<CharacterAttribute, Integer> levelingAttributes = heroType.getLevelingAttributes();
 
-    int strength = levelAttributes.get(CharacterAttribute.STRENGTH);
-    int dexterity = levelAttributes.get(CharacterAttribute.DEXTERITY);
-    int intelligence = levelAttributes.get(CharacterAttribute.INTELLIGENCE);
+    int strength = levelingAttributes.get(CharacterAttribute.STRENGTH);
+    int dexterity = levelingAttributes.get(CharacterAttribute.DEXTERITY);
+    int intelligence = levelingAttributes.get(CharacterAttribute.INTELLIGENCE);
 
     heroAttributes.replaceAll((k, v) -> {
       switch (k) {
@@ -154,7 +132,7 @@ public class Hero implements HeroCharacter, InventoryManager, EquipmentManager, 
   }
 
   @Override
-  public Lootable takeItem(Lootable lootItem) throws LootException {
+  public LootableItem takeItem(LootableItem lootItem) throws LootException {
     boolean taken = remains.remove(lootItem);
     if (!taken)
       throw new LootException(LootException.Messages.NOT_FOUND);
@@ -171,19 +149,21 @@ public class Hero implements HeroCharacter, InventoryManager, EquipmentManager, 
   }
 
   @Override
-  public void dropItem(Item item) throws InventoryException {
-    dropItem(inventory, item);
-  }
-
-  @Override
   public void unEquip(EquipmentSlot equipmentSlot) throws InvalidEquipmentException, InventoryException {
     unEquip(equipmentSlot, equippedItems, inventory);
   };
 
   @Override
+  public void equip(Equippable equipment) throws InvalidEquipmentException,
+      InventoryException {
+    equip(equipment, inventory, equippedItems, level, heroType);
+  }
+
+  @Override
   public void equip(int inventoryIndex) throws InvalidEquipmentException, InventoryException {
-    Equipment itemFromInventory = (Equipment) getFromInventory(inventoryIndex);
-    equip(itemFromInventory, inventory, equippedItems, level, heroType);
+    Equippable itemExistingInInventory = (Equippable) findInventoryItem(inventoryIndex);
+
+    equip(itemExistingInInventory, inventory, equippedItems, level, heroType);
   }
 
   @Override
@@ -208,7 +188,7 @@ public class Hero implements HeroCharacter, InventoryManager, EquipmentManager, 
 
   @Override
   public void showHeroAttributes() {
-    showHeroAttributes(heroAttributes);
+    showCharacterAttributes(heroAttributes);
   }
 
   @Override
@@ -221,40 +201,50 @@ public class Hero implements HeroCharacter, InventoryManager, EquipmentManager, 
     showEquippedItems(equippedItems);
   }
 
-  private Hero(HeroBuilder builder) {
-    name = builder.name;
-    heroType = builder.heroType;
-
-    heroAttributes = heroType.init();
-
-    try {
-      addToInventory(new Weapon.WeaponBuilder(heroType.starterWeapon).build());
-    } catch (InventoryException err) {
-      System.out.println("This should never happen: " + err.getMessage());
-    }
+  @Override
+  public void showHealth() {
+    System.out.println((int) health);
+    System.out.println(experience);
   }
 
   @Override
   public void display() {
     StringBuilder displayBuilder = new StringBuilder();
     displayBuilder
-        .append("\n" + blueC + "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@")
-        .append("\n" + blueC + "||||||||||||||||||||||||||||||||||||||||||||||")
-        .append("\n" + blueC + "/~/~/" + "   >> "
+        .append("\n" + redC + "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
+        // .append("\n" + redC + "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@")
+        // .append("\n" + redC + "||||||||||||||||||||||||||||||||||||||||||||||")
+        .append("\n" + redC + "/~/~/" + "   >> "
             + resetC + name
-            + blueC + " <<   |  "
-            + resetC + heroType.toString()
-            + blueC + " lvl."
-            + yellowC + level
-            + blueC + "  \\~\\~\\\n");
+            + redC + " <<   |  "
+            + resetC + "lvl."
+            + yellowC + level + " "
+            + resetC + heroType.toString());
     System.out.println(displayBuilder.toString());
 
     showHeroAttributes();
     showInventory();
+    System.out.println();
     showEquippedItems();
 
-    System.out.println(blueC + "||||||||||||||||||||||||||||||||||||||||||||||");
-    System.out.println(blueC + "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@\n");
+    // System.out.println(blueC + "||||||||||||||||||||||||||||||||||||||||||||||");
+    // System.out.println(blueC + "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
+  }
+
+  private Hero(HeroBuilder builder) {
+    name = builder.name;
+    heroType = builder.heroType;
+
+    heroAttributes = heroType.init();
+
+    // Armor royalMail = new Armor.ArmorBuilder(Mail.ROYAL_MAIL).build();
+
+    try {
+      addToInventory(new Weapon.WeaponBuilder(heroType.starterWeapon).build());
+      // addToInventory(royalMail);
+    } catch (InventoryException err) {
+      System.out.println("This should never happen: " + err.getMessage());
+    }
   }
 
   public static class HeroBuilder {

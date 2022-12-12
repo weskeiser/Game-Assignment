@@ -1,6 +1,8 @@
 package Game.Items.Equipment.Weapon;
 
-public enum WeaponType {
+import Game.Items.Equipment.EquipmentType;
+
+public enum WeaponType implements EquipmentType {
   AXE,
   HAMMER,
   SWORD,

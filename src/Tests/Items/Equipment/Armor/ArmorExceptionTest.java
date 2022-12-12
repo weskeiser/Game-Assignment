@@ -16,7 +16,7 @@ public class ArmorExceptionTest {
   // NOTE: Inventory slot 0 is taken up by starter weapon.
 
   @Test
-  public void givenHeroType_whenInsufficientLevel_shouldThrowEquipmentException() {
+  public void GivenHeroType_WhenInsufficientLevel_ShouldThrowEquipmentException() {
     Hero testHero = new Hero.HeroBuilder("Hero TestName", HeroType.MAGE).build();
     Armor insufficientLevelArmor = new Armor.ArmorBuilder(Cloth.WRINKLY_ROBE_BOTTOMS).build();
 
@@ -27,7 +27,7 @@ public class ArmorExceptionTest {
   }
 
   @Test
-  public void givenHeroType_whenWrongType_shouldThrowEquipmentException() {
+  public void GivenHeroType_WhenWrongType_ShouldThrowEquipmentException() {
     Hero testHero = new Hero.HeroBuilder("Hero TestName", HeroType.MAGE).build();
     Armor wrongTypeArmor = new Armor.ArmorBuilder(Mail.ROYAL_MAIL).build();
 

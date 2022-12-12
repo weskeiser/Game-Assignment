@@ -23,24 +23,14 @@ public interface InventoryManager {
     }
   };
 
-  public Item getFromInventory(int index) throws InventoryException;
-
-  default Item getFromInventory(List<Item> inventory, int index) throws InventoryException {
-    Item retrievedItem = inventory.get(index);
-
-    if (retrievedItem == null)
-      throw new InventoryException(InventoryErrMessages.NOT_FOUND);
-
-    return retrievedItem;
-
-  }
-
-  default void dropItem(List<Item> inventory, Item item) throws InventoryException {
+  default boolean removeFromInventory(List<Item> inventory, Item item) throws InventoryException {
     if (!inventory.remove(item))
       throw new InventoryException(InventoryErrMessages.NOT_FOUND);
 
-    System.out.println(item.getName() + " was dropped.");
+    return true;
   };
+
+  Item findInventoryItem(int index) throws InventoryException;
 
   void showInventory();
 

@@ -1,48 +1,37 @@
-import Game.GameCharacters.Hero.Hero;
-import Game.Items.Equipment.Weapon.Weapon;
-import Game.Items.Equipment.Weapon.WeaponItem;
+import java.util.Timer;
+
+import Adventure.Adventure;
 import GameController.GameController;
 
 public class App {
     public static void main(String[] args) throws Exception {
-        GameController game = new GameController();
+        Timer timer = new Timer();
+        GameController gameController = new GameController();
 
-        Hero troll = game.newMage("Troll");
-        Weapon testWeapon = new Weapon.WeaponBuilder(WeaponItem.CROOKED_BOW).build();
+        Adventure adventure = new Adventure(gameController.newMage("Troll"));
 
+        timer.scheduleAtFixedRate(adventure, 0, 1000);
+
+        adventure.run();
+
+        // Hero troll = gameController.newMage("Troll");
+        // Weapon testWeapon = new Weapon.WeaponBuilder(WeaponItem.CROOKED_BOW).build();
         // Armor royalMail = new Armor.ArmorBuilder(Mail.ROYAL_MAIL).build();
-        // System.out.println(royalMail);
 
-        // troll.showInventory();
-        // troll.showEquippedItems();
+        // //
 
+        // Hero rogie = gameController.newRogue("Rogie");
+        // gameController.combat(troll, rogie);
+        // gameController.combat(rogie, troll);
+        // troll.showHealth();
+        // // troll.display();
+        // // troll.finalBlow(rogie);
+        // try {
         // troll.equip(0);
+        // } catch (Throwable err) {
 
-        // troll.showInventory();
-        // troll.showEquippedItems();
-
-        // troll.unEquip(EquipmentSlot.WEAPON);
-
-        // troll.showInventory();
-        // troll.showEquippedItems();
-
-        // troll.equip(0);
-
-        // troll.showInventory();
-        // troll.showEquippedItems();
-
-        // troll.unEquip(EquipmentSlot.WEAPON);
-
-        // troll.showInventory();
-        // troll.showEquippedItems();
-
-        // troll.getTotalAttributes();
+        // }
         // troll.display();
-
-        // troll.addToInventory(testWeapon);
-        // troll.equip(1);
-
-        troll.display();
 
     }
 }

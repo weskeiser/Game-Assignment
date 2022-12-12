@@ -7,7 +7,7 @@ import Game.GameCharacters.Remains;
 import Game.GameCharacters.Hero.Hero;
 import Game.GameCharacters.Hero.HeroType;
 import Game.Items.Item;
-import Game.Items.Lootable;
+import Game.Items.LootableItem;
 
 public class GameController {
 
@@ -27,7 +27,7 @@ public class GameController {
     return new Hero.HeroBuilder(name, HeroType.MAGE).build();
   }
 
-  public void loot(Remains remains, Hero looter, Lootable lootItem) {
+  public void lootRemains(Remains remains, Hero looter, LootableItem lootItem) {
     try {
       if (looter.getFreeInventorySlots() <= 0)
         throw new LootException(LootException.Messages.FULL_INVENTORY);
@@ -46,7 +46,7 @@ public class GameController {
     }
   }
 
-  public void attack(GameCharacter defender, GameCharacter attacker) {
+  public void combat(GameCharacter defender, GameCharacter attacker) {
     double maxHit = attacker.getMaxHit();
 
     // randomise actual hit

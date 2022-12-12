@@ -12,47 +12,47 @@ import Game.Items.Equipment.Weapon.WeaponType;
 public enum HeroType implements CharacterType, HeroInitiator {
   WARRIOR() {
     public EnumMap<CharacterAttribute, Integer> init() {
-      this.levelAttributes = this.createAttributeMap(3, 2, 1);
-      this.validWeaponTypes = EnumSet.of(WeaponType.AXE, WeaponType.HAMMER, WeaponType.SWORD);
-      this.validArmorTypes = EnumSet.of(ArmorType.PLATE, ArmorType.MAIL);
-      this.damagingAttribute = CharacterAttribute.STRENGTH;
-      this.starterWeapon = WeaponItem.WOODEN_SWORD;
+      levelingAttributes = createAttributeMap(3, 2, 1);
+      validWeaponTypes = EnumSet.of(WeaponType.AXE, WeaponType.HAMMER, WeaponType.SWORD);
+      validArmorTypes = EnumSet.of(ArmorType.PLATE, ArmorType.MAIL);
+      damagingAttribute = CharacterAttribute.STRENGTH;
+      starterWeapon = WeaponItem.WOODEN_SWORD;
       return createAttributeMap(5, 2, 1);
     }
   },
   ROGUE {
     public EnumMap<CharacterAttribute, Integer> init() {
-      this.levelAttributes = this.createAttributeMap(1, 4, 1);
-      this.validWeaponTypes = EnumSet.of(WeaponType.DAGGER, WeaponType.SWORD);
-      this.validArmorTypes = EnumSet.of(ArmorType.LEATHER, ArmorType.MAIL);
-      this.damagingAttribute = CharacterAttribute.DEXTERITY;
-      this.starterWeapon = WeaponItem.WOODEN_SWORD;
+      levelingAttributes = createAttributeMap(1, 4, 1);
+      validWeaponTypes = EnumSet.of(WeaponType.DAGGER, WeaponType.SWORD);
+      validArmorTypes = EnumSet.of(ArmorType.LEATHER, ArmorType.MAIL);
+      damagingAttribute = CharacterAttribute.DEXTERITY;
+      starterWeapon = WeaponItem.WOODEN_SWORD;
       return createAttributeMap(2, 6, 1);
     }
   },
   RANGER {
     public EnumMap<CharacterAttribute, Integer> init() {
-      this.levelAttributes = this.createAttributeMap(1, 5, 1);
-      this.validWeaponTypes = EnumSet.of(WeaponType.BOW);
-      this.validArmorTypes = EnumSet.of(ArmorType.LEATHER, ArmorType.MAIL);
-      this.damagingAttribute = CharacterAttribute.DEXTERITY;
-      this.starterWeapon = WeaponItem.MAKESHIFT_BOW;
+      levelingAttributes = createAttributeMap(1, 5, 1);
+      validWeaponTypes = EnumSet.of(WeaponType.BOW);
+      validArmorTypes = EnumSet.of(ArmorType.LEATHER, ArmorType.MAIL);
+      damagingAttribute = CharacterAttribute.DEXTERITY;
+      starterWeapon = WeaponItem.MAKESHIFT_BOW;
       return createAttributeMap(1, 7, 1);
     }
   },
   MAGE {
     public EnumMap<CharacterAttribute, Integer> init() {
-      this.levelAttributes = this.createAttributeMap(1, 1, 5);
-      this.validWeaponTypes = EnumSet.of(WeaponType.STAFF, WeaponType.WAND);
-      this.validArmorTypes = EnumSet.of(ArmorType.CLOTH);
-      this.damagingAttribute = CharacterAttribute.INTELLIGENCE;
-      this.starterWeapon = WeaponItem.CRACKED_WAND;
+      levelingAttributes = createAttributeMap(1, 1, 5);
+      validWeaponTypes = EnumSet.of(WeaponType.STAFF, WeaponType.WAND);
+      validArmorTypes = EnumSet.of(ArmorType.CLOTH);
+      damagingAttribute = CharacterAttribute.INTELLIGENCE;
+      starterWeapon = WeaponItem.CRACKED_WAND;
       return createAttributeMap(1, 1, 8);
 
     }
   };
 
-  EnumMap<CharacterAttribute, Integer> levelAttributes;
+  EnumMap<CharacterAttribute, Integer> levelingAttributes;
   EnumSet<WeaponType> validWeaponTypes;
   EnumSet<ArmorType> validArmorTypes;
   CharacterAttribute damagingAttribute;
@@ -66,8 +66,8 @@ public enum HeroType implements CharacterType, HeroInitiator {
     return damagingAttribute;
   }
 
-  public EnumMap<CharacterAttribute, Integer> getLevelAttributes() {
-    return levelAttributes;
+  public EnumMap<CharacterAttribute, Integer> getLevelingAttributes() {
+    return levelingAttributes;
   }
 
   public EnumSet<WeaponType> getValidWeaponTypes() {

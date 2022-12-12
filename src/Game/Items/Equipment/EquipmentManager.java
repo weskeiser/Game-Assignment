@@ -15,9 +15,9 @@ import Game.Items.Equipment.Weapon.WeaponType;
 
 public interface EquipmentManager {
 
-  default void equip(Equipment equipment,
+  default void equip(Equippable equipment,
       List<Item> inventory,
-      EnumMap<EquipmentSlot, Equipment> equippedItems,
+      EnumMap<EquipmentSlot, Equippable> equippedItems,
       int heroLevel,
       HeroType heroType)
       throws InvalidEquipmentException, InventoryException {
@@ -39,6 +39,7 @@ public interface EquipmentManager {
         try {
           unEquip(EquipmentSlot.WEAPON, equippedItems, inventory);
         } catch (InvalidEquipmentException err) {
+          // TODO
           // Just unequips current weapon if existing. Can maybe handle extraordinary
           // events?
         }
@@ -58,21 +59,21 @@ public interface EquipmentManager {
         try {
           unEquip(equipment.getEquipmentSlot(), equippedItems, inventory);
         } catch (InvalidEquipmentException err) {
+          // TODO
           // Just unequips current weapon if existing. Can maybe handle extraordinary
           // events?
         }
 
         equippedItems.put(equipment.getEquipmentSlot(), (Armor) equipment);
     }
-
   };
 
   default void unEquip(EquipmentSlot equipmentSlot,
-      EnumMap<EquipmentSlot, Equipment> equippedItems,
+      EnumMap<EquipmentSlot, Equippable> equippedItems,
       List<Item> inventory)
       throws InvalidEquipmentException, InventoryException {
 
-    Equipment unEquipped = equippedItems.get(equipmentSlot);
+    Equippable unEquipped = equippedItems.get(equipmentSlot);
 
     if (unEquipped == null)
       throw new InvalidEquipmentException(EquipmentErrMessages.SLOT_EMPTY);
@@ -92,9 +93,4 @@ public interface EquipmentManager {
 
     System.out.println(unEquipped.getName() + " was unequipped and added to the inventory.");
   };
-
-  // default boolean getArmorAttributes() {
-  // return true;
-  // };
-
 }

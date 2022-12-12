@@ -1,7 +1,6 @@
 package Tests.GameCharacters.Hero;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotEquals;
 
 import java.util.EnumMap;
 import java.util.Map;
@@ -13,29 +12,23 @@ import Game.GameCharacters.Hero.Hero;
 import Game.GameCharacters.Hero.HeroType;
 
 public class LevelUpHeroTest {
+  Hero warrior = new Hero.HeroBuilder("Hero TestName", HeroType.WARRIOR).build();
 
-  @Test
-  public void givenWarrior_whenLevelUp_levelsAreCorrent() {
-    Hero warrior = new Hero.HeroBuilder("Hero TestName", HeroType.WARRIOR).build();
-    levelUpCorrectlyTest(warrior);
-  }
+  private final EnumMap<CharacterAttribute, Integer> WARRIOR_STARTING_ATTRIBUTES = createAttributeMap(5, 2, 1);
+  private final EnumMap<CharacterAttribute, Integer> ROGUE_STARTING_ATTRIBUTES = createAttributeMap(2, 6, 1);
+  private final EnumMap<CharacterAttribute, Integer> RANGER_STARTING_ATTRIBUTES = createAttributeMap(1, 7, 1);
+  private final EnumMap<CharacterAttribute, Integer> MAGE_STARTING_ATTRIBUTES = createAttributeMap(1, 1, 8);
 
-  @Test
-  public void givenRogue_whenLevelUp_levelsAreCorrent() {
-    Hero rogue = new Hero.HeroBuilder("Hero TestName", HeroType.ROGUE).build();
-    levelUpCorrectlyTest(rogue);
-  }
+  EnumMap<CharacterAttribute, Integer> WARRIOR_LEVELING_ATTRIBUTES = HeroType.WARRIOR.getLevelingAttributes();
+  EnumMap<CharacterAttribute, Integer> ROGUE_LEVELING_ATTRIBUTES = HeroType.ROGUE.getLevelingAttributes();
+  EnumMap<CharacterAttribute, Integer> RANGER_LEVELING_ATTRIBUTES = HeroType.RANGER.getLevelingAttributes();
+  EnumMap<CharacterAttribute, Integer> MAGE_LEVELING_ATTRIBUTES = HeroType.MAGE.getLevelingAttributes();
 
-  @Test
-  public void givenRanger_whenLevelUp_levelsAreCorrent() {
-    Hero ranger = new Hero.HeroBuilder("Hero TestName", HeroType.RANGER).build();
-    levelUpCorrectlyTest(ranger);
-  }
-
-  @Test
-  public void givenMage_whenLevelUp_levelsAreCorrent() {
-    Hero mage = new Hero.HeroBuilder("Hero TestName", HeroType.MAGE).build();
-    levelUpCorrectlyTest(mage);
+  public EnumMap<CharacterAttribute, Integer> createAttributeMap(int strength, int dexterity, int intelligence) {
+    return new EnumMap<>(Map.ofEntries(
+        Map.entry(CharacterAttribute.STRENGTH, strength),
+        Map.entry(CharacterAttribute.DEXTERITY, dexterity),
+        Map.entry(CharacterAttribute.INTELLIGENCE, intelligence)));
   }
 
   public void levelUpCorrectlyTest(Hero testHero) {
@@ -44,24 +37,18 @@ public class LevelUpHeroTest {
     // At level 1
     assertEquals(1, testHero.getLevel());
 
-    assertNotEquals(2, testHero.getLevel());
-
     switch (heroType) {
       case WARRIOR:
-        assertEquals(createAttributeMap(5, 2, 1), testHero.getHeroAttributes());
-        assertNotEquals(createAttributeMap(8, 4, 2), testHero.getHeroAttributes());
+        assertEquals(WARRIOR_STARTING_ATTRIBUTES, testHero.getHeroAttributes());
         break;
       case ROGUE:
-        assertEquals(createAttributeMap(2, 6, 1), testHero.getHeroAttributes());
-        assertNotEquals(createAttributeMap(3, 10, 2), testHero.getHeroAttributes());
+        assertEquals(ROGUE_STARTING_ATTRIBUTES, testHero.getHeroAttributes());
         break;
       case RANGER:
-        assertEquals(createAttributeMap(1, 7, 1), testHero.getHeroAttributes());
-        assertNotEquals(createAttributeMap(2, 12, 2), testHero.getHeroAttributes());
+        assertEquals(RANGER_STARTING_ATTRIBUTES, testHero.getHeroAttributes());
         break;
       case MAGE:
-        assertEquals(createAttributeMap(1, 1, 8), testHero.getHeroAttributes());
-        assertNotEquals(createAttributeMap(2, 2, 13), testHero.getHeroAttributes());
+        assertEquals(MAGE_STARTING_ATTRIBUTES, testHero.getHeroAttributes());
         break;
     }
 
@@ -69,13 +56,9 @@ public class LevelUpHeroTest {
     testHero.levelUp();
     assertEquals(2, testHero.getLevel());
 
-    assertNotEquals(1, testHero.getLevel());
-    assertNotEquals(3, testHero.getLevel());
-
     switch (heroType) {
       case WARRIOR:
         assertEquals(createAttributeMap(8, 4, 2), testHero.getHeroAttributes());
-
         break;
       case ROGUE:
         assertEquals(createAttributeMap(3, 10, 2), testHero.getHeroAttributes());
@@ -92,9 +75,6 @@ public class LevelUpHeroTest {
     testHero.levelUp();
     assertEquals(3, testHero.getLevel());
 
-    assertNotEquals(2, testHero.getLevel());
-    assertNotEquals(4, testHero.getLevel());
-
     switch (heroType) {
       case WARRIOR:
         assertEquals(createAttributeMap(11, 6, 3), testHero.getHeroAttributes());
@@ -109,13 +89,30 @@ public class LevelUpHeroTest {
         assertEquals(createAttributeMap(3, 3, 18), testHero.getHeroAttributes());
         break;
     }
-
   }
 
-  public EnumMap<CharacterAttribute, Integer> createAttributeMap(int strength, int dexterity, int intelligence) {
-    return new EnumMap<>(Map.ofEntries(
-        Map.entry(CharacterAttribute.STRENGTH, strength),
-        Map.entry(CharacterAttribute.DEXTERITY, dexterity),
-        Map.entry(CharacterAttribute.INTELLIGENCE, intelligence)));
+  @Test
+  public void GivenWarrior_WhenLevelUp_LevelsAreCorrent() {
+    Hero warrior = new Hero.HeroBuilder("Hero TestName", HeroType.WARRIOR).build();
+    levelUpCorrectlyTest(warrior);
   }
+
+  @Test
+  public void GivenRogue_WhenLevelUp_LevelsAreCorrent() {
+    Hero rogue = new Hero.HeroBuilder("Hero TestName", HeroType.ROGUE).build();
+    levelUpCorrectlyTest(rogue);
+  }
+
+  @Test
+  public void GivenRanger_WhenLevelUp_LevelsAreCorrent() {
+    Hero ranger = new Hero.HeroBuilder("Hero TestName", HeroType.RANGER).build();
+    levelUpCorrectlyTest(ranger);
+  }
+
+  @Test
+  public void GivenMage_WhenLevelUp_LevelsAreCorrent() {
+    Hero mage = new Hero.HeroBuilder("Hero TestName", HeroType.MAGE).build();
+    levelUpCorrectlyTest(mage);
+  }
+
 }

@@ -3,11 +3,11 @@ package Game.Items.Equipment.Armor;
 import java.util.EnumMap;
 
 import Game.GameCharacters.CharacterAttribute;
-import Game.Items.Lootable;
-import Game.Items.Equipment.Equipment;
+import Game.Items.LootableItem;
 import Game.Items.Equipment.EquipmentSlot;
+import Game.Items.Equipment.Equippable;
 
-public class Armor implements Equipment<ArmorType>, Lootable {
+public class Armor implements Equippable, LootableItem {
   private ArmorItem armor;
   private EquipmentSlot equipmentSlot;
 
@@ -50,9 +50,9 @@ public class Armor implements Equipment<ArmorType>, Lootable {
     System.out.println(getLevelRequirement());
   }
 
-  public void init() {
+  // public void init() {
 
-  }
+  // }
 
   private Armor(ArmorBuilder builder) {
     this.armor = builder.armor;
