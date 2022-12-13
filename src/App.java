@@ -15,7 +15,7 @@ public class App {
 
         Timer timer = new Timer();
 
-        timer.scheduleAtFixedRate(combatTasks, 0, 1000);
+        timer.scheduleAtFixedRate(combatTasks, 0, 250);
 
         // combatTasks.run();
 
@@ -23,6 +23,66 @@ public class App {
 
         Hero troll = gameController.newMage("Troll");
         Hero rogie = gameController.newRogue("Rogie");
+
+        troll.levelUp();
+        troll.levelUp();
+        troll.levelUp();
+        troll.levelUp();
+        troll.levelUp();
+        troll.levelUp();
+        troll.levelUp();
+        troll.levelUp();
+        troll.levelUp();
+        troll.levelUp();
+        troll.levelUp();
+        troll.levelUp();
+        troll.levelUp();
+        troll.levelUp();
+        troll.levelUp();
+        troll.levelUp();
+        troll.levelUp();
+        troll.levelUp();
+        troll.levelUp();
+        troll.levelUp();
+        troll.levelUp();
+        troll.levelUp();
+        troll.levelUp();
+        troll.levelUp();
+        troll.levelUp();
+        troll.levelUp();
+        troll.levelUp();
+        troll.levelUp();
+        troll.levelUp();
+        troll.levelUp();
+        troll.levelUp();
+        troll.levelUp();
+        troll.levelUp();
+        troll.levelUp();
+        troll.levelUp();
+        troll.levelUp();
+        troll.levelUp();
+        troll.levelUp();
+        troll.levelUp();
+        troll.levelUp();
+        troll.levelUp();
+        troll.levelUp();
+        troll.levelUp();
+        troll.levelUp();
+        troll.levelUp();
+        troll.levelUp();
+        troll.levelUp();
+        troll.levelUp();
+        troll.levelUp();
+        troll.levelUp();
+        troll.levelUp();
+
+        try {
+            troll.equip(0);
+        } catch (Throwable err) {
+            System.out.println(err);
+        }
+
+        troll.display();
 
         combatTasks.newAttack(troll, rogie);
 

@@ -8,7 +8,7 @@ import Game.Items.Equipment.Equippable;
 import Game.Items.Equipment.Armor.Armor;
 
 public interface AttributeManager {
-  EnumMap<CharacterAttribute, Integer> getHeroAttributes();
+  EnumMap<CharacterAttribute, Integer> getCharacterAttributes();
 
   int levelUp();
 

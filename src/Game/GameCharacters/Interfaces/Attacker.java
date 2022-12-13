@@ -14,6 +14,8 @@ public interface Attacker {
 
   boolean decrementIfAttackCooldown();
 
+  int getAttackSpeed();
+
   double getMaxHit();
 
   default double getMaxHit(Attacker attacker) {
@@ -29,14 +31,11 @@ public interface Attacker {
       // Expected behaviour, no handling needed.
     }
 
-    // Damaging attribute is character dependent
-    CharacterAttribute damagingAttribute = ((GameCharacter) attacker).getCharacterType().getDamagingAttribute();
+    int strengthAttribute = ((AttributeManager) attacker).getCharacterAttributes().get(CharacterAttribute.STRENGTH);
 
-    // Set attributeDamage according to damagingAttribute
-    int attributeDamage = ((AttributeManager) attacker).getHeroAttributes().get(damagingAttribute);
-
-    System.out.println("Calculated damage: " + weaponDamage * (1 + attributeDamage / 100));
-    return weaponDamage * (1 + attributeDamage / 100);
+    System.out.println("Calculated maxHit: " + weaponDamage * (1 +
+        strengthAttribute / 100));
+    return weaponDamage * (1 + strengthAttribute / 100);
   }
 
 }

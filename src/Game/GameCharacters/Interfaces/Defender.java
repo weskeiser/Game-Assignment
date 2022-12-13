@@ -12,7 +12,7 @@ public interface Defender {
 
   boolean defend(double hit);
 
-  boolean takeDamage(double damage, Attacker foe);
+  boolean takeDamage(int damage, Attacker foe);
 
   public void receiveFinalBlow(Attacker defeator);
 

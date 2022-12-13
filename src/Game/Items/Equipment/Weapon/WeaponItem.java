@@ -7,7 +7,7 @@ public enum WeaponItem {
   MAKESHIFT_BOW(1, "Makeshift bow", WeaponType.BOW, "A hurried.. work of art.. "),
   CROOKED_BOW(3, "Crooked bow", WeaponType.BOW, "A bit crooked, but it does the job."),
 
-  CRACKED_WAND(1, "Cracked wand", WeaponType.WAND, "A wand that has seen better days."),
+  CRACKED_WAND(50, "Cracked wand", WeaponType.WAND, "A wand that has seen better days."),
   CLEANING_STAFF(17, "Cleaning staff", WeaponType.STAFF, "Floors will be wiped with your adversaries.")
 
   ;
@@ -28,6 +28,10 @@ public enum WeaponItem {
 
   public WeaponType getWeaponType() {
     return weaponType;
+  }
+
+  public String getDescription() {
+    return description;
   }
 
   public double getDamageMultiplier() {
@@ -66,10 +70,6 @@ public enum WeaponItem {
 
     weaponDamage = (double) levelRequirement / 10 + 4;
     return weaponDamage;
-  }
-
-  public String getDescription() {
-    return description;
   }
 
   WeaponItem(int levelRequirement, String name, WeaponType weaponType, String description) {

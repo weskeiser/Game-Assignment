@@ -35,32 +35,33 @@ public class CombatTasks extends TimerTask implements CombatActions {
     attacker.setAttackCooldown(8);
 
     double maxHit = attacker.getMaxHit();
+    System.out.println(maxHit);
 
     double randomisedHit = randomiseHit(0, maxHit);
+    System.out.println(randomisedHit);
 
     boolean successfulHit = defender.defend(randomisedHit);
 
     if (!successfulHit)
       return;
 
-    boolean alive = defender.takeDamage(randomisedHit, attacker);
+    boolean alive = defender.takeDamage((int) randomisedHit, attacker);
+
+    if (!alive) {
+      attacker.addRemains(defender.getRemains());
+      fatalities.put(attacker, defender);
+    }
 
     if (((GameCharacter) attacker).getCharacterType() instanceof HeroType) {
       attacker.gainExperience(randomisedHit);
     }
 
-    if (!alive) {
-
-      attacker.addRemains(defender.getRemains());
-      fatalities.put(attacker, defender);
-    }
   }
 
   public void run() {
     System.out.println("hi");
 
     engagements.forEach((attacker, defender) -> {
-      // boolean onCooldown = attacker.decrementIfAttackCooldown();
       if (!attacker.decrementIfAttackCooldown())
         performAttack(attacker, defender);
 

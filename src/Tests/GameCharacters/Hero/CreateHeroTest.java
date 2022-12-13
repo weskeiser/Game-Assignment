@@ -54,24 +54,24 @@ public class CreateHeroTest {
 
     switch (heroType) {
       case WARRIOR:
-        assertEquals(createAttributeMap(5, 2, 1), testHero.getHeroAttributes());
+        assertEquals(createAttributeMap(5, 2, 1), testHero.getCharacterAttributes());
 
-        assertNotEquals(createAttributeMap(9, 9, 9), testHero.getHeroAttributes());
+        assertNotEquals(createAttributeMap(9, 9, 9), testHero.getCharacterAttributes());
         break;
       case ROGUE:
-        assertEquals(createAttributeMap(2, 6, 1), testHero.getHeroAttributes());
+        assertEquals(createAttributeMap(2, 6, 1), testHero.getCharacterAttributes());
 
-        assertNotEquals(createAttributeMap(9, 9, 9), testHero.getHeroAttributes());
+        assertNotEquals(createAttributeMap(9, 9, 9), testHero.getCharacterAttributes());
         break;
       case RANGER:
-        assertEquals(createAttributeMap(1, 7, 1), testHero.getHeroAttributes());
+        assertEquals(createAttributeMap(1, 7, 1), testHero.getCharacterAttributes());
 
-        assertNotEquals(createAttributeMap(9, 9, 9), testHero.getHeroAttributes());
+        assertNotEquals(createAttributeMap(9, 9, 9), testHero.getCharacterAttributes());
         break;
       case MAGE:
-        assertEquals(createAttributeMap(1, 1, 8), testHero.getHeroAttributes());
+        assertEquals(createAttributeMap(1, 1, 8), testHero.getCharacterAttributes());
 
-        assertNotEquals(createAttributeMap(9, 9, 9), testHero.getHeroAttributes());
+        assertNotEquals(createAttributeMap(9, 9, 9), testHero.getCharacterAttributes());
         break;
     }
   }

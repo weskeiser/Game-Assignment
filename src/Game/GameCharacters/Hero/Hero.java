@@ -25,7 +25,7 @@ public class Hero
   private EnumMap<CharacterAttribute, Integer> heroAttributes;
   private List<Item> inventory = new ArrayList<Item>(15);
 
-  private double health = 5;
+  private double health = 10;
   private int attackCooldown = 0;
 
   private Attacker defeatedBy = null;
@@ -37,10 +37,12 @@ public class Hero
     return attackCooldown;
   }
 
+  @Override
   public void setAttackCooldown(int attackCooldown) {
     this.attackCooldown = attackCooldown;
   }
 
+  @Override
   public boolean decrementIfAttackCooldown() {
     if (attackCooldown >= 1) {
       attackCooldown--;
@@ -129,12 +131,19 @@ public class Hero
   }
 
   @Override
+  public int getAttackSpeed() {
+    int dexterityAttribute = getCharacterAttributes().get(CharacterAttribute.DEXTERITY);
+    return 4;
+  }
+
+  @Override
   public double getMaxHit() {
     return getMaxHit(this);
   }
 
+  // Returns false if fatal hit
   @Override
-  public boolean takeDamage(double damage, Attacker foe) {
+  public boolean takeDamage(int damage, Attacker foe) {
     health = health - damage;
 
     if (health < damage) {
@@ -177,6 +186,7 @@ public class Hero
       }
     });
 
+    health = health + 2;
     level++;
     return level;
   }
@@ -212,7 +222,7 @@ public class Hero
   }
 
   @Override
-  public EnumMap<CharacterAttribute, Integer> getHeroAttributes() {
+  public EnumMap<CharacterAttribute, Integer> getCharacterAttributes() {
     return heroAttributes;
   }
 

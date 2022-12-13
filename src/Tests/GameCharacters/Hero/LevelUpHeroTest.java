@@ -39,16 +39,16 @@ public class LevelUpHeroTest {
 
     switch (heroType) {
       case WARRIOR:
-        assertEquals(WARRIOR_STARTING_ATTRIBUTES, testHero.getHeroAttributes());
+        assertEquals(WARRIOR_STARTING_ATTRIBUTES, testHero.getCharacterAttributes());
         break;
       case ROGUE:
-        assertEquals(ROGUE_STARTING_ATTRIBUTES, testHero.getHeroAttributes());
+        assertEquals(ROGUE_STARTING_ATTRIBUTES, testHero.getCharacterAttributes());
         break;
       case RANGER:
-        assertEquals(RANGER_STARTING_ATTRIBUTES, testHero.getHeroAttributes());
+        assertEquals(RANGER_STARTING_ATTRIBUTES, testHero.getCharacterAttributes());
         break;
       case MAGE:
-        assertEquals(MAGE_STARTING_ATTRIBUTES, testHero.getHeroAttributes());
+        assertEquals(MAGE_STARTING_ATTRIBUTES, testHero.getCharacterAttributes());
         break;
     }
 
@@ -58,16 +58,16 @@ public class LevelUpHeroTest {
 
     switch (heroType) {
       case WARRIOR:
-        assertEquals(createAttributeMap(8, 4, 2), testHero.getHeroAttributes());
+        assertEquals(createAttributeMap(8, 4, 2), testHero.getCharacterAttributes());
         break;
       case ROGUE:
-        assertEquals(createAttributeMap(3, 10, 2), testHero.getHeroAttributes());
+        assertEquals(createAttributeMap(3, 10, 2), testHero.getCharacterAttributes());
         break;
       case RANGER:
-        assertEquals(createAttributeMap(2, 12, 2), testHero.getHeroAttributes());
+        assertEquals(createAttributeMap(2, 12, 2), testHero.getCharacterAttributes());
         break;
       case MAGE:
-        assertEquals(createAttributeMap(2, 2, 13), testHero.getHeroAttributes());
+        assertEquals(createAttributeMap(2, 2, 13), testHero.getCharacterAttributes());
         break;
     }
 
@@ -77,16 +77,16 @@ public class LevelUpHeroTest {
 
     switch (heroType) {
       case WARRIOR:
-        assertEquals(createAttributeMap(11, 6, 3), testHero.getHeroAttributes());
+        assertEquals(createAttributeMap(11, 6, 3), testHero.getCharacterAttributes());
         break;
       case ROGUE:
-        assertEquals(createAttributeMap(4, 14, 3), testHero.getHeroAttributes());
+        assertEquals(createAttributeMap(4, 14, 3), testHero.getCharacterAttributes());
         break;
       case RANGER:
-        assertEquals(createAttributeMap(3, 17, 3), testHero.getHeroAttributes());
+        assertEquals(createAttributeMap(3, 17, 3), testHero.getCharacterAttributes());
         break;
       case MAGE:
-        assertEquals(createAttributeMap(3, 3, 18), testHero.getHeroAttributes());
+        assertEquals(createAttributeMap(3, 3, 18), testHero.getCharacterAttributes());
         break;
     }
   }
