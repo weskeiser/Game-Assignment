@@ -7,6 +7,7 @@ import Game.Exceptions.InvalidEquipmentException.EquipmentErrMessages;
 import Game.Exceptions.InventoryException;
 import Game.Exceptions.InventoryException.InventoryErrMessages;
 import Game.GameCharacters.Interfaces.*;
+import Game.GameCharacters.Remains.Remains;
 import Game.Items.Item;
 import Game.Items.LootableItem;
 import Game.Items.Equipment.*;
@@ -25,10 +26,35 @@ public class Hero
   private int level = 1;
   private EnumMap<CharacterAttribute, Integer> heroAttributes;
   private List<Item> inventory = new ArrayList<Item>(15);
+  private Attacker defeatedBy = null;
+  private List<Remains> lootableRemains = new ArrayList<>();
+
   private EnumMap<EquipmentSlot, Equippable> equippedItems = new EnumMap<>(EquipmentSlot.class);
 
-  private Attacker defeatedBy = null;
-  private List<LootableItem> remains = new ArrayList<>();
+  public EnumMap<EquipmentSlot, Equippable> getEquippedItems() {
+    return equippedItems;
+  }
+
+  public Remains getRemains() {
+
+    List<LootableItem> loot = new ArrayList<>();
+
+    equippedItems.values().forEach((item) -> loot.add((LootableItem) item));
+    inventory.forEach((item) -> loot.add((LootableItem) item));
+
+    equippedItems.clear();
+    inventory.clear();
+
+    return new Remains(loot, defeatedBy);
+  }
+
+  public List<Item> getInventory() {
+    return inventory;
+  }
+
+  public void addRemains(Remains remains) {
+    lootableRemains.add(remains);
+  }
 
   @Override
   public Item findInventoryItem(int index) throws InventoryException {
@@ -75,9 +101,8 @@ public class Hero
 
   @Override
   public void receiveFinalBlow(Attacker defeator) {
-
-    receiveFinalBlow(defeator, health, defeatedBy,
-        equippedItems, remains, inventory);
+    health = 0;
+    defeatedBy = defeator;
   }
 
   @Override
@@ -96,14 +121,18 @@ public class Hero
   };
 
   @Override
-  public void defend(double maxHit, Attacker foe) {
+  public int defend(double maxHit, Attacker foe) {
+
+    int actualHit = 1;
 
     if (health < maxHit) {
       receiveFinalBlow(foe);
-      return;
+      return actualHit;
     }
 
-    takeDamage(maxHit);
+    takeDamage(actualHit);
+
+    return actualHit;
   };
 
   @Override

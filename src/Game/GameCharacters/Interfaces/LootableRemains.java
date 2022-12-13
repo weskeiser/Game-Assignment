@@ -8,6 +8,6 @@ public interface LootableRemains {
 
   void showLoot(GameCharacter investigator);
 
-  GameCharacter getDefeator();
+  Attacker getDefeator();
 
 }

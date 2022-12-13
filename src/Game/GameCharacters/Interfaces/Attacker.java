@@ -1,10 +1,15 @@
 package Game.GameCharacters.Interfaces;
 
 import Game.Exceptions.InvalidEquipmentException;
+import Game.GameCharacters.Remains.Remains;
 import Game.Items.Equipment.EquipmentManager;
 import Game.Items.Equipment.Weapon.Weapon;
 
 public interface Attacker {
+  void gainExperience(int expGain);
+
+  void addRemains(Remains remains);
+
   double getMaxHit();
 
   default double getMaxHit(Attacker attacker) {

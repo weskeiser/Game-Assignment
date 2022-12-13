@@ -1,31 +1,13 @@
 package TickActions;
 
-import java.util.List;
-
-import Game.GameCharacters.Hero.Hero;
-import Game.GameCharacters.Hero.HeroType;
-import Game.GameCharacters.Interfaces.*;
+import Game.GameCharacters.Interfaces.Attacker;
+import Game.GameCharacters.Interfaces.Defender;
 
 public interface CombatActions {
-  default void combat(Attacker attacker, Defender defender) {
-    double maxHit = attacker.getMaxHit();
+  void newAttack(Attacker attacker, Defender defender);
 
-    // randomise actual hit
+  void disengageAttack(Attacker attacker, Defender defender);
 
-    double actualHit = maxHit;
-
-    if (((GameCharacter) attacker).getCharacterType() instanceof HeroType) {
-      ((Hero) attacker).gainExperience((int) actualHit);
-    }
-
-    defender.defend(maxHit, attacker);
-
-    if (defender.getHealth() <= 0) {
-      // kill(defender);
-    }
-  };
-
-  default void kill(Defender killed, List<Defender> killedList) {
-  }
+  void combat(Attacker attacker, Defender defender);
 
 }

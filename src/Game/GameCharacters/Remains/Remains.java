@@ -3,13 +3,12 @@ package Game.GameCharacters.Remains;
 import java.util.List;
 
 import Game.Exceptions.LootException;
-import Game.GameCharacters.Interfaces.GameCharacter;
-import Game.GameCharacters.Interfaces.LootableRemains;
+import Game.GameCharacters.Interfaces.*;
 import Game.Items.LootableItem;
 
 public class Remains implements LootableRemains {
   List<LootableItem> lootableItems;
-  private GameCharacter defeatedBy = null;
+  private Attacker defeatedBy = null;
 
   @Override
   public void showLoot(GameCharacter investigator) {
@@ -22,7 +21,7 @@ public class Remains implements LootableRemains {
   }
 
   @Override
-  public GameCharacter getDefeator() {
+  public Attacker getDefeator() {
     return defeatedBy;
   }
 
@@ -34,7 +33,7 @@ public class Remains implements LootableRemains {
     return lootItem;
   }
 
-  public Remains(List<LootableItem> lootableItems, GameCharacter defeatedBy) {
+  public Remains(List<LootableItem> lootableItems, Attacker defeatedBy) {
     this.lootableItems = lootableItems;
     this.defeatedBy = defeatedBy;
   }
