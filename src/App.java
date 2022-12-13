@@ -1,42 +1,31 @@
 import java.util.*;
 
+import Game.GameCharacters.Hero.Hero;
 import Game.GameCharacters.Interfaces.GameCharacter;
 import Game.GameCharacters.Remains.Remains;
 import GameController.GameController;
+import TickActions.TickActions;
 
 public class App {
     public static void main(String[] args) throws Exception {
         Map<GameCharacter, Remains> killedCharacters = new HashMap<>();
-
-        Timer timer = new Timer();
         GameController gameController = new GameController();
 
-        // CharacterStatus adventure = new
-        // CharacterStatus(gameController.newMage("Troll"));
+        TickActions tickActions = new TickActions.TickActionsBuilder().build();
 
-        // timer.scheduleAtFixedRate(adventure, 0, 1000);
+        Timer timer = new Timer();
 
-        // adventure.run();
+        timer.scheduleAtFixedRate(tickActions, 0, 1000);
+
+        // tickActions.run();
 
         //
 
-        // Hero troll = gameController.newMage("Troll");
-        // Weapon testWeapon = new Weapon.WeaponBuilder(WeaponItem.CROOKED_BOW).build();
-        // Armor royalMail = new Armor.ArmorBuilder(Mail.ROYAL_MAIL).build();
+        Hero troll = gameController.newMage("Troll");
+        Hero rogie = gameController.newRogue("Rogie");
 
-        // //
+        tickActions.addAttack(troll, rogie);
 
-        // Hero rogie = gameController.newRogue("Rogie");
-        // gameController.combat(troll, rogie);
-        // gameController.combat(rogie, troll);
-        // troll.showHealth();
-        // // troll.display();
-        // // troll.finalBlow(rogie);
-        // try {
-        // troll.equip(0);
-        // } catch (Throwable err) {
-
-        // }
         // troll.display();
 
     }

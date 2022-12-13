@@ -14,7 +14,8 @@ import Game.Items.Equipment.Weapon.Weapon;
 import utils.CLR;
 
 public class Hero
-    implements GameCharacter, HeroDisplayer, InventoryManager, EquipmentManager, CombatManager, AttributeManager {
+    implements GameCharacter, HeroDisplayer, InventoryManager, EquipmentManager, Attacker, Defender,
+    AttributeManager {
 
   private String name;
   private HeroType heroType;
@@ -26,7 +27,7 @@ public class Hero
   private List<Item> inventory = new ArrayList<Item>(15);
   private EnumMap<EquipmentSlot, Equippable> equippedItems = new EnumMap<>(EquipmentSlot.class);
 
-  private CombatManager defeatedBy = null;
+  private Attacker defeatedBy = null;
   private List<LootableItem> remains = new ArrayList<>();
 
   @Override
@@ -73,9 +74,9 @@ public class Hero
   }
 
   @Override
-  public void finalBlow(CombatManager defeator) {
+  public void receiveFinalBlow(Attacker defeator) {
 
-    finalBlow(defeator, health, defeatedBy,
+    receiveFinalBlow(defeator, health, defeatedBy,
         equippedItems, remains, inventory);
   }
 
@@ -95,10 +96,10 @@ public class Hero
   };
 
   @Override
-  public void defend(double maxHit, CombatManager foe) {
+  public void defend(double maxHit, Attacker foe) {
 
     if (health < maxHit) {
-      finalBlow(foe);
+      receiveFinalBlow(foe);
       return;
     }
 
@@ -144,22 +145,23 @@ public class Hero
   @Override
   public int getFreeInventorySlots() {
     return MAX_INVENTORY_SIZE - inventory.size();
-
   }
 
   @Override
   public void unEquip(EquipmentSlot equipmentSlot) throws InvalidEquipmentException, InventoryException {
+
     unEquip(equipmentSlot, equippedItems, inventory);
   };
 
   @Override
-  public void equip(Equippable equipment) throws InvalidEquipmentException,
-      InventoryException {
+  public void equip(Equippable equipment) throws InvalidEquipmentException, InventoryException {
+
     equip(equipment, inventory, equippedItems, level, heroType);
   }
 
   @Override
   public void equip(int inventoryIndex) throws InvalidEquipmentException, InventoryException {
+
     Equippable itemExistingInInventory = (Equippable) findInventoryItem(inventoryIndex);
 
     equip(itemExistingInInventory, inventory, equippedItems, level, heroType);
@@ -217,7 +219,6 @@ public class Hero
   @Override
   public void showHealth() {
     System.out.println((int) health);
-    System.out.println(experience);
   }
 
   @Override

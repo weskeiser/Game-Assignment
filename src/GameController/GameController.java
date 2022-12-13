@@ -4,7 +4,7 @@ import Game.Exceptions.InventoryException;
 import Game.Exceptions.LootException;
 import Game.GameCharacters.Hero.Hero;
 import Game.GameCharacters.Hero.HeroType;
-import Game.GameCharacters.Interfaces.*;
+import Game.GameCharacters.Interfaces.LootableRemains;
 import Game.Items.Item;
 import Game.Items.LootableItem;
 
@@ -43,28 +43,6 @@ public class GameController {
     } catch (InventoryException err) {
       System.out.println(err.getMessage());
     }
-  }
-
-  public void combat(CombatManager defender, CombatManager attacker) {
-    double maxHit = attacker.getMaxHit();
-
-    // randomise actual hit
-
-    double actualHit = maxHit;
-
-    if (((GameCharacter) attacker).getCharacterType() instanceof HeroType) {
-      ((Hero) attacker).gainExperience((int) actualHit);
-    }
-
-    defender.defend(maxHit, attacker);
-
-    if (defender.getHealth() <= 0) {
-      kill(defender);
-    }
-  };
-
-  public void kill(CombatManager killed) {
-
   }
 
 }
