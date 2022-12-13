@@ -4,11 +4,11 @@ import java.util.*;
 
 import Game.GameCharacters.Hero.HeroType;
 import Game.GameCharacters.Interfaces.*;
-import Game.GameCharacters.Remains.Remains;
 
 public class CombatTasks extends TimerTask implements CombatActions {
 
   private Map<Attacker, Defender> engagements = new HashMap<>();
+  private Map<Attacker, Defender> fatalities = new HashMap<>();
 
   public void newAttack(Attacker attacker, Defender defender) {
     engagements.put(attacker, defender);
@@ -18,27 +18,41 @@ public class CombatTasks extends TimerTask implements CombatActions {
     engagements.remove(attacker, defender);
   }
 
-  public void combat(Attacker attacker, Defender defender) {
-    double maxHit = attacker.getMaxHit();
+  public double randomiseHit(double min, double maxHit) {
+    double max = maxHit <= 1 ? 1.99 : maxHit;
 
-    // randomise actual hit
+    double firstRoll = (Math.random() * (max - min)) + min;
 
-    double randomisedHit = maxHit;
-
-    int actualHit = defender.defend(randomisedHit, attacker);
-
-    if (((GameCharacter) attacker).getCharacterType() instanceof HeroType) {
-      attacker.gainExperience(actualHit);
+    // If upper 25%, roll again
+    if ((firstRoll > max * 0.75)) {
+      return (Math.random() * (max - min)) + min;
     }
 
-    if (defender.getHealth() <= 0) {
-      disengageAttack(attacker, defender);
+    return firstRoll;
+  }
 
-      Remains remains = defender.getRemains();
+  public void performAttack(Attacker attacker, Defender defender) {
+    attacker.setAttackCooldown(8);
 
-      attacker.addRemains(remains);
+    double maxHit = attacker.getMaxHit();
 
-      // kill
+    double randomisedHit = randomiseHit(0, maxHit);
+
+    boolean successfulHit = defender.defend(randomisedHit);
+
+    if (!successfulHit)
+      return;
+
+    boolean alive = defender.takeDamage(randomisedHit, attacker);
+
+    if (((GameCharacter) attacker).getCharacterType() instanceof HeroType) {
+      attacker.gainExperience(randomisedHit);
+    }
+
+    if (!alive) {
+
+      attacker.addRemains(defender.getRemains());
+      fatalities.put(attacker, defender);
     }
   }
 
@@ -46,9 +60,15 @@ public class CombatTasks extends TimerTask implements CombatActions {
     System.out.println("hi");
 
     engagements.forEach((attacker, defender) -> {
-      combat(attacker, defender);
+      // boolean onCooldown = attacker.decrementIfAttackCooldown();
+      if (!attacker.decrementIfAttackCooldown())
+        performAttack(attacker, defender);
 
       System.out.println(defender.getHealth());
+    });
+
+    fatalities.forEach((attacker, defender) -> {
+      disengageAttack(attacker, defender);
     });
   }
 

@@ -9,7 +9,6 @@ import Game.Exceptions.InventoryException.InventoryErrMessages;
 import Game.GameCharacters.Interfaces.*;
 import Game.GameCharacters.Remains.Remains;
 import Game.Items.Item;
-import Game.Items.LootableItem;
 import Game.Items.Equipment.*;
 import Game.Items.Equipment.Weapon.Weapon;
 import utils.CLR;
@@ -20,27 +19,49 @@ public class Hero
 
   private String name;
   private HeroType heroType;
-  private double health = 100;
-  private int experience = 0;
-  private int experienceToLevel = 10;
+  private double experience = 0;
+  private double experienceToLevel = 10;
   private int level = 1;
   private EnumMap<CharacterAttribute, Integer> heroAttributes;
   private List<Item> inventory = new ArrayList<Item>(15);
+
+  private double health = 5;
+  private int attackCooldown = 0;
+
   private Attacker defeatedBy = null;
   private List<Remains> lootableRemains = new ArrayList<>();
 
   private EnumMap<EquipmentSlot, Equippable> equippedItems = new EnumMap<>(EquipmentSlot.class);
 
+  public int getAttackCooldown() {
+    return attackCooldown;
+  }
+
+  public void setAttackCooldown(int attackCooldown) {
+    this.attackCooldown = attackCooldown;
+  }
+
+  public boolean decrementIfAttackCooldown() {
+    if (attackCooldown >= 1) {
+      attackCooldown--;
+      return true;
+    }
+
+    return false;
+  }
+
+  @Override
   public EnumMap<EquipmentSlot, Equippable> getEquippedItems() {
     return equippedItems;
   }
 
+  @Override
   public Remains getRemains() {
 
-    List<LootableItem> loot = new ArrayList<>();
+    List<Item> loot = new ArrayList<>();
 
-    equippedItems.values().forEach((item) -> loot.add((LootableItem) item));
-    inventory.forEach((item) -> loot.add((LootableItem) item));
+    equippedItems.values().forEach((item) -> loot.add((Item) item));
+    inventory.forEach((item) -> loot.add((Item) item));
 
     equippedItems.clear();
     inventory.clear();
@@ -48,10 +69,7 @@ public class Hero
     return new Remains(loot, defeatedBy);
   }
 
-  public List<Item> getInventory() {
-    return inventory;
-  }
-
+  @Override
   public void addRemains(Remains remains) {
     lootableRemains.add(remains);
   }
@@ -85,7 +103,7 @@ public class Hero
   }
 
   @Override
-  public void gainExperience(int expGain) {
+  public void gainExperience(double expGain) {
 
     experience += expGain;
 
@@ -93,9 +111,9 @@ public class Hero
 
       levelUp();
 
-      int difference = experience - experienceToLevel;
+      double difference = experience - experienceToLevel;
 
-      experienceToLevel = (int) (experienceToLevel * 1.5) + difference;
+      experienceToLevel = (experienceToLevel * 1.5) + difference;
     }
   }
 
@@ -116,23 +134,20 @@ public class Hero
   }
 
   @Override
-  public void takeDamage(double damage) {
+  public boolean takeDamage(double damage, Attacker foe) {
     health = health - damage;
+
+    if (health < damage) {
+      receiveFinalBlow(foe);
+      return false;
+    }
+
+    return true;
   };
 
   @Override
-  public int defend(double maxHit, Attacker foe) {
-
-    int actualHit = 1;
-
-    if (health < maxHit) {
-      receiveFinalBlow(foe);
-      return actualHit;
-    }
-
-    takeDamage(actualHit);
-
-    return actualHit;
+  public boolean defend(double hit) {
+    return true;
   };
 
   @Override

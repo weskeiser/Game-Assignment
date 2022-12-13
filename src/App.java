@@ -27,6 +27,5 @@ public class App {
         combatTasks.newAttack(troll, rogie);
 
         // troll.display();
-
     }
 }

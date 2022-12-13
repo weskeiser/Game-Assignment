@@ -12,7 +12,7 @@ public interface AttributeManager {
 
   int levelUp();
 
-  void gainExperience(int expGain);
+  void gainExperience(double expGain);
 
   EnumMap<CharacterAttribute, Integer> getDefensiveAttributes();
 

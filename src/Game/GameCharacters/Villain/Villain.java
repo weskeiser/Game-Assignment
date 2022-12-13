@@ -5,9 +5,9 @@ import java.util.*;
 import Game.GameCharacters.Hero.HeroType;
 import Game.GameCharacters.Interfaces.*;
 import Game.Items.Item;
-import Game.Items.LootableItem;
 import Game.Items.Equipment.*;
 import Game.Items.Equipment.Weapon.Weapon;
+import Game.Items.LootableItem.LootableItem;
 
 public class Villain implements GameCharacter, InventoryManager, EquipmentManager, CombatManager {
 

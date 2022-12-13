@@ -4,10 +4,10 @@ import java.util.List;
 
 import Game.Exceptions.LootException;
 import Game.GameCharacters.Interfaces.*;
-import Game.Items.LootableItem;
+import Game.Items.Item;
 
 public class Remains implements LootableRemains {
-  List<LootableItem> lootableItems;
+  List<Item> lootableItems;
   private Attacker defeatedBy = null;
 
   @Override
@@ -26,14 +26,14 @@ public class Remains implements LootableRemains {
   }
 
   @Override
-  public LootableItem takeItem(LootableItem lootItem) throws LootException {
+  public Item takeItem(Item lootItem) throws LootException {
     boolean taken = lootableItems.remove(lootItem);
     if (!taken)
       throw new LootException(LootException.Messages.NOT_FOUND);
     return lootItem;
   }
 
-  public Remains(List<LootableItem> lootableItems, Attacker defeatedBy) {
+  public Remains(List<Item> lootableItems, Attacker defeatedBy) {
     this.lootableItems = lootableItems;
     this.defeatedBy = defeatedBy;
   }

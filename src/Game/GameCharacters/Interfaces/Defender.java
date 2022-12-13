@@ -10,9 +10,9 @@ public interface Defender {
 
   double getHealth();
 
-  int defend(double maxHit, Attacker foe);
+  boolean defend(double hit);
 
-  void takeDamage(double damage);
+  boolean takeDamage(double damage, Attacker foe);
 
   public void receiveFinalBlow(Attacker defeator);
 

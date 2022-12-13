@@ -6,7 +6,6 @@ import Game.GameCharacters.Hero.Hero;
 import Game.GameCharacters.Hero.HeroType;
 import Game.GameCharacters.Interfaces.LootableRemains;
 import Game.Items.Item;
-import Game.Items.LootableItem;
 
 public class GameController {
 
@@ -26,7 +25,7 @@ public class GameController {
     return new Hero.HeroBuilder(name, HeroType.MAGE).build();
   }
 
-  public void lootRemains(LootableRemains remains, Hero looter, LootableItem lootItem) {
+  public void lootRemains(LootableRemains remains, Hero looter, Item lootItem) {
     try {
       if (looter.getFreeInventorySlots() <= 0)
         throw new LootException(LootException.Messages.FULL_INVENTORY);

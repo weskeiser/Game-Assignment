@@ -15,6 +15,8 @@ import Game.Items.Equipment.Weapon.WeaponType;
 
 public interface EquipmentManager {
 
+  public EnumMap<EquipmentSlot, Equippable> getEquippedItems();
+
   void equip(Equippable equipment) throws InvalidEquipmentException,
       InventoryException;
 

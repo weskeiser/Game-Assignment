@@ -8,6 +8,6 @@ public interface CombatActions {
 
   void disengageAttack(Attacker attacker, Defender defender);
 
-  void combat(Attacker attacker, Defender defender);
+  void performAttack(Attacker attacker, Defender defender);
 
 }

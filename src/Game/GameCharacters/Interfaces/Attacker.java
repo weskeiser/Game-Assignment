@@ -6,9 +6,13 @@ import Game.Items.Equipment.EquipmentManager;
 import Game.Items.Equipment.Weapon.Weapon;
 
 public interface Attacker {
-  void gainExperience(int expGain);
+  void gainExperience(double expGain);
 
   void addRemains(Remains remains);
+
+  void setAttackCooldown(int ticks);
+
+  boolean decrementIfAttackCooldown();
 
   double getMaxHit();
 
