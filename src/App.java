@@ -1,18 +1,24 @@
-import java.util.Timer;
+import java.util.*;
 
-import Adventure.Adventure;
+import Game.GameCharacters.Interfaces.GameCharacter;
+import Game.GameCharacters.Remains.Remains;
 import GameController.GameController;
 
 public class App {
     public static void main(String[] args) throws Exception {
+        Map<GameCharacter, Remains> killedCharacters = new HashMap<>();
+
         Timer timer = new Timer();
         GameController gameController = new GameController();
 
-        Adventure adventure = new Adventure(gameController.newMage("Troll"));
+        // CharacterStatus adventure = new
+        // CharacterStatus(gameController.newMage("Troll"));
 
-        timer.scheduleAtFixedRate(adventure, 0, 1000);
+        // timer.scheduleAtFixedRate(adventure, 0, 1000);
 
-        adventure.run();
+        // adventure.run();
+
+        //
 
         // Hero troll = gameController.newMage("Troll");
         // Weapon testWeapon = new Weapon.WeaponBuilder(WeaponItem.CROOKED_BOW).build();

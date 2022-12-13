@@ -9,7 +9,7 @@ import java.util.Map;
 import org.junit.After;
 import org.junit.Test;
 
-import Game.GameCharacters.CharacterAttribute;
+import Game.GameCharacters.Interfaces.CharacterAttribute;
 import Game.Items.Equipment.EquipmentSlot;
 import Game.Items.Equipment.Armor.*;
 import Game.Items.Equipment.Armor.ArmorItems.Mail;

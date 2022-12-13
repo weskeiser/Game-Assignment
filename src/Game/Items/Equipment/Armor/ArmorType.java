@@ -3,7 +3,7 @@ package Game.Items.Equipment.Armor;
 import java.util.EnumMap;
 import java.util.Map;
 
-import Game.GameCharacters.CharacterAttribute;
+import Game.GameCharacters.Interfaces.CharacterAttribute;
 import Game.Items.Equipment.EquipmentType;
 
 public enum ArmorType implements EquipmentType {

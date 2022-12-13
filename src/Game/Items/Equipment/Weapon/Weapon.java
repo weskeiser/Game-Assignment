@@ -1,10 +1,9 @@
 package Game.Items.Equipment.Weapon;
 
-import Game.Items.LootableItem;
 import Game.Items.Equipment.EquipmentSlot;
 import Game.Items.Equipment.Equippable;
 
-public class Weapon implements Equippable, LootableItem {
+public class Weapon implements Equippable {
   private WeaponItem weapon;
   private EquipmentSlot equipmentSlot = EquipmentSlot.WEAPON;
 

@@ -1,16 +1,20 @@
-package Game.Items;
+package Game.GameCharacters.Interfaces;
 
 import java.util.List;
 
 import Game.Exceptions.InventoryException;
 import Game.Exceptions.InventoryException.InventoryErrMessages;
+import Game.Items.Item;
 import Game.Items.Equipment.Armor.Armor;
 import Game.Items.Equipment.Weapon.Weapon;
 
 public interface InventoryManager {
+  static int MAX_INVENTORY_SIZE = 15;
+
+  void addToInventory(Item item) throws InventoryException;
 
   default void addToInventory(List<Item> inventory, Item item) throws InventoryException {
-    if (inventory.size() >= 15) {
+    if (inventory.size() >= MAX_INVENTORY_SIZE) {
       throw new InventoryException(InventoryErrMessages.NO_SPACE);
     }
 
@@ -30,8 +34,8 @@ public interface InventoryManager {
     return true;
   };
 
-  Item findInventoryItem(int index) throws InventoryException;
+  int getFreeInventorySlots();
 
-  void showInventory();
+  Item findInventoryItem(int index) throws InventoryException;
 
 }

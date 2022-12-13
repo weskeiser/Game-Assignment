@@ -2,14 +2,14 @@ package Game.GameCharacters.Villain;
 
 import java.util.*;
 
-import Game.Exceptions.LootException;
-import Game.GameCharacters.*;
 import Game.GameCharacters.Hero.HeroType;
-import Game.Items.*;
+import Game.GameCharacters.Interfaces.*;
+import Game.Items.Item;
+import Game.Items.LootableItem;
 import Game.Items.Equipment.*;
 import Game.Items.Equipment.Weapon.Weapon;
 
-public class Villain implements GameCharacter, InventoryManager, EquipmentManager, CombatManager, Remains {
+public class Villain implements GameCharacter, InventoryManager, EquipmentManager, CombatManager {
 
   private String name;
   private HeroType heroType;
@@ -26,29 +26,6 @@ public class Villain implements GameCharacter, InventoryManager, EquipmentManage
   private List<Item> inventory = new ArrayList<Item>(15);
   private EnumMap<EquipmentSlot, Equippable> equippedItems = new EnumMap<EquipmentSlot, Equippable>(
       EquipmentSlot.class);
-
-  @Override
-  public LootableItem takeItem(LootableItem lootItem) throws LootException {
-    boolean taken = remains.remove(lootItem);
-    if (!taken)
-      throw new LootException(LootException.Messages.NOT_FOUND);
-    return lootItem;
-  }
-
-  @Override
-  public void showLoot(GameCharacter investigator) {
-    if (investigator != defeatedBy) {
-      System.out.println(LootException.Messages.NOT_YOURS);
-      return;
-    }
-
-    System.out.println(remains);
-  }
-
-  @Override
-  public GameCharacter getDefeator() {
-    return defeatedBy;
-  }
 
   @Override
   public void takeDamage(double damage) {

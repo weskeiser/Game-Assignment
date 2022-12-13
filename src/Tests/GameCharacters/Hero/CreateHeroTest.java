@@ -8,9 +8,9 @@ import java.util.EnumMap;
 import org.junit.After;
 import org.junit.Test;
 
-import Game.GameCharacters.CharacterAttribute;
 import Game.GameCharacters.Hero.Hero;
 import Game.GameCharacters.Hero.HeroType;
+import Game.GameCharacters.Interfaces.CharacterAttribute;
 
 public class CreateHeroTest {
   String heroName = "TestHero name";

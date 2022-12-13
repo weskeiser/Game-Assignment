@@ -7,18 +7,16 @@ import java.util.Map;
 
 import org.junit.*;
 
-import Game.GameCharacters.CharacterAttribute;
 import Game.GameCharacters.Hero.Hero;
 import Game.GameCharacters.Hero.HeroType;
+import Game.GameCharacters.Interfaces.CharacterAttribute;
 import Game.Items.Equipment.Armor.Armor;
 import Game.Items.Equipment.Armor.ArmorItems.Mail;
 
-public class TotalAttributesTest {
-  private final EnumMap<CharacterAttribute, Integer> WARRIOR_STARTING_ATTRIBUTES = createAttributeMap(3, 2, 1);
-
+public class DefensiveAttributesTest {
   Hero warrior = new Hero.HeroBuilder("Hero TestName", HeroType.WARRIOR).build();
 
-  EnumMap<CharacterAttribute, Integer> totalAttributes = new EnumMap<>(CharacterAttribute.class);
+  EnumMap<CharacterAttribute, Integer> defensiveAttributes = new EnumMap<>(CharacterAttribute.class);
 
   //
 
@@ -35,40 +33,37 @@ public class TotalAttributesTest {
     // Reset hero after each test
     warrior = new Hero.HeroBuilder("Hero TestName", HeroType.WARRIOR).build();
 
-    // Reset totalAttributes after each test
-    totalAttributes = new EnumMap<>(CharacterAttribute.class);
+    // Reset defensiveAttributes after each test
+    defensiveAttributes = new EnumMap<>(CharacterAttribute.class);
   }
 
   //
 
   @Test
-  public void NoArmorEquipped_GetTotalAttributes_TotalAttributesCorrect() {
-    totalAttributes = warrior.getTotalAttributes();
+  public void NoArmorEquipped_GetDefensiveAttributes_DefensiveAttributesCorrect() {
+    defensiveAttributes = warrior.getDefensiveAttributes();
 
-    assertEquals(WARRIOR_STARTING_ATTRIBUTES, totalAttributes);
+    assertEquals(createAttributeMap(0, 0, 0), defensiveAttributes);
   }
 
   @Test
-  public void OneArmorItemEquipped_GetTotalAttributes_TotalAttributesCorrect() {
+  public void OneArmorItemEquipped_GetDefensiveAttributes_DefensiveAttributesCorrect() {
 
     try {
       warrior.addToInventory(new Armor.ArmorBuilder(Mail.ROYAL_MAIL).build());
       warrior.equip(1);
 
-      totalAttributes = warrior.getTotalAttributes();
+      defensiveAttributes = warrior.getDefensiveAttributes();
     } catch (Throwable err) {
     }
 
-    // Royal mail armorAttributes: 2,3,1
-    // Warrior levelingAttributes: 3,2,1
-    // Total: 5,5,2
-    EnumMap<CharacterAttribute, Integer> expectedTotalAttributes = createAttributeMap(5, 5, 2);
+    EnumMap<CharacterAttribute, Integer> expectedDefensiveAttributes = createAttributeMap(2, 3, 1);
 
-    assertEquals(expectedTotalAttributes, totalAttributes);
+    assertEquals(expectedDefensiveAttributes, defensiveAttributes);
   }
 
   @Test
-  public void TwoArmorItemsEquipped_GetTotalAttributes_TotalAttributesCorrect() {
+  public void TwoArmorItemsEquipped_GetDefensiveAttributes_DefensiveAttributesCorrect() {
 
     try {
       warrior.addToInventory(new Armor.ArmorBuilder(Mail.ROYAL_MAIL).build());
@@ -76,21 +71,17 @@ public class TotalAttributesTest {
       warrior.equip(2);
       warrior.equip(1);
 
-      totalAttributes = warrior.getTotalAttributes();
+      defensiveAttributes = warrior.getDefensiveAttributes();
     } catch (Throwable err) {
     }
 
-    // Steel chain hood armorAttributes: 1,2,0
-    // Royal mail armorAttributes: 2,3,1
-    // Warrior levelingAttributes: 3,2,1
-    // Total: 6,7,2
-    EnumMap<CharacterAttribute, Integer> expectedTotalAttributes = createAttributeMap(6, 7, 2);
+    EnumMap<CharacterAttribute, Integer> expectedDefensiveAttributes = createAttributeMap(3, 5, 1);
 
-    assertEquals(expectedTotalAttributes, totalAttributes);
+    assertEquals(expectedDefensiveAttributes, defensiveAttributes);
   }
 
   @Test
-  public void OneArmorItemEquipped_ItemIsReplaced_TotalAttributesCorrect() {
+  public void OneArmorItemEquipped_ItemIsReplaced_DefensiveAttributesCorrect() {
 
     try {
       warrior.addToInventory(new Armor.ArmorBuilder(Mail.HOLY_CHAIN_HOOD).build());
@@ -99,17 +90,14 @@ public class TotalAttributesTest {
       warrior.addToInventory(new Armor.ArmorBuilder(Mail.STEEL_CHAIN_HOOD).build());
       warrior.equip(1);
 
-      totalAttributes = warrior.getTotalAttributes();
+      defensiveAttributes = warrior.getDefensiveAttributes();
     } catch (Throwable err) {
     }
 
-    // Steel chain hood armorAttributes: 1,2,0
-    // Warrior levelingAttributes: 3,2,1
-    // Total: 4,4,1
-    EnumMap<CharacterAttribute, Integer> expectedTotalAttributes = createAttributeMap(4, 4, 1);
+    EnumMap<CharacterAttribute, Integer> expectedDefensiveAttributes = createAttributeMap(1, 2, 0);
     warrior.display();
 
-    assertEquals(expectedTotalAttributes, totalAttributes);
+    assertEquals(expectedDefensiveAttributes, defensiveAttributes);
   }
 
   public EnumMap<CharacterAttribute, Integer> createAttributeMap(int strength, int dexterity, int intelligence) {

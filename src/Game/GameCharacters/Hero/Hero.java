@@ -2,33 +2,36 @@ package Game.GameCharacters.Hero;
 
 import java.util.*;
 
-import Game.Exceptions.*;
+import Game.Exceptions.InvalidEquipmentException;
 import Game.Exceptions.InvalidEquipmentException.EquipmentErrMessages;
+import Game.Exceptions.InventoryException;
 import Game.Exceptions.InventoryException.InventoryErrMessages;
-import Game.GameCharacters.*;
-import Game.Items.*;
+import Game.GameCharacters.Interfaces.*;
+import Game.Items.Item;
+import Game.Items.LootableItem;
 import Game.Items.Equipment.*;
 import Game.Items.Equipment.Weapon.Weapon;
+import utils.CLR;
 
-public class Hero implements HeroCharacter, InventoryManager, EquipmentManager, CombatManager, Remains {
+public class Hero
+    implements GameCharacter, HeroDisplayer, InventoryManager, EquipmentManager, CombatManager, AttributeManager {
 
   private String name;
   private HeroType heroType;
-
-  private GameCharacter defeatedBy = null;
-  private List<LootableItem> remains = new ArrayList<>();
-
   private double health = 100;
-  private int experienceToLevel = 30;
   private int experience = 0;
+  private int experienceToLevel = 10;
   private int level = 1;
   private EnumMap<CharacterAttribute, Integer> heroAttributes;
-
   private List<Item> inventory = new ArrayList<Item>(15);
   private EnumMap<EquipmentSlot, Equippable> equippedItems = new EnumMap<>(EquipmentSlot.class);
 
+  private CombatManager defeatedBy = null;
+  private List<LootableItem> remains = new ArrayList<>();
+
   @Override
   public Item findInventoryItem(int index) throws InventoryException {
+
     try {
       return inventory.get(index);
     } catch (IndexOutOfBoundsException err) {
@@ -36,12 +39,15 @@ public class Hero implements HeroCharacter, InventoryManager, EquipmentManager, 
     }
   }
 
-  public EnumMap<CharacterAttribute, Integer> getTotalAttributes() {
-    return getTotalAttributes(heroType, equippedItems);
+  @Override
+  public EnumMap<CharacterAttribute, Integer> getDefensiveAttributes() {
+
+    return getDefensiveAttributes(equippedItems);
   }
 
   @Override
   public Weapon getEquippedWeapon() throws InvalidEquipmentException {
+
     Weapon equippedWeapon = (Weapon) equippedItems.get(EquipmentSlot.WEAPON);
 
     if (equippedWeapon == null) {
@@ -53,32 +59,29 @@ public class Hero implements HeroCharacter, InventoryManager, EquipmentManager, 
 
   @Override
   public void gainExperience(int expGain) {
+
     experience += expGain;
+
     if (experience >= experienceToLevel) {
+
       levelUp();
-      experienceToLevel = (int) (experienceToLevel * 1.5);
+
+      int difference = experience - experienceToLevel;
+
+      experienceToLevel = (int) (experienceToLevel * 1.5) + difference;
     }
   }
 
   @Override
-  public void finalBlow(GameCharacter defeator) {
+  public void finalBlow(CombatManager defeator) {
+
     finalBlow(defeator, health, defeatedBy,
         equippedItems, remains, inventory);
   }
 
   @Override
-  public void showLoot(GameCharacter investigator) {
-    if (investigator != defeatedBy) {
-      System.out.println(LootException.Messages.NOT_YOURS);
-      return;
-    }
-
-    System.out.println(remains);
-  }
-
-  @Override
-  public GameCharacter getDefeator() {
-    return defeatedBy;
+  public double getHealth() {
+    return health;
   }
 
   @Override
@@ -92,7 +95,8 @@ public class Hero implements HeroCharacter, InventoryManager, EquipmentManager, 
   };
 
   @Override
-  public void defend(double maxHit, GameCharacter foe) {
+  public void defend(double maxHit, CombatManager foe) {
+
     if (health < maxHit) {
       finalBlow(foe);
       return;
@@ -108,6 +112,7 @@ public class Hero implements HeroCharacter, InventoryManager, EquipmentManager, 
 
   @Override
   public int levelUp() {
+
     EnumMap<CharacterAttribute, Integer> levelingAttributes = heroType.getLevelingAttributes();
 
     int strength = levelingAttributes.get(CharacterAttribute.STRENGTH);
@@ -132,20 +137,14 @@ public class Hero implements HeroCharacter, InventoryManager, EquipmentManager, 
   }
 
   @Override
-  public LootableItem takeItem(LootableItem lootItem) throws LootException {
-    boolean taken = remains.remove(lootItem);
-    if (!taken)
-      throw new LootException(LootException.Messages.NOT_FOUND);
-    return lootItem;
-  }
-
-  @Override
   public void addToInventory(Item item) throws InventoryException {
     addToInventory(inventory, item);
   }
 
+  @Override
   public int getFreeInventorySlots() {
-    return 15 - inventory.size();
+    return MAX_INVENTORY_SIZE - inventory.size();
+
   }
 
   @Override
@@ -186,6 +185,20 @@ public class Hero implements HeroCharacter, InventoryManager, EquipmentManager, 
     System.out.println(level);
   }
 
+  public void showCharacterAttributes(EnumMap<CharacterAttribute, Integer> characterAttributes) {
+    StringBuilder keyBuilder = new StringBuilder();
+    StringBuilder valueBuilder = new StringBuilder();
+    keyBuilder.append(CLR.redC + "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+    keyBuilder.append("\n" + CLR.blueC + "    ~");
+
+    characterAttributes.forEach((k, v) -> {
+      keyBuilder.append(" " + CLR.greenC + k + CLR.blueC + " ~");
+      valueBuilder.append(CLR.yellowC + v + "           ");
+    });
+
+    System.out.println(keyBuilder.toString() + "\n         " + valueBuilder.toString());
+  }
+
   @Override
   public void showHeroAttributes() {
     showCharacterAttributes(heroAttributes);
@@ -211,15 +224,13 @@ public class Hero implements HeroCharacter, InventoryManager, EquipmentManager, 
   public void display() {
     StringBuilder displayBuilder = new StringBuilder();
     displayBuilder
-        .append("\n" + redC + "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
-        // .append("\n" + redC + "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@")
-        // .append("\n" + redC + "||||||||||||||||||||||||||||||||||||||||||||||")
-        .append("\n" + redC + "/~/~/" + "   >> "
-            + resetC + name
-            + redC + " <<   |  "
-            + resetC + "lvl."
-            + yellowC + level + " "
-            + resetC + heroType.toString());
+        .append("\n" + CLR.redC + "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
+        .append("\n" + CLR.redC + "/~/~/" + "   >> "
+            + CLR.resetC + name
+            + CLR.redC + " <<   |  "
+            + CLR.resetC + "lvl."
+            + CLR.yellowC + level + " "
+            + CLR.resetC + heroType.toString());
     System.out.println(displayBuilder.toString());
 
     showHeroAttributes();
@@ -227,8 +238,6 @@ public class Hero implements HeroCharacter, InventoryManager, EquipmentManager, 
     System.out.println();
     showEquippedItems();
 
-    // System.out.println(blueC + "||||||||||||||||||||||||||||||||||||||||||||||");
-    // System.out.println(blueC + "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
   }
 
   private Hero(HeroBuilder builder) {
@@ -237,11 +246,8 @@ public class Hero implements HeroCharacter, InventoryManager, EquipmentManager, 
 
     heroAttributes = heroType.init();
 
-    // Armor royalMail = new Armor.ArmorBuilder(Mail.ROYAL_MAIL).build();
-
     try {
       addToInventory(new Weapon.WeaponBuilder(heroType.starterWeapon).build());
-      // addToInventory(royalMail);
     } catch (InventoryException err) {
       System.out.println("This should never happen: " + err.getMessage());
     }

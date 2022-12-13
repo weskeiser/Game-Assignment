@@ -2,12 +2,11 @@ package Game.Items.Equipment.Armor;
 
 import java.util.EnumMap;
 
-import Game.GameCharacters.CharacterAttribute;
-import Game.Items.LootableItem;
+import Game.GameCharacters.Interfaces.CharacterAttribute;
 import Game.Items.Equipment.EquipmentSlot;
 import Game.Items.Equipment.Equippable;
 
-public class Armor implements Equippable, LootableItem {
+public class Armor implements Equippable {
   private ArmorItem armor;
   private EquipmentSlot equipmentSlot;
 
@@ -49,10 +48,6 @@ public class Armor implements Equippable, LootableItem {
   public void printLevelRequirement() {
     System.out.println(getLevelRequirement());
   }
-
-  // public void init() {
-
-  // }
 
   private Armor(ArmorBuilder builder) {
     this.armor = builder.armor;

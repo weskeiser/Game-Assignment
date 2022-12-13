@@ -16,6 +16,7 @@ public enum WeaponItem {
   private String name;
   private WeaponType weaponType;
   private String description;
+  private double weaponDamage;
 
   public int getLevelRequirement() {
     return levelRequirement;
@@ -30,26 +31,41 @@ public enum WeaponItem {
   }
 
   public double getDamageMultiplier() {
+    if (weaponDamage != 0)
+      return weaponDamage;
+
     if (levelRequirement < 5) {
-      return (double) levelRequirement / 10 + 1;
-
-    } else if (levelRequirement < 10) {
-      return (double) levelRequirement / 10 + 1.5;
-
-    } else if (levelRequirement < 15) {
-      return (double) levelRequirement / 10 + 2;
-
-    } else if (levelRequirement < 20) {
-      return (double) levelRequirement / 10 + 2.5;
-
-    } else if (levelRequirement < 25) {
-      return (double) levelRequirement / 10 + 3;
-
-    } else if (levelRequirement < 30) {
-      return (double) levelRequirement / 10 + 3.5;
+      weaponDamage = (double) levelRequirement / 10 + 1;
+      return weaponDamage;
     }
 
-    return (double) levelRequirement / 10 + 4;
+    if (levelRequirement < 10) {
+      weaponDamage = (double) levelRequirement / 10 + 1.5;
+      return weaponDamage;
+    }
+
+    if (levelRequirement < 15) {
+      weaponDamage = (double) levelRequirement / 10 + 2;
+      return weaponDamage;
+    }
+
+    if (levelRequirement < 20) {
+      weaponDamage = (double) levelRequirement / 10 + 2.5;
+      return weaponDamage;
+    }
+
+    if (levelRequirement < 25) {
+      weaponDamage = (double) levelRequirement / 10 + 3;
+      return weaponDamage;
+    }
+
+    if (levelRequirement < 30) {
+      weaponDamage = (double) levelRequirement / 10 + 3.5;
+      return weaponDamage;
+    }
+
+    weaponDamage = (double) levelRequirement / 10 + 4;
+    return weaponDamage;
   }
 
   public String getDescription() {

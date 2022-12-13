@@ -2,10 +2,9 @@ package GameController;
 
 import Game.Exceptions.InventoryException;
 import Game.Exceptions.LootException;
-import Game.GameCharacters.GameCharacter;
-import Game.GameCharacters.Remains;
 import Game.GameCharacters.Hero.Hero;
 import Game.GameCharacters.Hero.HeroType;
+import Game.GameCharacters.Interfaces.*;
 import Game.Items.Item;
 import Game.Items.LootableItem;
 
@@ -27,7 +26,7 @@ public class GameController {
     return new Hero.HeroBuilder(name, HeroType.MAGE).build();
   }
 
-  public void lootRemains(Remains remains, Hero looter, LootableItem lootItem) {
+  public void lootRemains(LootableRemains remains, Hero looter, LootableItem lootItem) {
     try {
       if (looter.getFreeInventorySlots() <= 0)
         throw new LootException(LootException.Messages.FULL_INVENTORY);
@@ -46,18 +45,26 @@ public class GameController {
     }
   }
 
-  public void combat(GameCharacter defender, GameCharacter attacker) {
+  public void combat(CombatManager defender, CombatManager attacker) {
     double maxHit = attacker.getMaxHit();
 
     // randomise actual hit
 
-    int actualHit = (int) maxHit;
+    double actualHit = maxHit;
 
-    if (attacker.getCharacterType() instanceof HeroType) {
-      ((Hero) attacker).gainExperience(actualHit);
+    if (((GameCharacter) attacker).getCharacterType() instanceof HeroType) {
+      ((Hero) attacker).gainExperience((int) actualHit);
     }
 
     defender.defend(maxHit, attacker);
+
+    if (defender.getHealth() <= 0) {
+      kill(defender);
+    }
   };
+
+  public void kill(CombatManager killed) {
+
+  }
 
 }

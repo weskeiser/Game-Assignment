@@ -7,9 +7,9 @@ import java.util.Map;
 
 import org.junit.Test;
 
-import Game.GameCharacters.CharacterAttribute;
 import Game.GameCharacters.Hero.Hero;
 import Game.GameCharacters.Hero.HeroType;
+import Game.GameCharacters.Interfaces.CharacterAttribute;
 
 public class LevelUpHeroTest {
   Hero warrior = new Hero.HeroBuilder("Hero TestName", HeroType.WARRIOR).build();

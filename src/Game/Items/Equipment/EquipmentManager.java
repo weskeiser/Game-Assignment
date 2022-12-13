@@ -15,6 +15,11 @@ import Game.Items.Equipment.Weapon.WeaponType;
 
 public interface EquipmentManager {
 
+  void equip(Equippable equipment) throws InvalidEquipmentException,
+      InventoryException;
+
+  void equip(int inventoryIndex) throws InvalidEquipmentException, InventoryException;
+
   default void equip(Equippable equipment,
       List<Item> inventory,
       EnumMap<EquipmentSlot, Equippable> equippedItems,
@@ -68,6 +73,8 @@ public interface EquipmentManager {
     }
   };
 
+  public void unEquip(EquipmentSlot equipmentSlot) throws InvalidEquipmentException, InventoryException;
+
   default void unEquip(EquipmentSlot equipmentSlot,
       EnumMap<EquipmentSlot, Equippable> equippedItems,
       List<Item> inventory)
@@ -93,4 +100,6 @@ public interface EquipmentManager {
 
     System.out.println(unEquipped.getName() + " was unequipped and added to the inventory.");
   };
+
+  Weapon getEquippedWeapon() throws InvalidEquipmentException;
 }
