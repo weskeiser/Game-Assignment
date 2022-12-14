@@ -4,11 +4,11 @@ import static org.junit.Assert.assertThrows;
 
 import org.junit.Test;
 
-import Components.Exceptions.InvalidEquipmentException;
-import Components.GameCharacters.Hero.Hero;
-import Components.GameCharacters.Hero.HeroType;
-import Components.Items.Equipment.Weapon.Weapon;
-import Components.Items.Equipment.Weapon.WeaponItem;
+import Game.Components.Exceptions.InvalidEquipmentException;
+import Game.Components.GameCharacters.Hero.Hero;
+import Game.Components.GameCharacters.Hero.HeroType;
+import Game.Components.Items.Equipment.Weapon.Weapon;
+import Game.Components.Items.Equipment.Weapon.WeaponItem;
 
 // NOTE: Inventory slot 0 is taken up by starter weapon.
 

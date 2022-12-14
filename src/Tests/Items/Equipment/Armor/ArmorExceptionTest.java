@@ -4,12 +4,12 @@ import static org.junit.Assert.assertThrows;
 
 import org.junit.Test;
 
-import Components.Exceptions.InvalidEquipmentException;
-import Components.GameCharacters.Hero.Hero;
-import Components.GameCharacters.Hero.HeroType;
-import Components.Items.Equipment.Armor.Armor;
-import Components.Items.Equipment.Armor.ArmorItems.Cloth;
-import Components.Items.Equipment.Armor.ArmorItems.Mail;
+import Game.Components.Exceptions.InvalidEquipmentException;
+import Game.Components.GameCharacters.Hero.Hero;
+import Game.Components.GameCharacters.Hero.HeroType;
+import Game.Components.Items.Equipment.Armor.Armor;
+import Game.Components.Items.Equipment.Armor.ArmorItems.Cloth;
+import Game.Components.Items.Equipment.Armor.ArmorItems.Mail;
 
 public class ArmorExceptionTest {
 
