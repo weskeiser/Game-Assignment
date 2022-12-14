@@ -1,6 +1,7 @@
 package Game.Components.Items.Equipment;
 
-import java.util.*;
+import java.util.EnumMap;
+import java.util.List;
 
 import Game.Components.Exceptions.InvalidEquipmentException;
 import Game.Components.Exceptions.InvalidEquipmentException.EquipmentErrMessages;
@@ -9,18 +10,17 @@ import Game.Components.Exceptions.InventoryException.InventoryErrMessages;
 import Game.Components.GameCharacters.Hero.HeroType;
 import Game.Components.Items.Item;
 import Game.Components.Items.Equipment.Armor.Armor;
-import Game.Components.Items.Equipment.Armor.ArmorType;
 import Game.Components.Items.Equipment.Weapon.Weapon;
-import Game.Components.Items.Equipment.Weapon.WeaponType;
 
 public interface EquipmentManager {
+  EnumMap<EquipmentSlot, Equippable> getEquippedItems();
 
-  public EnumMap<EquipmentSlot, Equippable> getEquippedItems();
+  Weapon getEquippedWeapon() throws InvalidEquipmentException;
+
+  void equip(int inventoryIndex) throws InvalidEquipmentException, InventoryException;
 
   void equip(Equippable equipment) throws InvalidEquipmentException,
       InventoryException;
-
-  void equip(int inventoryIndex) throws InvalidEquipmentException, InventoryException;
 
   default void equip(Equippable equipment,
       List<Item> inventory,
@@ -37,42 +37,19 @@ public interface EquipmentManager {
       throw new InvalidEquipmentException(EquipmentErrMessages.LEVEL_REQUIREMENT);
     }
 
-    switch (equipment.getEquipmentSlot()) {
-      case WEAPON:
-        if (!((EnumSet<WeaponType>) heroType.getValidWeaponTypes()).contains(equipment.getEquipmentType())) {
-          throw new InvalidEquipmentException(EquipmentErrMessages.WRONG_TYPE);
-        }
-
-        try {
-          unEquip(EquipmentSlot.WEAPON, equippedItems, inventory);
-        } catch (InvalidEquipmentException err) {
-          // TODO
-          // Just unequips current weapon if existing. Can maybe handle extraordinary
-          // events?
-        }
-
-        equippedItems.put(EquipmentSlot.WEAPON, (Weapon) equipment);
-
-        System.out.println("You equip a " + equipment.getName() + " from your inventory.");
-
-        break;
-
-      // All armor slots
-      default:
-        if (!((EnumSet<ArmorType>) heroType.getValidArmorTypes()).contains(equipment.getEquipmentType())) {
-          throw new InvalidEquipmentException(EquipmentErrMessages.WRONG_TYPE);
-        }
-
-        try {
-          unEquip(equipment.getEquipmentSlot(), equippedItems, inventory);
-        } catch (InvalidEquipmentException err) {
-          // TODO
-          // Just unequips current weapon if existing. Can maybe handle extraordinary
-          // events?
-        }
-
-        equippedItems.put(equipment.getEquipmentSlot(), (Armor) equipment);
+    if (!(heroType.getValidArmorTypes()).contains(equipment.getEquipmentType())) {
+      throw new InvalidEquipmentException(EquipmentErrMessages.WRONG_TYPE);
     }
+
+    try {
+      unEquip(equipment.getEquipmentSlot());
+    } catch (InvalidEquipmentException err) {
+      if (err.getMessage() != EquipmentErrMessages.SLOT_EMPTY.msg()) {
+        System.out.println(err);
+      }
+    }
+
+    equippedItems.put(equipment.getEquipmentSlot(), equipment);
   };
 
   public void unEquip(EquipmentSlot equipmentSlot) throws InvalidEquipmentException, InventoryException;
@@ -103,5 +80,4 @@ public interface EquipmentManager {
     System.out.println(unEquipped.getName() + " was unequipped and added to the inventory.");
   };
 
-  Weapon getEquippedWeapon() throws InvalidEquipmentException;
 }

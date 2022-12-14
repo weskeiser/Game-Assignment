@@ -30,10 +30,9 @@ public class Hero
   // Combat
   private int attackCooldown = 0;
   private Attacker defeatedBy = null;
-
-  // Items
   private List<Remains> lootableRemains = new ArrayList<>();
 
+  // Items
   private List<Item> inventory = new ArrayList<Item>(15);
   private EnumMap<EquipmentSlot, Equippable> equippedItems = new EnumMap<>(EquipmentSlot.class);
 
@@ -48,6 +47,11 @@ public class Hero
   }
 
   @Override
+  public double getHealth() {
+    return health;
+  }
+
+  @Override
   public CharacterType getCharacterType() {
     return heroType;
   }
@@ -57,7 +61,12 @@ public class Hero
     return heroAttributes;
   }
 
-  // Combat related
+  // Combat related: Attacks
+  @Override
+  public double getMaxHit() {
+    return getMaxHit(this);
+  }
+
   @Override
   public CharacterAttribute getDamagingAttribute() {
     return heroType.getDamagingAttribute();
@@ -90,43 +99,12 @@ public class Hero
     return false;
   }
 
-  // Strip self of valuables and surrender them
-  @Override
-  public Remains surrenderValuables() {
-
-    List<Item> loot = new ArrayList<>();
-
-    equippedItems.values().forEach((item) -> loot.add((Item) item));
-    inventory.forEach((item) -> loot.add((Item) item));
-
-    equippedItems.clear();
-    inventory.clear();
-
-    return new Remains(loot, defeatedBy);
-  }
-
   @Override
   public void receiveLootAccess(Remains remains) {
     lootableRemains.add(remains);
   }
 
-  @Override
-  public void receiveFinalBlow(Attacker defeator) {
-    health = 0;
-    defeatedBy = defeator;
-  }
-
-  @Override
-  public double getHealth() {
-    return health;
-  }
-
-  @Override
-  public double getMaxHit() {
-    return getMaxHit(this);
-  }
-
-  // Returns false if fatal hit
+  // Combat related: Defense
   @Override
   public boolean takeDamage(int damage, Attacker foe) {
     health = health - damage;
@@ -140,7 +118,13 @@ public class Hero
   };
 
   @Override
-  public boolean defend(double hit, CharacterAttribute attackAttribute) {
+  public void receiveFinalBlow(Attacker defeator) {
+    health = 0;
+    defeatedBy = defeator;
+  }
+
+  @Override
+  public boolean defend(CharacterAttribute attackAttribute) {
     int deflectionChance = getDefensiveAttributes().get(attackAttribute);
 
     int roll100 = new Random().nextInt(100) + 1;
@@ -152,6 +136,20 @@ public class Hero
 
     return deflected;
   };
+
+  @Override
+  public Remains surrenderValuables() {
+
+    List<Item> loot = new ArrayList<>();
+
+    equippedItems.values().forEach(loot::add);
+    inventory.forEach(loot::add);
+
+    equippedItems.clear();
+    inventory.clear();
+
+    return new Remains(loot, defeatedBy);
+  }
 
   // Item related
   @Override
@@ -241,22 +239,7 @@ public class Hero
 
     EnumMap<CharacterAttribute, Integer> levelingAttributes = heroType.getLevelingAttributes();
 
-    int strength = levelingAttributes.get(CharacterAttribute.STRENGTH);
-    int dexterity = levelingAttributes.get(CharacterAttribute.DEXTERITY);
-    int intelligence = levelingAttributes.get(CharacterAttribute.INTELLIGENCE);
-
-    heroAttributes.replaceAll((k, v) -> {
-      switch (k) {
-        case STRENGTH:
-          return v + strength;
-        case DEXTERITY:
-          return v + dexterity;
-        case INTELLIGENCE:
-          return v + intelligence;
-        default:
-          return v;
-      }
-    });
+    heroAttributes.replaceAll((heroAttribute, value) -> value + levelingAttributes.get(heroAttribute));
 
     health = health + 2;
     level++;

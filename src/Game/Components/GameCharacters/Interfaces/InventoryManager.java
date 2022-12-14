@@ -27,6 +27,8 @@ public interface InventoryManager {
     }
   };
 
+  Item findInventoryItem(int index) throws InventoryException;
+
   default boolean removeFromInventory(List<Item> inventory, Item item) throws InventoryException {
     if (!inventory.remove(item))
       throw new InventoryException(InventoryErrMessages.NOT_FOUND);
@@ -35,7 +37,5 @@ public interface InventoryManager {
   };
 
   int getFreeInventorySlots();
-
-  Item findInventoryItem(int index) throws InventoryException;
 
 }

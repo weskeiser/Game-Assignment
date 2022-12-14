@@ -11,12 +11,9 @@ public enum Cloth implements ArmorItem {
   IRONED_ROBE_TOP() {
     public void init() {
       name = "Ironed robe top";
-      description = "Straight off your mothers ironing table.";
+      description = "Straight off your mothers ironing board.";
       levelRequirement = 1;
-      armorType = ArmorType.CLOTH;
       equipmentSlot = EquipmentSlot.TORSO;
-      armorAttributes = armorType.getBaseArmorAttributes();
-      applyArmorAttributeMultiplier();
     }
   },
 
@@ -25,19 +22,21 @@ public enum Cloth implements ArmorItem {
       name = "Wrinkly robe bottoms";
       description = "No time for ironing.";
       levelRequirement = 11;
-      armorType = ArmorType.CLOTH;
       equipmentSlot = EquipmentSlot.LEGS;
-      armorAttributes = armorType.getBaseArmorAttributes();
-      applyArmorAttributeMultiplier();
     }
   };
 
+  Cloth() {
+    init();
+    setArmorAttributes();
+  }
+
   String name;
-  int levelRequirement;
-  ArmorType armorType;
   String description;
+  int levelRequirement;
+  ArmorType armorType = ArmorType.CLOTH;
   EquipmentSlot equipmentSlot;
-  EnumMap<CharacterAttribute, Integer> armorAttributes;
+  EnumMap<CharacterAttribute, Integer> armorAttributes = new EnumMap<>(CharacterAttribute.class);
   // TODO: Make all armorAttributes enum maps double instead of integer
 
   public EnumMap<CharacterAttribute, Integer> getArmorAttributes() {
@@ -64,17 +63,7 @@ public enum Cloth implements ArmorItem {
     return description;
   }
 
-  // double multiplier;
-  // void setMultiplier() {
-  // multiplier = levelRequirement
-  // }
-
-  void applyArmorAttributeMultiplier() {
-    armorAttributes.put(CharacterAttribute.STRENGTH,
-        (1 + armorAttributes.get(CharacterAttribute.STRENGTH) / 100) * (levelRequirement / 10 + 1));
-    armorAttributes.put(CharacterAttribute.DEXTERITY,
-        (1 + armorAttributes.get(CharacterAttribute.DEXTERITY) / 100) * (levelRequirement / 10 + 1));
-    armorAttributes.put(CharacterAttribute.INTELLIGENCE,
-        (1 + armorAttributes.get(CharacterAttribute.INTELLIGENCE) / 100) * (levelRequirement / 10 + 1));
+  void setArmorAttributes() {
+    setArmorAttributes(armorType, armorAttributes, levelRequirement);
   }
 }

@@ -17,9 +17,9 @@ public class Game {
 
     CombatAction combatTasks = new CombatAction.CombatTasksBuilder().build();
 
-    Timer timer = new Timer();
+    Timer gameTimer = new Timer();
 
-    timer.scheduleAtFixedRate(combatTasks, 0, 250);
+    gameTimer.scheduleAtFixedRate(combatTasks, 0, 250);
 
     Hero troll = gameController.newMage("Troll");
     Hero rogie = gameController.newRogue("Rogie");

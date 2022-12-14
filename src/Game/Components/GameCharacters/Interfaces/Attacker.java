@@ -23,11 +23,9 @@ public interface Attacker {
   double getMaxHit();
 
   default double getMaxHit(Attacker attacker) {
-
     double weaponDamage = 1;
 
     try {
-
       Weapon equippedWeapon = ((EquipmentManager) attacker).getEquippedWeapon();
 
       weaponDamage = equippedWeapon.getDamageMultiplier();
@@ -37,8 +35,6 @@ public interface Attacker {
 
     int strengthAttribute = ((AttributeManager) attacker).getCharacterAttributes().get(CharacterAttribute.STRENGTH);
 
-    System.out.println("Calculated maxHit: " + weaponDamage * (1 +
-        strengthAttribute / 100));
     return weaponDamage * (1 + strengthAttribute / 100);
   }
 

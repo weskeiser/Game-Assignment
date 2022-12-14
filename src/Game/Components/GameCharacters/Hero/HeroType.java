@@ -79,6 +79,7 @@ public enum HeroType implements CharacterType, HeroInitiator {
   }
 
   public EnumMap<CharacterAttribute, Integer> createAttributeMap(int strength, int dexterity, int intelligence) {
+
     EnumMap<CharacterAttribute, Integer> attributeMap = new EnumMap<>(CharacterAttribute.class);
     attributeMap.put(CharacterAttribute.STRENGTH, strength);
     attributeMap.put(CharacterAttribute.DEXTERITY, dexterity);

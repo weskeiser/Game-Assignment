@@ -25,7 +25,7 @@ public class CombatAction extends TimerTask implements CombatTask {
     // Randomise hit
     double firstRoll = (Math.random() * (max - min)) + min;
 
-    // If upper 25%, roll again. To make higher hits special.
+    // If upper 25%, roll again. Makes high hits more special.
     if ((firstRoll > max * 0.75)) {
       return (Math.random() * (max - min)) + min;
     }
@@ -34,20 +34,24 @@ public class CombatAction extends TimerTask implements CombatTask {
   }
 
   public void performAttack(Attacker attacker, Defender defender) {
+    // Attacker -> Return if attacker is on cooldown
+    if (attacker.decrementIfAttackCooldown())
+      return;
+
     // Attacker -> Set attack cooldown
     attacker.setAttackCooldown(GAME_TICKS - attacker.getAttackSpeed());
-
-    // Attacker -> Get max hit and randomise it
-    double maxHit = attacker.getMaxHit();
-    double randomisedHit = randomiseHit(0, maxHit);
 
     // Attacker -> Get attack type
     CharacterAttribute attackAttribute = attacker.getDamagingAttribute();
 
     // Defender -> Attempt to deflect, cancel attack if success
-    boolean deflected = defender.defend(randomisedHit, attackAttribute);
+    boolean deflected = defender.defend(attackAttribute);
     if (deflected)
       return;
+
+    // Attacker -> Get max hit and randomise it
+    double maxHit = attacker.getMaxHit();
+    double randomisedHit = randomiseHit(0, maxHit);
 
     // Defender -> Take damage
     boolean alive = defender.takeDamage((int) randomisedHit, attacker);
@@ -67,14 +71,9 @@ public class CombatAction extends TimerTask implements CombatTask {
   }
 
   public void run() {
-    engagements.forEach((attacker, defender) -> {
-      if (!attacker.decrementIfAttackCooldown())
-        performAttack(attacker, defender);
-    });
+    engagements.forEach(this::performAttack);
 
-    fatalities.forEach((attacker, defender) -> {
-      disengageAttack(attacker, defender);
-    });
+    fatalities.forEach(this::disengageAttack);
   }
 
   private CombatAction(CombatTasksBuilder builder) {

@@ -51,7 +51,7 @@ public class Armor implements Equippable {
 
   private Armor(ArmorBuilder builder) {
     this.armor = builder.armor;
-    armor.init();
+    // armor.init();
     this.equipmentSlot = armor.getEquipmentSlot();
   }
 

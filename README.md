@@ -21,24 +21,46 @@ The `JAVA PROJECTS` view allows you to manage your dependencies. More details ca
 - Maximum 15% deflection chance per attribute per piece (Head, Torso, Legs)
 - Different armor types have different base attributes that act as a multiplier in an algorithm with with armor level requirement to provide protection against attributes of same type when attacked
 - Armor can also invoke special effects
-- The task stipulates the getArmorAttributes method belongs to equipment manager. However as the equipment manager is implementd by game characters, I saw it redundant feature, since game characters already have a method to get total attributes and the method would have no practical use. The getArmorAttributes method is instead located at each individual armor type, where it logically belongs.
 
 Combat:
 
-1. Max hit of attacker is calculated
-2. Whether defender deflected the attack is calculated
-3. Damage is randomised
+1. Whether defender deflected the attack is determined
+2. Max hit of attacker is calculated
+3. Damage is randomised\*
 4. Defender takes damage
 5. Attacker gains experience if not NPC
 
-I have altered the implementation of some of the hard requirements under the assumption they will only draw points if they no longer implement the requested feature or that they are a measurably worse implementation.
+I have altered the implementation of some of the hard requirements under the assumption they will only draw points if they no longer implement the spirit of the requested feature or that they are a measurably worse implementation.
 
-Some of the requirements from the default approach are negated by the specifications of the alternative approach.
+Some of the requirements from the default approach are negated by the specifications of the alternative approach (Appendix D, point 2).
+
+---
+
+Notes on modifications
+
+Hero damage has contradictory specifications
+In point 2) is the following specification:
+• Strength – determines the physical strength of the character.
+• Dexterity – determines the characters ability to attack with speed and nimbleness.
+• Intelligence – determines the characters affinity with magic.
+In point 5.2) is the following specification:
+Each hero class has a damaging attribute which contributes to their total damage:
+• Warrior – damage increased by total strength
+• Mage – damage increased by total intelligence
+• Ranger – damage increased by total dexterity
+• Rogue – damage increased by total dexterity
+To make a balanced combat system I have made base damage calculations depend only on the strength attribute out of the three, allowing the strength of the character to be determined by it.
+The attack speed (tick penalty when performing an attack), relies on the dexterity attribute out of the three, allowing the characters' ability to attack with speed and nimbleness be determined by it.
+Affinity with magic to be determined. Spells probably.
 
 TotalAttributes have contradictory specifications.
 In point 5.1) it says total attributes is the sum of levelling attributes and armor attributes.
 In point 5.2) is a note stating damaging attribute can be calculated from TotalAttributes, implying total attributes contains, logically, all hero attributes.
-I have went with the solution of totalAttributes, renamed defensiveAttributes, representing total worn armorAttributes, with a custom defenses calculation model laid out in \*\*\*\*. And leaving leveling attributes to their intuitive domain; providing the amount by which their attributes gain levels.
+I have went with the solution of totalAttributes, renamed defensiveAttributes, representing total worn armorAttributes, with a custom defenses calculation model laid out in \*\*\*\*. And leaving leveling attributes to their intuitive domain; representing the amount by which their attributes gain levels.
+
+The task stipulates the getArmorAttributes method belongs to equipment manager. However as the equipment manager is implementd by game characters, I saw it redundant feature, since game characters already have a method to get total attributes and the method would have no practical use. The getArmorAttributes method is instead located at each individual armor type, where it in this implementation logically belongs.
+
+---
 
 Hard requirements:
 
@@ -70,9 +92,9 @@ Hard requirements:
 
 - Hero
   Abstract Hero class to encapsulate all shared functionality. Methods with default implementation can be defined here to be overridden in child classes. If there is no default implementation for a method, make it abstract to be implemented in a child class.
-  Interact with Hero class to satisfy Liscov SP.
   \*\*\*\* negated by specifications in alternative approach
-  Heroes start with different attributes and level up at different rates specified in assignment
+  Interact with Hero class to satisfy Liscov SP.
+  Heroes start with different attributes and level up at different rates as specified
 
 - Display
   • Name

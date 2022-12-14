@@ -1,7 +1,6 @@
 package Game.Components.Items.Equipment.Armor.ArmorItems;
 
 import java.util.EnumMap;
-import java.util.Map;
 
 import Game.Components.GameCharacters.Interfaces.CharacterAttribute;
 import Game.Components.Items.Equipment.EquipmentSlot;
@@ -15,7 +14,6 @@ public enum Mail implements ArmorItem {
       description = "A chainhood made of steel.";
       levelRequirement = 14;
       equipmentSlot = EquipmentSlot.HEAD;
-      setArmorAttributes();
     }
   },
 
@@ -25,7 +23,6 @@ public enum Mail implements ArmorItem {
       description = "The chain has peculiarly large holes..";
       levelRequirement = 6;
       equipmentSlot = EquipmentSlot.TORSO;
-      setArmorAttributes();
     }
   },
 
@@ -35,17 +32,20 @@ public enum Mail implements ArmorItem {
       description = "This piece of armor arrived by post.";
       levelRequirement = 22;
       equipmentSlot = EquipmentSlot.TORSO;
-      setArmorAttributes();
     }
   };
+
+  Mail() {
+    init();
+    setArmorAttributes();
+  }
 
   String name;
   String description;
   int levelRequirement;
   ArmorType armorType = ArmorType.MAIL;
   EquipmentSlot equipmentSlot;
-  EnumMap<CharacterAttribute, Integer> armorAttributes;
-  // TODO: Make all armorAttributes enum maps double instead of integer
+  EnumMap<CharacterAttribute, Integer> armorAttributes = new EnumMap<>(CharacterAttribute.class);
 
   public EnumMap<CharacterAttribute, Integer> getArmorAttributes() {
     return armorAttributes;
@@ -72,23 +72,7 @@ public enum Mail implements ArmorItem {
   }
 
   void setArmorAttributes() {
-    EnumMap<CharacterAttribute, Integer> baseArmorAttributes = armorType.getBaseArmorAttributes();
-
-    armorAttributes = new EnumMap<>(Map.ofEntries(
-
-        Map.entry(CharacterAttribute.STRENGTH,
-
-            (int) ((double) baseArmorAttributes.get(CharacterAttribute.STRENGTH)
-                * ((double) levelRequirement / 20))),
-
-        Map.entry(CharacterAttribute.DEXTERITY,
-
-            (int) ((double) baseArmorAttributes.get(CharacterAttribute.DEXTERITY)
-                * ((double) levelRequirement / 20))),
-
-        Map.entry(CharacterAttribute.INTELLIGENCE,
-
-            (int) ((double) baseArmorAttributes.get(CharacterAttribute.INTELLIGENCE)
-                * ((double) levelRequirement / 20)))));
+    setArmorAttributes(armorType, armorAttributes, levelRequirement);
   }
+
 }

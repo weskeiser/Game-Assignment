@@ -10,7 +10,7 @@ public interface Defender {
 
   double getHealth();
 
-  boolean defend(double hit, CharacterAttribute attackType);
+  boolean defend(CharacterAttribute attackType);
 
   boolean takeDamage(int damage, Attacker foe);
 
