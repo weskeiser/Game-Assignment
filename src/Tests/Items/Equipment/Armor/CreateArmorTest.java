@@ -9,10 +9,10 @@ import java.util.Map;
 import org.junit.After;
 import org.junit.Test;
 
-import Game.GameCharacters.Interfaces.CharacterAttribute;
-import Game.Items.Equipment.EquipmentSlot;
-import Game.Items.Equipment.Armor.*;
-import Game.Items.Equipment.Armor.ArmorItems.Mail;
+import Components.GameCharacters.Interfaces.CharacterAttribute;
+import Components.Items.Equipment.EquipmentSlot;
+import Components.Items.Equipment.Armor.*;
+import Components.Items.Equipment.Armor.ArmorItems.Mail;
 
 public class CreateArmorTest {
   // Expected constants

@@ -7,11 +7,11 @@ import java.util.Map;
 
 import org.junit.*;
 
-import Game.GameCharacters.Hero.Hero;
-import Game.GameCharacters.Hero.HeroType;
-import Game.GameCharacters.Interfaces.CharacterAttribute;
-import Game.Items.Equipment.Armor.Armor;
-import Game.Items.Equipment.Armor.ArmorItems.Mail;
+import Components.GameCharacters.Hero.Hero;
+import Components.GameCharacters.Hero.HeroType;
+import Components.GameCharacters.Interfaces.CharacterAttribute;
+import Components.Items.Equipment.Armor.Armor;
+import Components.Items.Equipment.Armor.ArmorItems.Mail;
 
 public class DefensiveAttributesTest {
   Hero warrior = new Hero.HeroBuilder("Hero TestName", HeroType.WARRIOR).build();

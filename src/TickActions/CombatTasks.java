@@ -2,8 +2,8 @@ package TickActions;
 
 import java.util.*;
 
-import Game.GameCharacters.Hero.HeroType;
-import Game.GameCharacters.Interfaces.*;
+import Components.GameCharacters.Hero.HeroType;
+import Components.GameCharacters.Interfaces.*;
 
 public class CombatTasks extends TimerTask implements CombatActions {
 
@@ -32,7 +32,10 @@ public class CombatTasks extends TimerTask implements CombatActions {
   }
 
   public void performAttack(Attacker attacker, Defender defender) {
-    attacker.setAttackCooldown(8);
+    System.out.println();
+    System.out.println(attacker.getAttackSpeed());
+    System.out.println();
+    attacker.setAttackCooldown(GAME_TICKS - attacker.getAttackSpeed());
 
     double maxHit = attacker.getMaxHit();
     System.out.println(maxHit);
@@ -59,8 +62,6 @@ public class CombatTasks extends TimerTask implements CombatActions {
   }
 
   public void run() {
-    System.out.println("hi");
-
     engagements.forEach((attacker, defender) -> {
       if (!attacker.decrementIfAttackCooldown())
         performAttack(attacker, defender);

@@ -1,9 +1,10 @@
 package TickActions;
 
-import Game.GameCharacters.Interfaces.Attacker;
-import Game.GameCharacters.Interfaces.Defender;
+import Components.GameCharacters.Interfaces.Attacker;
+import Components.GameCharacters.Interfaces.Defender;
 
-public interface CombatActions {
+public interface CombatActions extends GameActions {
+
   void newAttack(Attacker attacker, Defender defender);
 
   void disengageAttack(Attacker attacker, Defender defender);

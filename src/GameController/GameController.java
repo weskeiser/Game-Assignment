@@ -1,11 +1,11 @@
 package GameController;
 
-import Game.Exceptions.InventoryException;
-import Game.Exceptions.LootException;
-import Game.GameCharacters.Hero.Hero;
-import Game.GameCharacters.Hero.HeroType;
-import Game.GameCharacters.Interfaces.LootableRemains;
-import Game.Items.Item;
+import Components.Exceptions.InventoryException;
+import Components.Exceptions.LootException;
+import Components.GameCharacters.Hero.Hero;
+import Components.GameCharacters.Hero.HeroType;
+import Components.GameCharacters.Interfaces.LootableRemains;
+import Components.Items.Item;
 
 public class GameController {
 

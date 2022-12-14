@@ -1,8 +1,8 @@
 import java.util.*;
 
-import Game.GameCharacters.Hero.Hero;
-import Game.GameCharacters.Interfaces.GameCharacter;
-import Game.GameCharacters.Remains.Remains;
+import Components.GameCharacters.Hero.Hero;
+import Components.GameCharacters.Interfaces.GameCharacter;
+import Components.GameCharacters.Remains.Remains;
 import GameController.GameController;
 import TickActions.CombatTasks;
 
@@ -15,66 +15,111 @@ public class App {
 
         Timer timer = new Timer();
 
-        timer.scheduleAtFixedRate(combatTasks, 0, 250);
-
-        // combatTasks.run();
-
-        //
+        timer.scheduleAtFixedRate(combatTasks, 0, GAME_TICK_LENGTH);
 
         Hero troll = gameController.newMage("Troll");
         Hero rogie = gameController.newRogue("Rogie");
+        Hero rangie = gameController.newRanger("Rangie");
 
-        troll.levelUp();
-        troll.levelUp();
-        troll.levelUp();
-        troll.levelUp();
-        troll.levelUp();
-        troll.levelUp();
-        troll.levelUp();
-        troll.levelUp();
-        troll.levelUp();
-        troll.levelUp();
-        troll.levelUp();
-        troll.levelUp();
-        troll.levelUp();
-        troll.levelUp();
-        troll.levelUp();
-        troll.levelUp();
-        troll.levelUp();
-        troll.levelUp();
-        troll.levelUp();
-        troll.levelUp();
-        troll.levelUp();
-        troll.levelUp();
-        troll.levelUp();
-        troll.levelUp();
-        troll.levelUp();
-        troll.levelUp();
-        troll.levelUp();
-        troll.levelUp();
-        troll.levelUp();
-        troll.levelUp();
-        troll.levelUp();
-        troll.levelUp();
-        troll.levelUp();
-        troll.levelUp();
-        troll.levelUp();
-        troll.levelUp();
-        troll.levelUp();
-        troll.levelUp();
-        troll.levelUp();
-        troll.levelUp();
-        troll.levelUp();
-        troll.levelUp();
-        troll.levelUp();
-        troll.levelUp();
-        troll.levelUp();
-        troll.levelUp();
-        troll.levelUp();
-        troll.levelUp();
-        troll.levelUp();
-        troll.levelUp();
-        troll.levelUp();
+        rangie.levelUp();
+        rangie.levelUp();
+        rangie.levelUp();
+        rangie.levelUp();
+        rangie.levelUp();
+        rangie.levelUp();
+        rangie.levelUp();
+        rangie.levelUp();
+        rangie.levelUp();
+        rangie.levelUp();
+        rangie.levelUp();
+        rangie.levelUp();
+        rangie.levelUp();
+        rangie.levelUp();
+        rangie.levelUp();
+        rangie.levelUp();
+        rangie.levelUp();
+        rangie.levelUp();
+        rangie.levelUp();
+        rangie.levelUp();
+        rangie.levelUp();
+        rangie.levelUp();
+        rangie.levelUp();
+        rangie.levelUp();
+        rangie.levelUp();
+        rangie.levelUp();
+        rangie.levelUp();
+        rangie.levelUp();
+        rangie.levelUp();
+        rangie.levelUp();
+        rangie.levelUp();
+        rangie.levelUp();
+        rangie.levelUp();
+        rangie.levelUp();
+        rangie.levelUp();
+        rangie.levelUp();
+        rangie.levelUp();
+        rangie.levelUp();
+        rangie.levelUp();
+        rangie.levelUp();
+        rangie.levelUp();
+        rangie.levelUp();
+        rangie.levelUp();
+        rangie.levelUp();
+        rangie.levelUp();
+        rangie.levelUp();
+        rangie.levelUp();
+        rangie.levelUp();
+        rangie.levelUp();
+        rangie.levelUp();
+        rangie.levelUp();
+        rangie.levelUp();
+        rangie.levelUp();
+        rangie.levelUp();
+        rangie.levelUp();
+        rangie.levelUp();
+        rangie.levelUp();
+        rangie.levelUp();
+        rangie.levelUp();
+        rangie.levelUp();
+        rangie.levelUp();
+        rangie.levelUp();
+        rangie.levelUp();
+        rangie.levelUp();
+        rangie.levelUp();
+        rangie.levelUp();
+        rangie.levelUp();
+        rangie.levelUp();
+        rangie.levelUp();
+        rangie.levelUp();
+        rangie.levelUp();
+        rangie.levelUp();
+        rangie.levelUp();
+        rangie.levelUp();
+        rangie.levelUp();
+        rangie.levelUp();
+        rangie.levelUp();
+        rangie.levelUp();
+        rangie.levelUp();
+        rangie.levelUp();
+        rangie.levelUp();
+        rangie.levelUp();
+        rangie.levelUp();
+        rangie.levelUp();
+        rangie.levelUp();
+        rangie.levelUp();
+        rangie.levelUp();
+        rangie.levelUp();
+        rangie.levelUp();
+        rangie.levelUp();
+        rangie.levelUp();
+        rangie.levelUp();
+        rangie.levelUp();
+        rangie.levelUp();
+        rangie.levelUp();
+        rangie.levelUp();
+        rangie.levelUp();
+        rangie.levelUp();
+        rangie.levelUp();
 
         try {
             troll.equip(0);
@@ -82,10 +127,8 @@ public class App {
             System.out.println(err);
         }
 
-        troll.display();
-
         combatTasks.newAttack(troll, rogie);
 
-        // troll.display();
+        // rangie.display();
     }
 }

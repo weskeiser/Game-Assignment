@@ -6,8 +6,8 @@ import static org.junit.Assert.assertNotEquals;
 import org.junit.After;
 import org.junit.Test;
 
-import Game.Items.Equipment.EquipmentSlot;
-import Game.Items.Equipment.Weapon.*;
+import Components.Items.Equipment.EquipmentSlot;
+import Components.Items.Equipment.Weapon.*;
 
 public class CreateWeaponTest {
   // String weaponName = "Crooked bow";
