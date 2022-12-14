@@ -1,9 +1,10 @@
-package Game.GameActions;
+package Game.GameAction.Combat;
 
 import Game.Components.GameCharacters.Interfaces.Attacker;
 import Game.Components.GameCharacters.Interfaces.Defender;
+import Game.GameAction.GameTask;
 
-public interface CombatActions extends GameActions {
+public interface CombatTask extends GameTask {
 
   void newAttack(Attacker attacker, Defender defender);
 

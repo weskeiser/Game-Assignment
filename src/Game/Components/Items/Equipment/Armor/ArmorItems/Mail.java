@@ -22,7 +22,7 @@ public enum Mail implements ArmorItem {
   HOLY_CHAIN_HOOD() {
     public void init() {
       name = "Holy chain hood";
-      description = "This chain has peculiarly large holes..";
+      description = "The chain has peculiarly large holes..";
       levelRequirement = 6;
       equipmentSlot = EquipmentSlot.TORSO;
       setArmorAttributes();

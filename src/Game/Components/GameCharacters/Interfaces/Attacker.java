@@ -6,11 +6,13 @@ import Game.Components.Items.Equipment.EquipmentManager;
 import Game.Components.Items.Equipment.Weapon.Weapon;
 
 public interface Attacker {
-  CharacterAttribute getCurrentAttackType();
+  public CharacterAttribute getDamagingAttribute();
+
+  int getAttackCooldown();
 
   void gainExperience(double expGain);
 
-  void addRemains(Remains remains);
+  void receiveLootAccess(Remains remains);
 
   void setAttackCooldown(int ticks);
 

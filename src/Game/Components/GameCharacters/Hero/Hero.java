@@ -19,26 +19,49 @@ public class Hero
 
   private String name;
   private HeroType heroType;
+
+  // Levels
+  private int level = 1;
+  private double health = 10;
   private double experience = 0;
   private double experienceToLevel = 10;
-  private int level = 1;
   private EnumMap<CharacterAttribute, Integer> heroAttributes;
-  private List<Item> inventory = new ArrayList<Item>(15);
 
-  private double health = 10;
+  // Combat
   private int attackCooldown = 0;
-
   private Attacker defeatedBy = null;
-  private List<Remains> lootableRemains = new ArrayList<>();
-  private CharacterAttribute currentAttackType = CharacterAttribute.STRENGTH;
 
+  // Items
+  private List<Remains> lootableRemains = new ArrayList<>();
+
+  private List<Item> inventory = new ArrayList<Item>(15);
   private EnumMap<EquipmentSlot, Equippable> equippedItems = new EnumMap<>(EquipmentSlot.class);
 
   @Override
-  public CharacterAttribute getCurrentAttackType() {
-    return currentAttackType;
+  public String getName() {
+    return name;
+  }
 
-  };
+  @Override
+  public int getLevel() {
+    return level;
+  }
+
+  @Override
+  public CharacterType getCharacterType() {
+    return heroType;
+  }
+
+  @Override
+  public EnumMap<CharacterAttribute, Integer> getCharacterAttributes() {
+    return heroAttributes;
+  }
+
+  // Combat related
+  @Override
+  public CharacterAttribute getDamagingAttribute() {
+    return heroType.getDamagingAttribute();
+  }
 
   @Override
   public int getAttackSpeed() {
@@ -47,6 +70,7 @@ public class Hero
     return dexterityAttribute / 100;
   }
 
+  @Override
   public int getAttackCooldown() {
     return attackCooldown;
   }
@@ -66,13 +90,9 @@ public class Hero
     return false;
   }
 
+  // Strip self of valuables and surrender them
   @Override
-  public EnumMap<EquipmentSlot, Equippable> getEquippedItems() {
-    return equippedItems;
-  }
-
-  @Override
-  public Remains getRemains() {
+  public Remains surrenderValuables() {
 
     List<Item> loot = new ArrayList<>();
 
@@ -86,51 +106,8 @@ public class Hero
   }
 
   @Override
-  public void addRemains(Remains remains) {
+  public void receiveLootAccess(Remains remains) {
     lootableRemains.add(remains);
-  }
-
-  @Override
-  public Item findInventoryItem(int index) throws InventoryException {
-
-    try {
-      return inventory.get(index);
-    } catch (IndexOutOfBoundsException err) {
-      throw new InventoryException(InventoryErrMessages.NOT_FOUND);
-    }
-  }
-
-  @Override
-  public EnumMap<CharacterAttribute, Integer> getDefensiveAttributes() {
-
-    return getDefensiveAttributes(equippedItems);
-  }
-
-  @Override
-  public Weapon getEquippedWeapon() throws InvalidEquipmentException {
-
-    Weapon equippedWeapon = (Weapon) equippedItems.get(EquipmentSlot.WEAPON);
-
-    if (equippedWeapon == null) {
-      throw new InvalidEquipmentException(EquipmentErrMessages.NO_WEAPON);
-    }
-
-    return equippedWeapon;
-  }
-
-  @Override
-  public void gainExperience(double expGain) {
-
-    experience += expGain;
-
-    if (experience >= experienceToLevel) {
-
-      levelUp();
-
-      double difference = experience - experienceToLevel;
-
-      experienceToLevel = (experienceToLevel * 1.5) + difference;
-    }
   }
 
   @Override
@@ -163,23 +140,100 @@ public class Hero
   };
 
   @Override
-  public boolean defend(double hit, CharacterAttribute attackType) {
-    int deflectionChance = getDefensiveAttributes().get(attackType);
+  public boolean defend(double hit, CharacterAttribute attackAttribute) {
+    int deflectionChance = getDefensiveAttributes().get(attackAttribute);
 
-    Random random = new Random();
-    int randomRoll = random.nextInt(100) + 1;
+    int roll100 = new Random().nextInt(100) + 1;
 
     boolean deflected = false;
 
-    if (deflectionChance >= randomRoll)
+    if (deflectionChance >= roll100)
       deflected = true;
 
     return deflected;
   };
 
+  // Item related
   @Override
-  public CharacterType getCharacterType() {
-    return heroType;
+  public Item findInventoryItem(int index) throws InventoryException {
+
+    try {
+      return inventory.get(index);
+    } catch (IndexOutOfBoundsException err) {
+      throw new InventoryException(InventoryErrMessages.NOT_FOUND);
+    }
+  }
+
+  @Override
+  public void addToInventory(Item item) throws InventoryException {
+    addToInventory(inventory, item);
+  }
+
+  @Override
+  public int getFreeInventorySlots() {
+    return MAX_INVENTORY_SIZE - inventory.size();
+  }
+
+  // Equipment related
+
+  @Override
+  public void equip(Equippable equipment) throws InvalidEquipmentException, InventoryException {
+
+    equip(equipment, inventory, equippedItems, level, heroType);
+  }
+
+  @Override
+  public void equip(int inventoryIndex) throws InvalidEquipmentException, InventoryException {
+
+    Equippable itemExistingInInventory = (Equippable) findInventoryItem(inventoryIndex);
+
+    equip(itemExistingInInventory, inventory, equippedItems, level, heroType);
+  }
+
+  @Override
+  public void unEquip(EquipmentSlot equipmentSlot) throws InvalidEquipmentException, InventoryException {
+
+    unEquip(equipmentSlot, equippedItems, inventory);
+  };
+
+  @Override
+  public EnumMap<EquipmentSlot, Equippable> getEquippedItems() {
+    return equippedItems;
+  }
+
+  @Override
+  public Weapon getEquippedWeapon() throws InvalidEquipmentException {
+
+    Weapon equippedWeapon = (Weapon) equippedItems.get(EquipmentSlot.WEAPON);
+
+    if (equippedWeapon == null) {
+      throw new InvalidEquipmentException(EquipmentErrMessages.NO_WEAPON);
+    }
+
+    return equippedWeapon;
+  }
+
+  // Attributes related
+
+  @Override
+  public EnumMap<CharacterAttribute, Integer> getDefensiveAttributes() {
+
+    return getDefensiveAttributes(equippedItems);
+  }
+
+  @Override
+  public void gainExperience(double expGain) {
+
+    experience += expGain;
+
+    if (experience >= experienceToLevel) {
+
+      levelUp();
+
+      double difference = experience - experienceToLevel;
+
+      experienceToLevel = (experienceToLevel * 1.5) + difference;
+    }
   }
 
   @Override
@@ -209,50 +263,7 @@ public class Hero
     return level;
   }
 
-  @Override
-  public void addToInventory(Item item) throws InventoryException {
-    addToInventory(inventory, item);
-  }
-
-  @Override
-  public int getFreeInventorySlots() {
-    return MAX_INVENTORY_SIZE - inventory.size();
-  }
-
-  @Override
-  public void unEquip(EquipmentSlot equipmentSlot) throws InvalidEquipmentException, InventoryException {
-
-    unEquip(equipmentSlot, equippedItems, inventory);
-  };
-
-  @Override
-  public void equip(Equippable equipment) throws InvalidEquipmentException, InventoryException {
-
-    equip(equipment, inventory, equippedItems, level, heroType);
-  }
-
-  @Override
-  public void equip(int inventoryIndex) throws InvalidEquipmentException, InventoryException {
-
-    Equippable itemExistingInInventory = (Equippable) findInventoryItem(inventoryIndex);
-
-    equip(itemExistingInInventory, inventory, equippedItems, level, heroType);
-  }
-
-  @Override
-  public EnumMap<CharacterAttribute, Integer> getCharacterAttributes() {
-    return heroAttributes;
-  }
-
-  @Override
-  public String getName() {
-    return name;
-  }
-
-  @Override
-  public int getLevel() {
-    return level;
-  }
+  // Displaying related
 
   @Override
   public void showLevel() {

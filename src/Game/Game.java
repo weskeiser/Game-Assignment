@@ -7,7 +7,7 @@ import Game.Components.GameCharacters.Interfaces.GameCharacter;
 import Game.Components.GameCharacters.Remains.Remains;
 import Game.Components.Items.Equipment.Armor.Armor;
 import Game.Components.Items.Equipment.Armor.ArmorItems.Mail;
-import Game.GameActions.CombatTasks;
+import Game.GameAction.Combat.CombatAction;
 import Game.GameController.GameController;
 
 public class Game {
@@ -15,7 +15,7 @@ public class Game {
     Map<GameCharacter, Remains> killedCharacters = new HashMap<>();
     GameController gameController = new GameController();
 
-    CombatTasks combatTasks = new CombatTasks.CombatTasksBuilder().build();
+    CombatAction combatTasks = new CombatAction.CombatTasksBuilder().build();
 
     Timer timer = new Timer();
 

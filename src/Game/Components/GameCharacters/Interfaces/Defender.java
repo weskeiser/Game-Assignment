@@ -6,7 +6,7 @@ public interface Defender {
 
   int getLevel();
 
-  Remains getRemains();
+  Remains surrenderValuables();
 
   double getHealth();
 
