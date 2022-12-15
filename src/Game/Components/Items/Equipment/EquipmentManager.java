@@ -1,7 +1,6 @@
 package Game.Components.Items.Equipment;
 
-import java.util.EnumMap;
-import java.util.List;
+import java.util.*;
 
 import Game.Components.Exceptions.InvalidEquipmentException;
 import Game.Components.Exceptions.InvalidEquipmentException.EquipmentErrMessages;
@@ -16,7 +15,7 @@ import Game.Components.Items.Equipment.Weapon.Weapon;
 public interface EquipmentManager {
   EnumMap<EquipmentSlot, Equippable> getEquippedItems();
 
-  Weapon getEquippedWeapon() throws InvalidEquipmentException;
+  Optional<Weapon> getEquippedWeapon();
 
   void equip(int inventoryIndex) throws InvalidEquipmentException, InventoryException;
 
@@ -38,7 +37,11 @@ public interface EquipmentManager {
       throw new InvalidEquipmentException(EquipmentErrMessages.LEVEL_REQUIREMENT);
     }
 
-    if (!(heroType.getValidArmorTypes()).contains(equipment.getEquipmentType())) {
+    EnumSet<?> validEquipmentTypes = equipment.getEquipmentSlot() == EquipmentSlot.WEAPON
+        ? heroType.getValidWeaponTypes()
+        : heroType.getValidArmorTypes();
+
+    if (!validEquipmentTypes.contains(equipment.getEquipmentType())) {
       throw new InvalidEquipmentException(EquipmentErrMessages.WRONG_TYPE);
     }
 

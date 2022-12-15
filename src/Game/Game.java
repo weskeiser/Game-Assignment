@@ -1,25 +1,23 @@
 package Game;
 
-import java.util.*;
+import java.util.Timer;
 
 import Game.Components.GameCharacters.Hero.Hero;
-import Game.Components.GameCharacters.Interfaces.GameCharacter;
-import Game.Components.GameCharacters.Remains.Remains;
 import Game.Components.Items.Equipment.Armor.Armor;
 import Game.Components.Items.Equipment.Armor.ArmorItems.Mail;
+import Game.GameAction.GameTask;
 import Game.GameAction.Combat.CombatAction;
 import Game.GameController.GameController;
 
 public class Game {
   public static void main(String[] args) throws Exception {
-    Map<GameCharacter, Remains> killedCharacters = new HashMap<>();
     GameController gameController = new GameController();
 
     CombatAction combatTasks = new CombatAction.CombatTasksBuilder().build();
 
     Timer gameTimer = new Timer();
 
-    gameTimer.scheduleAtFixedRate(combatTasks, 0, 250);
+    gameTimer.scheduleAtFixedRate(combatTasks, 0, GameTask.GAME_TICK_LENGTH);
 
     Hero troll = gameController.newMage("Troll");
     Hero rogie = gameController.newRogue("Rogie");
@@ -126,9 +124,12 @@ public class Game {
     rangie.levelUp();
 
     try {
+      rangie.display();
       rangie.equip(0);
       Armor royalMail = new Armor.ArmorBuilder(Mail.ROYAL_MAIL).build();
       rangie.addToInventory(royalMail);
+
+      System.out.println(rangie.getMaxHit());
 
       rangie.equip(0);
 

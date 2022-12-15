@@ -8,21 +8,21 @@ import Game.Components.Items.Equipment.Armor.ArmorItem;
 import Game.Components.Items.Equipment.Armor.ArmorType;
 
 public enum Mail implements ArmorItem {
+  HOLY_CHAIN_HOOD() {
+    public void init() {
+      name = "Holy chain hood";
+      description = "The chain has peculiarly large holes..";
+      levelRequirement = 6;
+      equipmentSlot = EquipmentSlot.HEAD;
+    }
+  },
+
   STEEL_CHAIN_HOOD() {
     public void init() {
       name = "Steel chain hood";
       description = "A chainhood made of steel.";
       levelRequirement = 14;
       equipmentSlot = EquipmentSlot.HEAD;
-    }
-  },
-
-  HOLY_CHAIN_HOOD() {
-    public void init() {
-      name = "Holy chain hood";
-      description = "The chain has peculiarly large holes..";
-      levelRequirement = 6;
-      equipmentSlot = EquipmentSlot.TORSO;
     }
   },
 

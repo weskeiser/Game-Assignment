@@ -3,7 +3,6 @@ package Game.Components.GameCharacters.Hero;
 import java.util.*;
 
 import Game.Components.Exceptions.InvalidEquipmentException;
-import Game.Components.Exceptions.InvalidEquipmentException.EquipmentErrMessages;
 import Game.Components.Exceptions.InventoryException;
 import Game.Components.Exceptions.InventoryException.InventoryErrMessages;
 import Game.Components.GameCharacters.Interfaces.*;
@@ -209,15 +208,17 @@ public class Hero
   }
 
   @Override
-  public Weapon getEquippedWeapon() throws InvalidEquipmentException {
+  public Optional<Weapon> getEquippedWeapon() {
 
     Weapon equippedWeapon = (Weapon) equippedItems.get(EquipmentSlot.WEAPON);
 
-    if (equippedWeapon == null) {
-      throw new InvalidEquipmentException(EquipmentErrMessages.NO_WEAPON);
-    }
+    // if (equippedWeapon == null) {
+    // throw new InvalidEquipmentException(EquipmentErrMessages.NO_WEAPON);
+    // }
 
-    return equippedWeapon;
+    return Optional.ofNullable(equippedWeapon);
+
+    // return equippedWeapon;
   }
 
   // Attributes related

@@ -2,109 +2,133 @@ package Tests.GameCharacters.Hero;
 
 import static org.junit.Assert.assertEquals;
 
-import java.util.EnumMap;
-import java.util.Map;
+import java.util.*;
 
-import org.junit.*;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.junit.runners.Parameterized;
 
 import Game.Components.GameCharacters.Hero.Hero;
 import Game.Components.GameCharacters.Hero.HeroType;
+import Game.Components.GameCharacters.Interfaces.AttributeManager;
 import Game.Components.GameCharacters.Interfaces.CharacterAttribute;
 import Game.Components.Items.Equipment.Armor.Armor;
+import Game.Components.Items.Equipment.Armor.ArmorItem;
+import Game.Components.Items.Equipment.Armor.ArmorItems.Cloth;
 import Game.Components.Items.Equipment.Armor.ArmorItems.Mail;
 
-public class DefensiveAttributesTest {
-  Hero warrior = new Hero.HeroBuilder("Hero TestName", HeroType.WARRIOR).build();
+@RunWith(Parameterized.class)
 
+public class DefensiveAttributesTest {
+  private Hero testHero;
   EnumMap<CharacterAttribute, Integer> defensiveAttributes = new EnumMap<>(CharacterAttribute.class);
 
+  Armor expectedBodyArmorOne;
+
+  Armor expectedHeadArmorOne;
+  Armor expectedHeadArmorTwo;
+
   //
 
-  @Before
-  public void levelHeroUp() {
-    // Level hero up to lvl22 for equipment requirements
-    for (int i = 0; i < 22; i++) {
-      warrior.levelUp();
-    }
-  }
-
-  @After
-  public void resetVariables() {
-    // Reset hero after each test
-    warrior = new Hero.HeroBuilder("Hero TestName", HeroType.WARRIOR).build();
-
+  public DefensiveAttributesTest(HeroType heroType, ArmorItem expectedBodyArmorOne, ArmorItem expectedHeadArmorOne,
+      ArmorItem expectedHeadArmorTwo) {
     // Reset defensiveAttributes after each test
     defensiveAttributes = new EnumMap<>(CharacterAttribute.class);
+
+    this.testHero = new Hero.HeroBuilder("TestHero Name", heroType).build();
+    this.expectedBodyArmorOne = new Armor.ArmorBuilder(expectedBodyArmorOne).build();
+
+    this.expectedHeadArmorOne = new Armor.ArmorBuilder(expectedHeadArmorOne).build();
+    this.expectedHeadArmorTwo = new Armor.ArmorBuilder(expectedHeadArmorTwo).build();
+
+    // Level up before each test
+    for (int i = 0; i < 22; i++) {
+      testHero.levelUp();
+    }
+
   }
 
-  //
+  @Parameterized.Parameters
+
+  public static Collection testParams() {
+    return Arrays.asList(
+        new Object[][] {
+            { HeroType.WARRIOR, Mail.ROYAL_MAIL, Mail.STEEL_CHAIN_HOOD, Mail.HOLY_CHAIN_HOOD },
+            { HeroType.ROGUE, Mail.ROYAL_MAIL, Mail.STEEL_CHAIN_HOOD, Mail.HOLY_CHAIN_HOOD },
+            { HeroType.RANGER, Mail.ROYAL_MAIL, Mail.STEEL_CHAIN_HOOD, Mail.HOLY_CHAIN_HOOD },
+            { HeroType.MAGE, Cloth.IRONED_ROBE_TOP, Cloth.STIFF_WIZARD_HAT, Cloth.INVISIBLE_WIZARD_HAT } });
+  }
 
   @Test
+
   public void NoArmorEquipped_GetDefensiveAttributes_DefensiveAttributesCorrect() {
-    defensiveAttributes = warrior.getDefensiveAttributes();
+    defensiveAttributes = testHero.getDefensiveAttributes();
 
-    assertEquals(createAttributeMap(0, 0, 0), defensiveAttributes);
+    assertEquals(AttributeManager.newAttributeMap(0, 0, 0), defensiveAttributes);
   }
 
   @Test
+
   public void OneArmorItemEquipped_GetDefensiveAttributes_DefensiveAttributesCorrect() {
 
     try {
-      warrior.addToInventory(new Armor.ArmorBuilder(Mail.ROYAL_MAIL).build());
-      warrior.equip(1);
+      testHero.addToInventory(expectedBodyArmorOne);
+      testHero.equip(expectedBodyArmorOne);
 
-      defensiveAttributes = warrior.getDefensiveAttributes();
+      defensiveAttributes = testHero.getDefensiveAttributes();
     } catch (Throwable err) {
     }
 
-    EnumMap<CharacterAttribute, Integer> expectedDefensiveAttributes = createAttributeMap(2, 3, 1);
+    EnumMap<CharacterAttribute, Integer> expectedDefensiveAttributes = expectedBodyArmorOne.getArmorAttributes();
 
     assertEquals(expectedDefensiveAttributes, defensiveAttributes);
   }
 
   @Test
+
   public void TwoArmorItemsEquipped_GetDefensiveAttributes_DefensiveAttributesCorrect() {
-
+    //
     try {
-      warrior.addToInventory(new Armor.ArmorBuilder(Mail.ROYAL_MAIL).build());
-      warrior.addToInventory(new Armor.ArmorBuilder(Mail.STEEL_CHAIN_HOOD).build());
-      warrior.equip(2);
-      warrior.equip(1);
+      testHero.addToInventory(expectedBodyArmorOne);
+      testHero.equip(expectedBodyArmorOne);
 
-      defensiveAttributes = warrior.getDefensiveAttributes();
+      testHero.addToInventory(expectedHeadArmorOne);
+      testHero.equip(expectedHeadArmorOne);
+
+      defensiveAttributes = testHero.getDefensiveAttributes();
     } catch (Throwable err) {
     }
 
-    EnumMap<CharacterAttribute, Integer> expectedDefensiveAttributes = createAttributeMap(3, 5, 1);
+    EnumMap<CharacterAttribute, Integer> expectedDefensiveAttributes = new EnumMap<>(CharacterAttribute.class);
+
+    EnumMap<CharacterAttribute, Integer> bodyArmorAttributes = expectedBodyArmorOne.getArmorAttributes();
+    EnumMap<CharacterAttribute, Integer> headArmorAttributes = expectedHeadArmorOne.getArmorAttributes();
+
+    for (CharacterAttribute cAttribute : bodyArmorAttributes.keySet()) {
+      expectedDefensiveAttributes.put(cAttribute,
+          bodyArmorAttributes.get(cAttribute) + headArmorAttributes.get(cAttribute));
+    }
 
     assertEquals(expectedDefensiveAttributes, defensiveAttributes);
   }
 
   @Test
+
   public void OneArmorItemEquipped_ItemIsReplaced_DefensiveAttributesCorrect() {
 
     try {
-      warrior.addToInventory(new Armor.ArmorBuilder(Mail.HOLY_CHAIN_HOOD).build());
-      warrior.equip(1);
+      testHero.addToInventory(expectedHeadArmorOne);
+      testHero.equip(expectedHeadArmorOne);
 
-      warrior.addToInventory(new Armor.ArmorBuilder(Mail.STEEL_CHAIN_HOOD).build());
-      warrior.equip(1);
+      testHero.addToInventory(expectedHeadArmorTwo);
+      testHero.equip(expectedHeadArmorTwo);
 
-      defensiveAttributes = warrior.getDefensiveAttributes();
+      defensiveAttributes = testHero.getDefensiveAttributes();
     } catch (Throwable err) {
     }
 
-    EnumMap<CharacterAttribute, Integer> expectedDefensiveAttributes = createAttributeMap(1, 2, 0);
-    warrior.display();
+    EnumMap<CharacterAttribute, Integer> expectedDefensiveAttributes = expectedHeadArmorTwo.getArmorAttributes();
 
     assertEquals(expectedDefensiveAttributes, defensiveAttributes);
   }
-
-  public EnumMap<CharacterAttribute, Integer> createAttributeMap(int strength, int dexterity, int intelligence) {
-    return new EnumMap<>(Map.ofEntries(
-        Map.entry(CharacterAttribute.STRENGTH, strength),
-        Map.entry(CharacterAttribute.DEXTERITY, dexterity),
-        Map.entry(CharacterAttribute.INTELLIGENCE, intelligence)));
-  }
-
 }

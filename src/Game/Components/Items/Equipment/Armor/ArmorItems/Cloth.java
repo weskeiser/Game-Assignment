@@ -17,6 +17,24 @@ public enum Cloth implements ArmorItem {
     }
   },
 
+  STIFF_WIZARD_HAT() {
+    public void init() {
+      name = "Stiff wizard hat";
+      description = "The wizard academy hand these out";
+      levelRequirement = 1;
+      equipmentSlot = EquipmentSlot.HEAD;
+    }
+  },
+
+  INVISIBLE_WIZARD_HAT() {
+    public void init() {
+      name = "Invisible wizard hat";
+      description = "...";
+      levelRequirement = 22;
+      equipmentSlot = EquipmentSlot.HEAD;
+    }
+  },
+
   WRINKLY_ROBE_BOTTOMS() {
     public void init() {
       name = "Wrinkly robe bottoms";

@@ -1,6 +1,7 @@
 package Game.Components.GameCharacters.Interfaces;
 
-import Game.Components.Exceptions.InvalidEquipmentException;
+import java.util.Optional;
+
 import Game.Components.GameCharacters.Remains.Remains;
 import Game.Components.Items.Equipment.EquipmentManager;
 import Game.Components.Items.Equipment.Weapon.Weapon;
@@ -23,15 +24,10 @@ public interface Attacker {
   double getMaxHit();
 
   default double getMaxHit(Attacker attacker) {
-    double weaponDamage = 1;
 
-    try {
-      Weapon equippedWeapon = ((EquipmentManager) attacker).getEquippedWeapon();
+    Optional<Weapon> equippedWeapon = ((EquipmentManager) attacker).getEquippedWeapon();
 
-      weaponDamage = equippedWeapon.getDamageMultiplier();
-    } catch (InvalidEquipmentException err) {
-      // Expected behaviour, no handling needed.
-    }
+    double weaponDamage = equippedWeapon.map(Weapon::getDamageMultiplier).orElse(1.0);
 
     int strengthAttribute = ((AttributeManager) attacker).getCharacterAttributes().get(CharacterAttribute.STRENGTH);
 

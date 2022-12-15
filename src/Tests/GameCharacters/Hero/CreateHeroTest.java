@@ -49,6 +49,7 @@ public class CreateHeroTest {
   @Test
   public void GetName_NewHero_IsCorrect() {
     assertEquals(expectedHeroName, testHero.getName());
+    System.out.println(testHero.getCharacterType());
   }
 
   @Test
