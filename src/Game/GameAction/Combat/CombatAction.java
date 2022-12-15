@@ -42,7 +42,7 @@ public class CombatAction extends TimerTask implements CombatTask {
     attacker.setAttackCooldown(GAME_TICKS - attacker.getAttackSpeed());
 
     // Attacker -> Get attack type
-    CharacterAttribute attackAttribute = attacker.getDamagingAttribute();
+    CharacterAttribute attackAttribute = attacker.getAttackAttribute();
 
     // Defender -> Attempt to deflect, cancel attack if success
     boolean deflected = defender.defend(attackAttribute);

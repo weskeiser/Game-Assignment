@@ -17,7 +17,9 @@ public class Remains implements LootableRemains {
       return;
     }
 
-    System.out.println(lootableItems);
+    // TODO: Implement
+    System.out.println("Dev definitely needs coffee");
+
   }
 
   @Override

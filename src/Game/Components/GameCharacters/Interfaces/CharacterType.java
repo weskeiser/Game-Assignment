@@ -7,7 +7,7 @@ import Game.Components.Items.Equipment.Armor.ArmorType;
 import Game.Components.Items.Equipment.Weapon.WeaponType;
 
 public interface CharacterType {
-  public CharacterAttribute getDamagingAttribute();
+  public CharacterAttribute getAttackAttribute();
 
   public EnumMap<CharacterAttribute, Integer> getLevelingAttributes();
 

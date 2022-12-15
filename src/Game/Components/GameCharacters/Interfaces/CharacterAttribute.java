@@ -4,6 +4,7 @@ public enum CharacterAttribute {
   STRENGTH,
   DEXTERITY,
   INTELLIGENCE;
+
 }
 
 // add two instances and return sum

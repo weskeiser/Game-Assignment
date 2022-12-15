@@ -17,13 +17,18 @@ public class Hero
     implements GameCharacter, HeroDisplayer, InventoryManager, EquipmentManager, Attacker, Defender,
     AttributeManager {
 
+  public static double HERO_STARTING_HEALTH = 10;
+  public static double HERO_STARTING_EXPERIENCE = 0;
+  public static int HERO_STARTING_LEVEL = 1;
+
   private String name;
   private HeroType heroType;
 
   // Levels
-  private int level = 1;
-  private double health = 10;
-  private double experience = 0;
+  private int level = HERO_STARTING_LEVEL;
+  private double health = HERO_STARTING_HEALTH;
+  private double experience = HERO_STARTING_EXPERIENCE;
+
   private double experienceToLevel = 10;
   private EnumMap<CharacterAttribute, Integer> heroAttributes;
 
@@ -33,8 +38,12 @@ public class Hero
   private List<Remains> lootableRemains = new ArrayList<>();
 
   // Items
-  private List<Item> inventory = new ArrayList<Item>(15);
+  private List<Item> inventory = new ArrayList<Item>();
   private EnumMap<EquipmentSlot, Equippable> equippedItems = new EnumMap<>(EquipmentSlot.class);
+
+  public double getExperience() {
+    return experience;
+  }
 
   @Override
   public String getName() {
@@ -68,8 +77,8 @@ public class Hero
   }
 
   @Override
-  public CharacterAttribute getDamagingAttribute() {
-    return heroType.getDamagingAttribute();
+  public CharacterAttribute getAttackAttribute() {
+    return heroType.getAttackAttribute();
   }
 
   @Override

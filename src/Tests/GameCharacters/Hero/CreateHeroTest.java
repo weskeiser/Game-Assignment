@@ -1,79 +1,85 @@
 package Tests.GameCharacters.Hero;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotEquals;
 
-import java.util.EnumMap;
+import java.util.*;
 
-import org.junit.After;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.junit.runners.Parameterized;
 
+import Game.Components.Exceptions.InventoryException;
 import Game.Components.GameCharacters.Hero.Hero;
 import Game.Components.GameCharacters.Hero.HeroType;
+import Game.Components.GameCharacters.Interfaces.AttributeManager;
 import Game.Components.GameCharacters.Interfaces.CharacterAttribute;
+import Game.Components.Items.Equipment.Weapon.Weapon;
+import Game.Components.Items.Equipment.Weapon.WeaponItem;
 
+@RunWith(Parameterized.class)
 public class CreateHeroTest {
-  String heroName = "TestHero name";
-  Hero testHero = new Hero.HeroBuilder(heroName, HeroType.MAGE).build();
+  private Hero testHero;
 
-  public EnumMap<CharacterAttribute, Integer> createAttributeMap(int strength, int dexterity, int intelligence) {
-    EnumMap<CharacterAttribute, Integer> attributeMap = new EnumMap<>(CharacterAttribute.class);
-    attributeMap.put(CharacterAttribute.STRENGTH, strength);
-    attributeMap.put(CharacterAttribute.DEXTERITY, dexterity);
-    attributeMap.put(CharacterAttribute.INTELLIGENCE, intelligence);
-    return attributeMap;
+  private String expectedHeroName = "TestHero Name";
+  private WeaponItem expectedStartingWeapon;
+  private EnumMap<CharacterAttribute, Integer> expectedStartingAttributes;
+
+  //
+
+  @Parameterized.Parameters
+  public static Collection testParams() {
+    return Arrays.asList(
+        new Object[][] {
+            { HeroType.WARRIOR, WeaponItem.WOODEN_SWORD, AttributeManager.newAttributeMap(5, 2, 1) },
+            { HeroType.ROGUE, WeaponItem.WOODEN_SWORD, AttributeManager.newAttributeMap(2, 6, 1) },
+            { HeroType.RANGER, WeaponItem.MAKESHIFT_BOW, AttributeManager.newAttributeMap(1, 7, 1) },
+            { HeroType.MAGE, WeaponItem.CRACKED_WAND, AttributeManager.newAttributeMap(1, 1, 8) } });
+  }
+
+  public CreateHeroTest(HeroType heroType, WeaponItem expectedStartingWeapon,
+      EnumMap<CharacterAttribute, Integer> expectedStartingAttributes) {
+
+    this.testHero = new Hero.HeroBuilder(expectedHeroName, heroType).build();
+    this.expectedStartingWeapon = expectedStartingWeapon;
+    this.expectedStartingAttributes = expectedStartingAttributes;
   }
 
   //
 
-  @After
-  public void resetHero() {
-    testHero = new Hero.HeroBuilder(heroName, HeroType.MAGE).build();
-  }
-
-  //
-
   @Test
-  public void WhenHeroCreated_NameIsCorrect() {
-    String heroNameFromNewHero = testHero.getName();
-    assertEquals(heroName, heroNameFromNewHero);
-
-    assertNotEquals("9823fsfdklj", heroNameFromNewHero);
+  public void GetName_NewHero_IsCorrect() {
+    assertEquals(expectedHeroName, testHero.getName());
   }
 
   @Test
-  public void WhenHeroCreated_LevelIsOne() {
-    assertEquals(1, testHero.getLevel());
-
-    assertNotEquals(2, testHero.getLevel());
+  public void GetHealth_NewHero_HealthIsZero() {
+    assertEquals(Hero.HERO_STARTING_HEALTH, testHero.getHealth(), 0);
   }
 
   @Test
-  public void GivenHeroType_WhenHeroCreated_HeroAttributesAreCorrect() {
-    HeroType heroType = (HeroType) testHero.getCharacterType();
+  public void GetLevel_NewHero_LevelIsZero() {
+    assertEquals(Hero.HERO_STARTING_LEVEL, testHero.getLevel(), 0);
+  }
 
-    switch (heroType) {
-      case WARRIOR:
-        assertEquals(createAttributeMap(5, 2, 1), testHero.getCharacterAttributes());
+  @Test
+  public void GetExperience_NewHero_ExperieceIsZero() {
+    assertEquals(Hero.HERO_STARTING_EXPERIENCE, testHero.getExperience(), 0);
+  }
 
-        assertNotEquals(createAttributeMap(9, 9, 9), testHero.getCharacterAttributes());
-        break;
-      case ROGUE:
-        assertEquals(createAttributeMap(2, 6, 1), testHero.getCharacterAttributes());
+  @Test
+  public void EquipFromFirstInvSlot_NewHero_IsStartingWeapon() {
+    try {
+      Weapon firstInventorySlotItem = (Weapon) testHero.findInventoryItem(0);
 
-        assertNotEquals(createAttributeMap(9, 9, 9), testHero.getCharacterAttributes());
-        break;
-      case RANGER:
-        assertEquals(createAttributeMap(1, 7, 1), testHero.getCharacterAttributes());
-
-        assertNotEquals(createAttributeMap(9, 9, 9), testHero.getCharacterAttributes());
-        break;
-      case MAGE:
-        assertEquals(createAttributeMap(1, 1, 8), testHero.getCharacterAttributes());
-
-        assertNotEquals(createAttributeMap(9, 9, 9), testHero.getCharacterAttributes());
-        break;
+      assertEquals(expectedStartingWeapon, firstInventorySlotItem.getEquippable());
+    } catch (InventoryException err) {
+      System.out.println("Starting weapon test fail.");
     }
+  }
+
+  @Test
+  public void GetCharacterAttributes_NewHero_IsCorrect() {
+    assertEquals(expectedStartingAttributes, testHero.getCharacterAttributes());
   }
 
 }

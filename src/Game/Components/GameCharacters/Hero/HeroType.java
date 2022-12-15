@@ -15,7 +15,7 @@ public enum HeroType implements CharacterType, HeroInitiator {
       levelingAttributes = createAttributeMap(3, 2, 1);
       validWeaponTypes = EnumSet.of(WeaponType.AXE, WeaponType.HAMMER, WeaponType.SWORD);
       validArmorTypes = EnumSet.of(ArmorType.PLATE, ArmorType.MAIL);
-      damagingAttribute = CharacterAttribute.STRENGTH;
+      attackAttribute = CharacterAttribute.STRENGTH;
       starterWeapon = WeaponItem.WOODEN_SWORD;
       return createAttributeMap(5, 2, 1);
     }
@@ -25,7 +25,7 @@ public enum HeroType implements CharacterType, HeroInitiator {
       levelingAttributes = createAttributeMap(1, 4, 1);
       validWeaponTypes = EnumSet.of(WeaponType.DAGGER, WeaponType.SWORD);
       validArmorTypes = EnumSet.of(ArmorType.LEATHER, ArmorType.MAIL);
-      damagingAttribute = CharacterAttribute.DEXTERITY;
+      attackAttribute = CharacterAttribute.DEXTERITY;
       starterWeapon = WeaponItem.WOODEN_SWORD;
       return createAttributeMap(2, 6, 1);
     }
@@ -35,7 +35,7 @@ public enum HeroType implements CharacterType, HeroInitiator {
       levelingAttributes = createAttributeMap(1, 5, 1);
       validWeaponTypes = EnumSet.of(WeaponType.BOW);
       validArmorTypes = EnumSet.of(ArmorType.LEATHER, ArmorType.MAIL);
-      damagingAttribute = CharacterAttribute.DEXTERITY;
+      attackAttribute = CharacterAttribute.DEXTERITY;
       starterWeapon = WeaponItem.MAKESHIFT_BOW;
       return createAttributeMap(1, 7, 1);
     }
@@ -45,7 +45,7 @@ public enum HeroType implements CharacterType, HeroInitiator {
       levelingAttributes = createAttributeMap(1, 1, 5);
       validWeaponTypes = EnumSet.of(WeaponType.STAFF, WeaponType.WAND);
       validArmorTypes = EnumSet.of(ArmorType.CLOTH);
-      damagingAttribute = CharacterAttribute.INTELLIGENCE;
+      attackAttribute = CharacterAttribute.INTELLIGENCE;
       starterWeapon = WeaponItem.CRACKED_WAND;
       return createAttributeMap(1, 1, 8);
 
@@ -55,15 +55,15 @@ public enum HeroType implements CharacterType, HeroInitiator {
   EnumMap<CharacterAttribute, Integer> levelingAttributes;
   EnumSet<WeaponType> validWeaponTypes;
   EnumSet<ArmorType> validArmorTypes;
-  CharacterAttribute damagingAttribute;
+  CharacterAttribute attackAttribute;
   WeaponItem starterWeapon;
 
   public WeaponItem getStarterWeapon() {
     return starterWeapon;
   }
 
-  public CharacterAttribute getDamagingAttribute() {
-    return damagingAttribute;
+  public CharacterAttribute getAttackAttribute() {
+    return attackAttribute;
   }
 
   public EnumMap<CharacterAttribute, Integer> getLevelingAttributes() {

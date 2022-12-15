@@ -6,7 +6,7 @@ import Game.Components.Items.Equipment.EquipmentManager;
 import Game.Components.Items.Equipment.Weapon.Weapon;
 
 public interface Attacker {
-  public CharacterAttribute getDamagingAttribute();
+  public CharacterAttribute getAttackAttribute();
 
   int getAttackCooldown();
 

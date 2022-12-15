@@ -8,6 +8,7 @@ import Game.Components.Exceptions.InvalidEquipmentException.EquipmentErrMessages
 import Game.Components.Exceptions.InventoryException;
 import Game.Components.Exceptions.InventoryException.InventoryErrMessages;
 import Game.Components.GameCharacters.Hero.HeroType;
+import Game.Components.GameCharacters.Interfaces.InventoryManager;
 import Game.Components.Items.Item;
 import Game.Components.Items.Equipment.Armor.Armor;
 import Game.Components.Items.Equipment.Weapon.Weapon;
@@ -47,9 +48,10 @@ public interface EquipmentManager {
       if (err.getMessage() != EquipmentErrMessages.SLOT_EMPTY.msg()) {
         System.out.println(err);
       }
+    } finally {
+      equippedItems.put(equipment.getEquipmentSlot(), equipment);
     }
 
-    equippedItems.put(equipment.getEquipmentSlot(), equipment);
   };
 
   public void unEquip(EquipmentSlot equipmentSlot) throws InvalidEquipmentException, InventoryException;
@@ -64,17 +66,16 @@ public interface EquipmentManager {
     if (unEquipped == null)
       throw new InvalidEquipmentException(EquipmentErrMessages.SLOT_EMPTY);
 
-    if (inventory.size() >= 15) {
+    if (inventory.size() >= InventoryManager.MAX_INVENTORY_SIZE) {
       throw new InventoryException(InventoryErrMessages.NO_SPACE);
     }
 
     equippedItems.remove(equipmentSlot);
 
-    if (unEquipped instanceof Weapon) {
-      inventory.add((Weapon) unEquipped);
-
-    } else if (unEquipped instanceof Armor) {
+    if (unEquipped instanceof Armor) {
       inventory.add((Armor) unEquipped);
+    } else if (unEquipped instanceof Weapon) {
+      inventory.add((Weapon) unEquipped);
     }
 
     System.out.println(unEquipped.getName() + " was unequipped and added to the inventory.");

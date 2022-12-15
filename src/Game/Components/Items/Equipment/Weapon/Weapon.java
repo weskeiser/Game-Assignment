@@ -8,6 +8,11 @@ public class Weapon implements Equippable {
   private EquipmentSlot equipmentSlot = EquipmentSlot.WEAPON;
 
   @Override
+  public Enum getEquippable() {
+    return weapon;
+  }
+
+  @Override
   public EquipmentSlot getEquipmentSlot() {
     return equipmentSlot;
   }

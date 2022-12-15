@@ -16,6 +16,15 @@ public interface AttributeManager {
 
   EnumMap<CharacterAttribute, Integer> getDefensiveAttributes();
 
+  public static EnumMap<CharacterAttribute, Integer> newAttributeMap(int strength,
+      int dexterity, int intelligence) {
+    EnumMap<CharacterAttribute, Integer> attributeMap = new EnumMap<>(CharacterAttribute.class);
+    attributeMap.put(CharacterAttribute.STRENGTH, strength);
+    attributeMap.put(CharacterAttribute.DEXTERITY, dexterity);
+    attributeMap.put(CharacterAttribute.INTELLIGENCE, intelligence);
+    return attributeMap;
+  }
+
   default EnumMap<CharacterAttribute, Integer> getDefensiveAttributes(
       EnumMap<EquipmentSlot, Equippable> equippedItems) {
 
