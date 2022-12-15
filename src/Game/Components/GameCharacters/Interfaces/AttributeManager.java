@@ -16,6 +16,7 @@ public interface AttributeManager {
 
   EnumMap<CharacterAttribute, Integer> getDefensiveAttributes();
 
+  // TODO: Change to more specific name
   public static EnumMap<CharacterAttribute, Integer> newAttributeMap(int strength,
       int dexterity, int intelligence) {
     EnumMap<CharacterAttribute, Integer> attributeMap = new EnumMap<>(CharacterAttribute.class);

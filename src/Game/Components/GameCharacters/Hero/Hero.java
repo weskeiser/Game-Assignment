@@ -33,6 +33,7 @@ public class Hero
 
   // Combat
   private int attackCooldown = 0;
+  private Defender currentlyAttacking = null;
   private Attacker defeatedBy = null;
   private List<Remains> lootableRemains = new ArrayList<>();
 
@@ -70,6 +71,16 @@ public class Hero
   }
 
   // Combat related: Attacks
+  @Override
+  public Optional<Defender> getCurrentlyAttacking() {
+    return Optional.ofNullable(currentlyAttacking);
+  }
+
+  @Override
+  public void setCurrentlyAttacking(Defender currentlyAttacking) {
+    this.currentlyAttacking = currentlyAttacking;
+  }
+
   @Override
   public double getMaxHit() {
     return getMaxHit(this);

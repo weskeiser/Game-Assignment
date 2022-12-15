@@ -7,77 +7,104 @@ import Game.Components.GameCharacters.Interfaces.*;
 
 public class CombatAction extends TimerTask implements CombatTask {
 
-  private Map<Attacker, Defender> engagements = new HashMap<>();
-  private Map<Attacker, Defender> fatalities = new HashMap<>();
+  private HashSet<Attacker> attackers = new HashSet<>();
 
   public void newAttack(Attacker attacker, Defender defender) {
-    engagements.put(attacker, defender);
+    attackers.add(attacker);
+    attacker.setCurrentlyAttacking(defender);
+
+    // Defender -> Automatically attack back if not actively attacking someone else.
+    Optional<Defender> defenderCurrentlyAttacking = defender.getCurrentlyAttacking();
+
+    if (defenderCurrentlyAttacking.isEmpty()) {
+
+      attackers.add((Attacker) defender);
+
+      defender.setCurrentlyAttacking((Defender) attacker);
+    }
   }
 
   public void disengageAttack(Attacker attacker, Defender defender) {
-    engagements.remove(attacker, defender);
+    // engagements.remove(attacker, defender);
   }
 
-  public double randomiseHit(double min, double maxHit) {
-    // Considering logic change
+  public double randomiseHit(double maxHit) {
     double max = maxHit <= 1 ? 1.99 : maxHit;
 
-    // Randomise hit
-    double firstRoll = (Math.random() * (max - min)) + min;
+    double firstRoll = (Math.random() * (max - 0)) + 0;
 
-    // If upper 25%, roll again. Makes high hits more special.
+    // If upper 25%, roll again to make high hits more special.
     if ((firstRoll > max * 0.75)) {
-      return (Math.random() * (max - min)) + min;
+      return (Math.random() * (max - 0)) + 0;
     }
 
     return firstRoll;
   }
 
-  public void performAttack(Attacker attacker, Defender defender) {
-    // Attacker -> Return if attacker is on cooldown
+  public boolean performAttack(Attacker attacker, Defender defender) {
     if (attacker.decrementIfAttackCooldown())
-      return;
+      return ALIVE;
 
-    // Attacker -> Set attack cooldown
     attacker.setAttackCooldown(GAME_TICKS - attacker.getAttackSpeed());
 
-    // Attacker -> Get attack type
-    CharacterAttribute attackAttribute = attacker.getAttackAttribute();
+    //
 
-    // Defender -> Attempt to deflect, cancel attack if success
-    boolean deflected = defender.defend(attackAttribute);
-    if (deflected)
-      return;
+    if (defender.defend(attacker.getAttackAttribute()))
+      return ALIVE;
 
-    // Attacker -> Get max hit and randomise it
-    double maxHit = attacker.getMaxHit();
-    double randomisedHit = randomiseHit(0, maxHit);
+    var randomisedMaxHit = randomiseHit(attacker.getMaxHit());
 
-    // Defender -> Take damage
-    boolean alive = defender.takeDamage((int) randomisedHit, attacker);
+    boolean defenderSurvived = defender.takeDamage((int) randomisedMaxHit, attacker);
 
-    // Attacker -> If opponent killed, attacker gets loot access
-    // Defender -> Clear valuables
-    if (!alive) {
-      attacker.receiveLootAccess(defender.surrenderValuables());
-      fatalities.put(attacker, defender);
-    }
+    System.out.println(defender.getHealth());
 
-    // Attacker -> If not NPC, gain experience
     if (((GameCharacter) attacker).getCharacterType() instanceof HeroType) {
-      attacker.gainExperience(randomisedHit);
+      attacker.gainExperience(randomisedMaxHit);
     }
 
+    //
+
+    if (!defenderSurvived) {
+      attacker.receiveLootAccess(defender.surrenderValuables());
+
+      attacker.setCurrentlyAttacking(null);
+      defender.setCurrentlyAttacking(null);
+      return DEAD;
+      // engagements.remove(attacker, defender);
+      // engagements.remove((Attacker) defender, (Defender) attacker);
+    }
+
+    return ALIVE;
   }
 
   public void run() {
-    engagements.forEach(this::performAttack);
+    var attackIterator = attackers.iterator();
 
-    fatalities.forEach(this::disengageAttack);
+    while (attackIterator.hasNext()) {
+      var attacker = attackIterator.next();
+      System.out.println(((GameCharacter) attacker).getName());
+
+      Optional<Defender> optionalDefender = attacker.getCurrentlyAttacking();
+
+      optionalDefender.ifPresent((defender) -> {
+        // Remove concurrent attackers
+        if (defender.getHealth() <= 0)
+          attackIterator.remove();
+
+        boolean aliveStatus = performAttack(attacker, defender);
+
+        if (aliveStatus == DEAD) {
+          // Remove attacker
+          attackIterator.remove();
+          // Remove defender
+          attackers.remove((Attacker) defender);
+        }
+      });
+    }
   }
 
   private CombatAction(CombatTasksBuilder builder) {
-    this.engagements = builder.engagements;
+    // this.engagements = builder.engagements;
   }
 
   public static class CombatTasksBuilder {

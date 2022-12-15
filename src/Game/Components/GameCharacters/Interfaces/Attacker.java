@@ -7,7 +7,11 @@ import Game.Components.Items.Equipment.EquipmentManager;
 import Game.Components.Items.Equipment.Weapon.Weapon;
 
 public interface Attacker {
-  public CharacterAttribute getAttackAttribute();
+  CharacterAttribute getAttackAttribute();
+
+  Optional<Defender> getCurrentlyAttacking();
+
+  void setCurrentlyAttacking(Defender currentlyAttacking);
 
   int getAttackCooldown();
 

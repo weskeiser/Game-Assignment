@@ -28,14 +28,25 @@ public class DefensiveAttributesTest {
   Armor expectedHeadArmorOne;
   Armor expectedHeadArmorTwo;
 
-  //
+  @Parameterized.Parameters
 
+  public static Collection<Object[]> testParams() {
+    return Arrays.asList(
+        new Object[][] {
+            { HeroType.WARRIOR, Mail.ROYAL_MAIL, Mail.STEEL_CHAIN_HOOD, Mail.HOLY_CHAIN_HOOD },
+            { HeroType.ROGUE, Mail.ROYAL_MAIL, Mail.STEEL_CHAIN_HOOD, Mail.HOLY_CHAIN_HOOD },
+            { HeroType.RANGER, Mail.ROYAL_MAIL, Mail.STEEL_CHAIN_HOOD, Mail.HOLY_CHAIN_HOOD },
+            { HeroType.MAGE, Cloth.IRONED_ROBE_TOP, Cloth.STIFF_WIZARD_HAT, Cloth.INVISIBLE_WIZARD_HAT } });
+  }
+
+  // Constructor
   public DefensiveAttributesTest(HeroType heroType, ArmorItem expectedBodyArmorOne, ArmorItem expectedHeadArmorOne,
       ArmorItem expectedHeadArmorTwo) {
     // Reset defensiveAttributes after each test
     defensiveAttributes = new EnumMap<>(CharacterAttribute.class);
 
     this.testHero = new Hero.HeroBuilder("TestHero Name", heroType).build();
+
     this.expectedBodyArmorOne = new Armor.ArmorBuilder(expectedBodyArmorOne).build();
 
     this.expectedHeadArmorOne = new Armor.ArmorBuilder(expectedHeadArmorOne).build();
@@ -45,18 +56,6 @@ public class DefensiveAttributesTest {
     for (int i = 0; i < 22; i++) {
       testHero.levelUp();
     }
-
-  }
-
-  @Parameterized.Parameters
-
-  public static Collection testParams() {
-    return Arrays.asList(
-        new Object[][] {
-            { HeroType.WARRIOR, Mail.ROYAL_MAIL, Mail.STEEL_CHAIN_HOOD, Mail.HOLY_CHAIN_HOOD },
-            { HeroType.ROGUE, Mail.ROYAL_MAIL, Mail.STEEL_CHAIN_HOOD, Mail.HOLY_CHAIN_HOOD },
-            { HeroType.RANGER, Mail.ROYAL_MAIL, Mail.STEEL_CHAIN_HOOD, Mail.HOLY_CHAIN_HOOD },
-            { HeroType.MAGE, Cloth.IRONED_ROBE_TOP, Cloth.STIFF_WIZARD_HAT, Cloth.INVISIBLE_WIZARD_HAT } });
   }
 
   @Test

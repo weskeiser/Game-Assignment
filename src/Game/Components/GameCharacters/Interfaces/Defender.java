@@ -1,5 +1,7 @@
 package Game.Components.GameCharacters.Interfaces;
 
+import java.util.Optional;
+
 import Game.Components.GameCharacters.Remains.Remains;
 
 public interface Defender {
@@ -9,6 +11,10 @@ public interface Defender {
   Remains surrenderValuables();
 
   double getHealth();
+
+  Optional<Defender> getCurrentlyAttacking();
+
+  void setCurrentlyAttacking(Defender currentlyAttacking);
 
   boolean defend(CharacterAttribute attackType);
 

@@ -124,12 +124,9 @@ public class Game {
     rangie.levelUp();
 
     try {
-      rangie.display();
       rangie.equip(0);
       Armor royalMail = new Armor.ArmorBuilder(Mail.ROYAL_MAIL).build();
       rangie.addToInventory(royalMail);
-
-      System.out.println(rangie.getMaxHit());
 
       rangie.equip(0);
 
@@ -137,10 +134,13 @@ public class Game {
       System.out.println(err);
     }
 
+    System.out.println(rangie.getMaxHit());
+
     System.out.println(rangie.getDefensiveAttributes());
     rangie.display();
 
     combatTasks.newAttack(rangie, rogie);
+    combatTasks.newAttack(troll, rogie);
 
     // rangie.display();
   }
