@@ -24,8 +24,8 @@ public class CombatAction extends TimerTask implements CombatTask {
     }
   }
 
-  public void disengageAttack(Attacker attacker, Defender defender) {
-    // engagements.remove(attacker, defender);
+  public void disengageAttacker(Attacker attacker) {
+    attackers.remove(attacker);
   }
 
   public double randomiseHit(double maxHit) {
@@ -54,7 +54,7 @@ public class CombatAction extends TimerTask implements CombatTask {
 
     var randomisedMaxHit = randomiseHit(attacker.getMaxHit());
 
-    boolean defenderSurvived = defender.takeDamage((int) randomisedMaxHit, attacker);
+    var defenderSurvived = defender.takeDamage((int) randomisedMaxHit, attacker);
 
     System.out.println(defender.getHealth());
 
@@ -70,8 +70,6 @@ public class CombatAction extends TimerTask implements CombatTask {
       attacker.setCurrentlyAttacking(null);
       defender.setCurrentlyAttacking(null);
       return DEAD;
-      // engagements.remove(attacker, defender);
-      // engagements.remove((Attacker) defender, (Defender) attacker);
     }
 
     return ALIVE;
@@ -82,21 +80,23 @@ public class CombatAction extends TimerTask implements CombatTask {
 
     while (attackIterator.hasNext()) {
       var attacker = attackIterator.next();
-      System.out.println(((GameCharacter) attacker).getName());
 
       Optional<Defender> optionalDefender = attacker.getCurrentlyAttacking();
 
       optionalDefender.ifPresent((defender) -> {
-        // Remove concurrent attackers
-        if (defender.getHealth() <= 0)
+        // Attackers -> After death: Remove concurrent attackers
+        if (defender.getHealth() <= 0) {
+          attacker.setCurrentlyAttacking(null);
           attackIterator.remove();
+        }
 
-        boolean aliveStatus = performAttack(attacker, defender);
+        // Actual attack
+        var aliveStatus = performAttack(attacker, defender);
 
         if (aliveStatus == DEAD) {
-          // Remove attacker
+          // Attackers -> After death: Remove attacker
           attackIterator.remove();
-          // Remove defender
+          // Attackers -> After death: Remove defender
           attackers.remove((Attacker) defender);
         }
       });
@@ -104,19 +104,20 @@ public class CombatAction extends TimerTask implements CombatTask {
   }
 
   private CombatAction(CombatTasksBuilder builder) {
-    // this.engagements = builder.engagements;
+    this.attackers = builder.attackers;
   }
 
   public static class CombatTasksBuilder {
-    private Map<Attacker, Defender> engagements;
+    private HashSet<Attacker> attackers;
 
+    // Default
     public CombatTasksBuilder() {
-      this.engagements = new HashMap<>();
+      this.attackers = new HashSet<Attacker>();
     }
 
     // For use in instances
-    public CombatTasksBuilder setEngagements(Map<Attacker, Defender> engagements) {
-      this.engagements = engagements;
+    public CombatTasksBuilder setAttackers(HashSet<Attacker> attackers) {
+      this.attackers = attackers;
       return this;
     }
 

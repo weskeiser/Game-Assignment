@@ -26,6 +26,7 @@ public class HeroDamage {
   // Params for constructor
   @Parameterized.Parameters
   public static Collection<Object[]> testParams() {
+
     return Arrays.asList(
         new Object[][] {
             { HeroType.WARRIOR, WeaponItem.GREATAXE, WeaponItem.EXCALIBUR },
@@ -39,9 +40,7 @@ public class HeroDamage {
   public HeroDamage(HeroType heroType, WeaponItem heroWeaponOne, WeaponItem heroWeaponTwo) {
 
     this.testHero = new Hero.HeroBuilder("TestHero Name", heroType).build();
-
     this.heroWeaponOne = new Weapon.WeaponBuilder(heroWeaponOne).build();
-
     this.heroWeaponTwo = new Weapon.WeaponBuilder(heroWeaponTwo).build();
 
     // Level up before each test
@@ -55,11 +54,9 @@ public class HeroDamage {
   @Test
 
   public void NoWeaponEquipped_GetMaxHit_IsCorrectNumber() {
-    int strengthAttribute = testHero.getCharacterAttributes().get(CharacterAttribute.STRENGTH);
-
-    int barehandWeaponDamage = 1;
-
-    double expectedMaxHit = barehandWeaponDamage * (1 + strengthAttribute / 100);
+    var barehandWeaponDamage = 1;
+    var strengthAttribute = testHero.getCharacterAttributes().get(CharacterAttribute.STRENGTH);
+    var expectedMaxHit = barehandWeaponDamage * (1 + strengthAttribute / 100);
 
     assertEquals(expectedMaxHit, testHero.getMaxHit(), 0);
   }
@@ -79,10 +76,9 @@ public class HeroDamage {
     if (equippedWeapon.isEmpty())
       fail();
 
-    double weaponDamage = equippedWeapon.map(Weapon::getDamageMultiplier).orElse(1.0);
-
-    int strengthAttribute = testHero.getCharacterAttributes().get(CharacterAttribute.STRENGTH);
-    double expectedMaxHit = weaponDamage * (1 + strengthAttribute / 100);
+    var weaponDamage = equippedWeapon.map(Weapon::getDamageMultiplier).orElse(1.0);
+    var strengthAttribute = testHero.getCharacterAttributes().get(CharacterAttribute.STRENGTH);
+    var expectedMaxHit = weaponDamage * (1 + strengthAttribute / 100);
 
     assertEquals(expectedMaxHit, testHero.getMaxHit(), 0);
   }
@@ -104,10 +100,9 @@ public class HeroDamage {
     if (equippedWeapon.isEmpty())
       fail();
 
-    double weaponDamage = equippedWeapon.map(Weapon::getDamageMultiplier).orElse(1.0);
-
-    int strengthAttribute = testHero.getCharacterAttributes().get(CharacterAttribute.STRENGTH);
-    double expectedMaxHit = weaponDamage * (1 + strengthAttribute / 100);
+    var weaponDamage = equippedWeapon.map(Weapon::getDamageMultiplier).orElse(1.0);
+    var strengthAttribute = testHero.getCharacterAttributes().get(CharacterAttribute.STRENGTH);
+    var expectedMaxHit = weaponDamage * (1 + strengthAttribute / 100);
 
     assertEquals(expectedMaxHit, testHero.getMaxHit(), 0);
   }

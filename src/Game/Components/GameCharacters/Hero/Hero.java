@@ -93,9 +93,9 @@ public class Hero
 
   @Override
   public int getAttackSpeed() {
-    int dexterityAttribute = heroAttributes.get(CharacterAttribute.DEXTERITY);
+    var dexterityAttributeLevel = heroAttributes.get(CharacterAttribute.DEXTERITY);
 
-    return dexterityAttribute / 100;
+    return dexterityAttributeLevel / 100;
   }
 
   @Override
@@ -144,11 +144,10 @@ public class Hero
 
   @Override
   public boolean defend(CharacterAttribute attackAttribute) {
-    int deflectionChance = getDefensiveAttributes().get(attackAttribute);
+    var deflectionChance = getDefensiveAttributes().get(attackAttribute);
+    var roll100 = new Random().nextInt(100) + 1;
 
-    int roll100 = new Random().nextInt(100) + 1;
-
-    boolean deflected = false;
+    var deflected = false;
 
     if (deflectionChance >= roll100)
       deflected = true;
@@ -159,7 +158,7 @@ public class Hero
   @Override
   public Remains surrenderValuables() {
 
-    List<Item> loot = new ArrayList<>();
+    var loot = new ArrayList<Item>();
 
     equippedItems.values().forEach(loot::add);
     inventory.forEach(loot::add);
@@ -202,7 +201,7 @@ public class Hero
   @Override
   public void equip(int inventoryIndex) throws InvalidEquipmentException, InventoryException {
 
-    Equippable itemExistingInInventory = (Equippable) findInventoryItem(inventoryIndex);
+    var itemExistingInInventory = (Equippable) findInventoryItem(inventoryIndex);
 
     equip(itemExistingInInventory, inventory, equippedItems, level, heroType);
   }
@@ -221,7 +220,7 @@ public class Hero
   @Override
   public Optional<Weapon> getEquippedWeapon() {
 
-    Weapon equippedWeapon = (Weapon) equippedItems.get(EquipmentSlot.WEAPON);
+    var equippedWeapon = (Weapon) equippedItems.get(EquipmentSlot.WEAPON);
 
     // if (equippedWeapon == null) {
     // throw new InvalidEquipmentException(EquipmentErrMessages.NO_WEAPON);
@@ -258,7 +257,7 @@ public class Hero
   @Override
   public int levelUp() {
 
-    EnumMap<CharacterAttribute, Integer> levelingAttributes = heroType.getLevelingAttributes();
+    var levelingAttributes = heroType.getLevelingAttributes();
 
     heroAttributes.replaceAll((heroAttribute, value) -> value + levelingAttributes.get(heroAttribute));
 

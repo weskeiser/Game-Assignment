@@ -10,7 +10,7 @@ public interface CombatTask extends GameTask {
 
   void newAttack(Attacker attacker, Defender defender);
 
-  void disengageAttack(Attacker attacker, Defender defender);
+  void disengageAttacker(Attacker attacker);
 
   boolean performAttack(Attacker attacker, Defender defender);
 }
