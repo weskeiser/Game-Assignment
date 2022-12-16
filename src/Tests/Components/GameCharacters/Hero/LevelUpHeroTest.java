@@ -1,4 +1,4 @@
-package Tests.GameCharacters.Hero;
+package Tests.Components.GameCharacters.Hero;
 
 import static org.junit.Assert.assertEquals;
 

@@ -10,16 +10,6 @@ public class Armor implements Equippable {
   private ArmorItem armor;
   private EquipmentSlot equipmentSlot;
 
-  @Override
-  public int getLevelRequirement() {
-    return armor.getLevelRequirement();
-  }
-
-  @Override
-  public ArmorType getEquipmentType() {
-    return armor.getArmorType();
-  }
-
   public EnumMap<CharacterAttribute, Integer> getArmorAttributes() {
     return armor.getArmorAttributes();
   };
@@ -30,13 +20,18 @@ public class Armor implements Equippable {
   }
 
   @Override
-  public void inspect() {
-    System.out.println(armor.getDescription());
+  public ArmorType getEquipmentType() {
+    return armor.getArmorType();
   }
 
   @Override
-  public void printName() {
-    System.out.println(getName());
+  public int getLevelRequirement() {
+    return armor.getLevelRequirement();
+  }
+
+  @Override
+  public void printLevelRequirement() {
+    System.out.println(getLevelRequirement());
   }
 
   @Override
@@ -45,8 +40,13 @@ public class Armor implements Equippable {
   }
 
   @Override
-  public void printLevelRequirement() {
-    System.out.println(getLevelRequirement());
+  public void inspect() {
+    System.out.println(armor.getDescription());
+  }
+
+  @Override
+  public void printName() {
+    System.out.println(getName());
   }
 
   private Armor(ArmorBuilder builder) {

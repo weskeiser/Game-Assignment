@@ -1,6 +1,7 @@
-package Tests.GameCharacters.Hero;
+package Tests.Components.GameCharacters.Hero;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
 
 import java.util.*;
 
@@ -27,7 +28,7 @@ public class CreateHeroTest {
   //
 
   @Parameterized.Parameters
-  public static Collection testParams() {
+  public static Collection<Object[]> testParams() {
     return Arrays.asList(
         new Object[][] {
             { HeroType.WARRIOR, WeaponItem.WOODEN_SWORD, AttributeManager.newAttributeMap(5, 2, 1) },
@@ -47,39 +48,40 @@ public class CreateHeroTest {
   //
 
   @Test
-  public void GetName_NewHero_IsCorrect() {
+  public void NewHero_GetName_IsCorrect() {
     assertEquals(expectedHeroName, testHero.getName());
-    System.out.println(testHero.getCharacterType());
   }
 
   @Test
-  public void GetHealth_NewHero_HealthIsZero() {
+  public void NewHero_GetHealth_HealthIsZero() {
     assertEquals(Hero.HERO_STARTING_HEALTH, testHero.getHealth(), 0);
   }
 
   @Test
-  public void GetLevel_NewHero_LevelIsZero() {
+  public void NewHero_GetLevel_LevelIsZero() {
     assertEquals(Hero.HERO_STARTING_LEVEL, testHero.getLevel(), 0);
   }
 
   @Test
-  public void GetExperience_NewHero_ExperieceIsZero() {
+  public void NewHero_GetExperience_ExperieceIsZero() {
     assertEquals(Hero.HERO_STARTING_EXPERIENCE, testHero.getExperience(), 0);
   }
 
   @Test
-  public void EquipFromFirstInvSlot_NewHero_IsStartingWeapon() {
-    try {
-      Weapon firstInventorySlotItem = (Weapon) testHero.findInventoryItem(0);
+  public void NewHero_EquipFromFirstInvSlot_IsStartingWeapon() {
+    Weapon firstInventorySlotItem = null;
 
-      assertEquals(expectedStartingWeapon, firstInventorySlotItem.getEquippable());
+    try {
+      firstInventorySlotItem = (Weapon) testHero.findInventoryItem(0);
     } catch (InventoryException err) {
-      System.out.println("Starting weapon test fail.");
+      fail();
     }
+
+    assertEquals(expectedStartingWeapon, firstInventorySlotItem.getWeapon());
   }
 
   @Test
-  public void GetCharacterAttributes_NewHero_IsCorrect() {
+  public void NewHero_GetCharacterAttributes_IsCorrect() {
     assertEquals(expectedStartingAttributes, testHero.getCharacterAttributes());
   }
 

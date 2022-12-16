@@ -1,4 +1,4 @@
-package Tests.Items.Equipment.Armor;
+package Tests.Components.Items.Equipment.Armor;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
@@ -33,29 +33,29 @@ public class CreateArmorTest {
   //
 
   @Test
-  public void WhenArmorCreated_NameIsCorrect() {
+  public void CreatedNewArmor_NameIsCorrect() {
     assertEquals(ARMOR_NAME, testArmor.getName());
 
     assertNotEquals("saldkjf98sadf239", testArmor.getName());
   }
 
   @Test
-  public void WhenArmorCreated_RequiredLevelIsCorrect() {
+  public void CreatedNewArmor_RequiredLevelIsCorrect() {
     assertEquals(REQUIRED_LEVEL, testArmor.getLevelRequirement());
   }
 
   @Test
-  public void WhenArmorCreated_EquipmentSlotIsCorrect() {
+  public void CreatedNewArmor_EquipmentSlotIsCorrect() {
     assertEquals(EQUIPMENT_SLOT, testArmor.getEquipmentSlot());
   }
 
   @Test
-  public void WhenArmorCreated_ArmorTypeIsCorrect() {
+  public void CreatedNewArmor_ArmorTypeIsCorrect() {
     assertEquals(ARMOR_TYPE, testArmor.getEquipmentType());
   }
 
   @Test
-  public void WhenArmorCreated_ArmorAttributesCorrect() {
+  public void CreatedNewArmor_ArmorAttributesCorrect() {
     assertEquals(createAttributeMap(2, 3, 1), testArmor.getArmorAttributes());
   }
 

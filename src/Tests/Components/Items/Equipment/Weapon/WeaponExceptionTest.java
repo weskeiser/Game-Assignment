@@ -1,4 +1,4 @@
-package Tests.Items.Equipment.Weapon;
+package Tests.Components.Items.Equipment.Weapon;
 
 import static org.junit.Assert.assertThrows;
 

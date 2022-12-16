@@ -1,4 +1,4 @@
-package Tests.Items.Equipment.Armor;
+package Tests.Components.Items.Equipment.Armor;
 
 import static org.junit.Assert.assertThrows;
 
@@ -16,7 +16,7 @@ public class ArmorExceptionTest {
   // NOTE: Inventory slot 0 is taken up by starter weapon.
 
   @Test
-  public void GivenHeroType_WhenInsufficientLevel_ShouldThrowEquipmentException() {
+  public void Hero_EquipHigherLevelArmor_ThrowsEquipmentException() {
     Hero testHero = new Hero.HeroBuilder("Hero TestName", HeroType.MAGE).build();
     Armor insufficientLevelArmor = new Armor.ArmorBuilder(Cloth.WRINKLY_ROBE_BOTTOMS).build();
 
@@ -27,7 +27,7 @@ public class ArmorExceptionTest {
   }
 
   @Test
-  public void GivenHeroType_WhenWrongType_ShouldThrowEquipmentException() {
+  public void Hero_EquipArmorOfWrongType_ThrowsEquipmentException() {
     Hero testHero = new Hero.HeroBuilder("Hero TestName", HeroType.MAGE).build();
     Armor wrongTypeArmor = new Armor.ArmorBuilder(Mail.ROYAL_MAIL).build();
 

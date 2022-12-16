@@ -7,9 +7,12 @@ public class Weapon implements Equippable {
   private WeaponItem weapon;
   private EquipmentSlot equipmentSlot = EquipmentSlot.WEAPON;
 
-  @Override
-  public Enum getEquippable() {
+  public WeaponItem getWeapon() {
     return weapon;
+  }
+
+  public double getDamageMultiplier() {
+    return weapon.getDamageMultiplier();
   }
 
   @Override
@@ -30,10 +33,6 @@ public class Weapon implements Equippable {
   @Override
   public void printLevelRequirement() {
     System.out.println(getLevelRequirement());
-  }
-
-  public double getDamageMultiplier() {
-    return weapon.getDamageMultiplier();
   }
 
   @Override
