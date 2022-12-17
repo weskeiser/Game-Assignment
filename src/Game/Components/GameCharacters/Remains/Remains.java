@@ -3,7 +3,9 @@ package Game.Components.GameCharacters.Remains;
 import java.util.List;
 
 import Game.Components.Exceptions.LootException;
-import Game.Components.GameCharacters.Interfaces.*;
+import Game.Components.GameCharacters.Hero.Hero;
+import Game.Components.GameCharacters.Interfaces.Attacker;
+import Game.Components.GameCharacters.Interfaces.LootableRemains;
 import Game.Components.Items.Item;
 
 public class Remains implements LootableRemains {
@@ -11,7 +13,7 @@ public class Remains implements LootableRemains {
   private Attacker defeatedBy = null;
 
   @Override
-  public void showLoot(GameCharacter investigator) {
+  public void showLoot(Hero investigator) {
     if (investigator != defeatedBy) {
       System.out.println(LootException.Messages.NOT_YOURS);
       return;

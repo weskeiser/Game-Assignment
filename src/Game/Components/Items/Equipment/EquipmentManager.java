@@ -37,7 +37,7 @@ public interface EquipmentManager {
       throw new InvalidEquipmentException(EquipmentErrMessages.LEVEL_REQUIREMENT);
     }
 
-    EnumSet<?> validEquipmentTypes = equipment.getEquipmentSlot() == EquipmentSlot.WEAPON
+    var validEquipmentTypes = equipment.getEquipmentSlot() == EquipmentSlot.WEAPON
         ? heroType.getValidWeaponTypes()
         : heroType.getValidArmorTypes();
 
@@ -64,7 +64,7 @@ public interface EquipmentManager {
       List<Item> inventory)
       throws InvalidEquipmentException, InventoryException {
 
-    Equippable unEquipped = equippedItems.get(equipmentSlot);
+    var unEquipped = equippedItems.get(equipmentSlot);
 
     if (unEquipped == null)
       throw new InvalidEquipmentException(EquipmentErrMessages.SLOT_EMPTY);
@@ -80,8 +80,6 @@ public interface EquipmentManager {
     } else if (unEquipped instanceof Weapon) {
       inventory.add((Weapon) unEquipped);
     }
-
-    System.out.println(unEquipped.getName() + " was unequipped and added to the inventory.");
   };
 
 }

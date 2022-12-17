@@ -17,7 +17,7 @@ import Game.Components.Items.Equipment.Weapon.Weapon;
 import Game.Components.Items.Equipment.Weapon.WeaponItem;
 
 @RunWith(Parameterized.class)
-public class HeroDamage {
+public class HeroDamageTest {
   private Hero testHero;
 
   Weapon heroWeaponOne;
@@ -37,7 +37,7 @@ public class HeroDamage {
   }
 
   // Constructor
-  public HeroDamage(HeroType heroType, WeaponItem heroWeaponOne, WeaponItem heroWeaponTwo) {
+  public HeroDamageTest(HeroType heroType, WeaponItem heroWeaponOne, WeaponItem heroWeaponTwo) {
 
     this.testHero = new Hero.HeroBuilder("TestHero Name", heroType).build();
     this.heroWeaponOne = new Weapon.WeaponBuilder(heroWeaponOne).build();

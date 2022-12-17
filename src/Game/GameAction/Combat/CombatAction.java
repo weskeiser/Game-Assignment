@@ -2,14 +2,16 @@ package Game.GameAction.Combat;
 
 import java.util.*;
 
-import Game.Components.GameCharacters.Hero.HeroType;
-import Game.Components.GameCharacters.Interfaces.*;
+import Game.Components.GameCharacters.Hero.Hero;
+import Game.Components.GameCharacters.Interfaces.Attacker;
+import Game.Components.GameCharacters.Interfaces.Defender;
 
 public class CombatAction extends TimerTask implements CombatTask {
 
   private HashSet<Attacker> attackers = new HashSet<>();
 
   public void newAttack(Attacker attacker, Defender defender) {
+
     attackers.add(attacker);
     attacker.setCurrentlyAttacking(defender);
 
@@ -42,6 +44,7 @@ public class CombatAction extends TimerTask implements CombatTask {
   }
 
   public boolean performAttack(Attacker attacker, Defender defender) {
+
     if (attacker.decrementIfAttackCooldown())
       return ALIVE;
 
@@ -58,7 +61,7 @@ public class CombatAction extends TimerTask implements CombatTask {
 
     System.out.println(defender.getHealth());
 
-    if (((GameCharacter) attacker).getCharacterType() instanceof HeroType) {
+    if (attacker instanceof Hero) {
       attacker.gainExperience(randomisedMaxHit);
     }
 

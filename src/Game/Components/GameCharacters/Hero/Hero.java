@@ -13,20 +13,16 @@ import Game.Components.Items.Equipment.Weapon.Weapon;
 import utils.CLR;
 
 public class Hero
-    implements GameCharacter, HeroDisplayer, InventoryManager, EquipmentManager, Attacker, Defender,
+    implements HeroDisplayer, InventoryManager, EquipmentManager, Attacker, Defender,
     AttributeManager {
-
-  public static double HERO_STARTING_HEALTH = 10;
-  public static double HERO_STARTING_EXPERIENCE = 0;
-  public static int HERO_STARTING_LEVEL = 1;
 
   private String name;
   private HeroType heroType;
 
   // Levels
-  private int level = HERO_STARTING_LEVEL;
-  private double health = HERO_STARTING_HEALTH;
-  private double experience = HERO_STARTING_EXPERIENCE;
+  private int level = 1;
+  private double health = 10;
+  private double experience = 0;
 
   private double experienceToLevel = 10;
   private EnumMap<CharacterAttribute, Integer> heroAttributes;
@@ -41,11 +37,6 @@ public class Hero
   private List<Item> inventory = new ArrayList<Item>();
   private EnumMap<EquipmentSlot, Equippable> equippedItems = new EnumMap<>(EquipmentSlot.class);
 
-  public double getExperience() {
-    return experience;
-  }
-
-  @Override
   public String getName() {
     return name;
   }
@@ -55,22 +46,21 @@ public class Hero
     return level;
   }
 
+  public double getExperience() {
+    return experience;
+  }
+
+  public CharacterType getCharacterType() {
+    return heroType;
+  }
+
+  // Combat related: Attacks
+
   @Override
   public double getHealth() {
     return health;
   }
 
-  @Override
-  public CharacterType getCharacterType() {
-    return heroType;
-  }
-
-  @Override
-  public EnumMap<CharacterAttribute, Integer> getCharacterAttributes() {
-    return heroAttributes;
-  }
-
-  // Combat related: Attacks
   @Override
   public Optional<Defender> getCurrentlyAttacking() {
     return Optional.ofNullable(currentlyAttacking);
@@ -124,6 +114,7 @@ public class Hero
   }
 
   // Combat related: Defense
+
   @Override
   public boolean takeDamage(int damage, Attacker foe) {
     health = health - damage;
@@ -170,9 +161,9 @@ public class Hero
   }
 
   // Item related
+
   @Override
   public Item findInventoryItem(int index) throws InventoryException {
-
     try {
       return inventory.get(index);
     } catch (IndexOutOfBoundsException err) {
@@ -222,16 +213,15 @@ public class Hero
 
     var equippedWeapon = (Weapon) equippedItems.get(EquipmentSlot.WEAPON);
 
-    // if (equippedWeapon == null) {
-    // throw new InvalidEquipmentException(EquipmentErrMessages.NO_WEAPON);
-    // }
-
     return Optional.ofNullable(equippedWeapon);
-
-    // return equippedWeapon;
   }
 
   // Attributes related
+
+  @Override
+  public EnumMap<CharacterAttribute, Integer> getCharacterAttributes() {
+    return heroAttributes;
+  }
 
   @Override
   public EnumMap<CharacterAttribute, Integer> getDefensiveAttributes() {
@@ -251,6 +241,8 @@ public class Hero
       double difference = experience - experienceToLevel;
 
       experienceToLevel = (experienceToLevel * 1.5) + difference;
+
+      System.out.println("\n" + CLR.greenC + "Congratulations, " + name + "! Your level is now " + level + ".");
     }
   }
 

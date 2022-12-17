@@ -1,71 +1,69 @@
 package Tests.Components.Items.Equipment.Armor;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotEquals;
 
-import java.util.EnumMap;
-import java.util.Map;
+import java.util.Arrays;
+import java.util.Collection;
 
-import org.junit.After;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.junit.runners.Parameterized;
 
-import Game.Components.GameCharacters.Interfaces.CharacterAttribute;
-import Game.Components.Items.Equipment.EquipmentSlot;
-import Game.Components.Items.Equipment.Armor.*;
+import Game.Components.Items.Equipment.Armor.Armor;
+import Game.Components.Items.Equipment.Armor.ArmorItem;
+import Game.Components.Items.Equipment.Armor.ArmorItems.Cloth;
 import Game.Components.Items.Equipment.Armor.ArmorItems.Mail;
 
+@RunWith(Parameterized.class)
 public class CreateArmorTest {
-  // Expected constants
-  final ArmorItem ROYAL_MAIL = Mail.ROYAL_MAIL;
-  final ArmorType ARMOR_TYPE = ArmorType.MAIL;
-  final EquipmentSlot EQUIPMENT_SLOT = EquipmentSlot.TORSO;
-  final String ARMOR_NAME = "Royal mail";
-  final int REQUIRED_LEVEL = 22;
 
-  // Test armor
-  Armor testArmor = new Armor.ArmorBuilder(ROYAL_MAIL).build();
+  Armor testArmor;
+  ArmorItem armorItem;
 
-  @After
-  public void resetArmor() {
-    testArmor = new Armor.ArmorBuilder(ROYAL_MAIL).build();
+  // Params for constructor
+  @Parameterized.Parameters
+
+  public static Collection<ArmorItem> testParams() {
+
+    return Arrays.asList(
+        Mail.HOLY_CHAIN_HOOD,
+        Mail.ROYAL_MAIL,
+        Cloth.WRINKLY_ROBE_BOTTOMS,
+        Cloth.INVISIBLE_WIZARD_HAT);
+  }
+
+  // Constructor
+  public CreateArmorTest(ArmorItem armorItem) {
+
+    this.armorItem = armorItem;
+    this.testArmor = new Armor.ArmorBuilder(armorItem).build();
   }
 
   //
 
   @Test
   public void CreatedNewArmor_NameIsCorrect() {
-    assertEquals(ARMOR_NAME, testArmor.getName());
-
-    assertNotEquals("saldkjf98sadf239", testArmor.getName());
+    assertEquals(armorItem.getName(), testArmor.getName());
   }
 
   @Test
   public void CreatedNewArmor_RequiredLevelIsCorrect() {
-    assertEquals(REQUIRED_LEVEL, testArmor.getLevelRequirement());
+    assertEquals(armorItem.getLevelRequirement(), testArmor.getLevelRequirement());
   }
 
   @Test
   public void CreatedNewArmor_EquipmentSlotIsCorrect() {
-    assertEquals(EQUIPMENT_SLOT, testArmor.getEquipmentSlot());
+    assertEquals(armorItem.getEquipmentSlot(), testArmor.getEquipmentSlot());
   }
 
   @Test
   public void CreatedNewArmor_ArmorTypeIsCorrect() {
-    assertEquals(ARMOR_TYPE, testArmor.getEquipmentType());
+    assertEquals(armorItem.getArmorType(), testArmor.getEquipmentType());
   }
 
   @Test
   public void CreatedNewArmor_ArmorAttributesCorrect() {
-    assertEquals(createAttributeMap(2, 3, 1), testArmor.getArmorAttributes());
-  }
-
-  // Helpers
-
-  public EnumMap<CharacterAttribute, Integer> createAttributeMap(int strength, int dexterity, int intelligence) {
-    return new EnumMap<>(Map.ofEntries(
-        Map.entry(CharacterAttribute.STRENGTH, strength),
-        Map.entry(CharacterAttribute.DEXTERITY, dexterity),
-        Map.entry(CharacterAttribute.INTELLIGENCE, intelligence)));
+    assertEquals(armorItem.getArmorAttributes(), testArmor.getArmorAttributes());
   }
 
 }

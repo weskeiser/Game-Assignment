@@ -1,21 +1,47 @@
-## Getting Started
+# Hero Game `Noroff Assignment #04`
 
-Welcome to the VS Code Java world. Here is a guideline to help you get started to write Java code in Visual Studio Code.
+---
 
-## Folder Structure
+## About The Game
 
-The workspace contains two folders by default, where:
+A tick based game where the player handles a Hero. The player has the option of choosing a ranger, a rogue, a mage or a warrior as their character.
 
-- `src`: the folder to maintain sources
-- `lib`: the folder to maintain dependencies
+## Game Mechanics
 
-Meanwhile, the compiled output files will be generated in the `bin` folder by default.
+#### Tick System
 
-> If you want to customize the folder structure, open `.vscode/settings.json` and update the related settings there.
+A game tick is `250ms`
 
-## Dependency Management
+The `gameTimer` is the global time keeper. Game actions are defined in extensions of `TimeTask` implementing extensions of the `GameTask` interface. Game tasks are scheduled and removed with methods on these instances and are ran every game tick.
 
-The `JAVA PROJECTS` view allows you to manage your dependencies. More details can be found [here](https://github.com/microsoft/vscode-java-dependency#manage-dependencies).
+#### Combat
+
+The combat system has been designed with multiple algorithms.
+
+A player can engage in combat with NPC Villains. If multiple Heroes are instantiated, they can also engage in combat with each other, as the game is designed with **multiplayer expansion in mind**.
+
+A character can attack one enemy character at a time, but can be attacked by multiple enemy characters simultaneously.
+
+If a character is attacked, it will automatically attack back if it is not already attacking someone else.
+
+When a character performs an attack, they receive an **8 tick cooldown** time. Cooldown time will be **lower depending on their dexterity** level.
+
+`Defense`
+When an attack is performed the defender will first **attempt to deflect the attack**. The deflection chance depends on their worn armor and the attack type of the attacker. Each armor slot gives a maximum of 15% deflection chance, translating to a **maximum 45% deflection chance** given a level cap of 100 and no added bonuses.
+
+When calculating the deflection chance, for each armor slot, **only the armorAttribute matching the attackAttribute of the attacker is taken into consideration**.
+
+`Attack`
+If the defender fails to deflect the attack, **the attacker's max hit is calculated**. The attacker's max hit depends on their **equipped weapon**, and their **strength attribute**. After the max hit has been calculated, the **actual hit is randomised**. If a roll is in the upper 25th percentile, there will be a re-roll. This contributes to making higher hits more special, and makes the game more unpredictable. The defender then takes the resulting hit, and the **attacker will receive experience equiavelent to the actual hit**, given they are not an NPC.
+
+`Death`
+When a character receives a final blow, their inventory and equipped items are dropped as loot, and becomes accessible, as Remains, to the player who defeated them.
+
+---
+
+---
+
+---
 
 - Higher armor attribute provides a chance to deflect an attack of same type
 - Maximum 15% deflection chance per attribute per piece (Head, Torso, Legs)

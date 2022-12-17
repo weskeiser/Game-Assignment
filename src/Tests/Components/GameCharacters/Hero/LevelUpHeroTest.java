@@ -19,15 +19,14 @@ public class LevelUpHeroTest {
 
   // Params for constructor
   @Parameterized.Parameters
-  public static Collection<Object[]> testParams() {
+
+  public static Collection<HeroType> testParams() {
 
     return Arrays.asList(
-        new Object[][] {
-            { HeroType.WARRIOR },
-            { HeroType.ROGUE },
-            { HeroType.RANGER },
-            { HeroType.MAGE },
-        });
+        HeroType.WARRIOR,
+        HeroType.ROGUE,
+        HeroType.RANGER,
+        HeroType.MAGE);
   }
 
   // Constructor
@@ -36,16 +35,16 @@ public class LevelUpHeroTest {
   }
 
   @Test
-  public void LevelsCorrectWhenLevelingUp() {
+  public void LevelsAreCorrectWhenLevelingUp() {
     var heroType = (HeroType) testHero.getCharacterType();
     var heroAttributes = heroType.init();
     var levelingAttributes = heroType.getLevelingAttributes();
-    var startingHealth = 10;
+    var initialHealth = 10;
 
     // At level 1
 
     assertEquals(1, testHero.getLevel());
-    assertEquals(startingHealth, testHero.getHealth(), 0);
+    assertEquals(initialHealth, testHero.getHealth(), 0);
     assertEquals(heroAttributes, testHero.getCharacterAttributes());
 
     // At level 2
@@ -55,7 +54,7 @@ public class LevelUpHeroTest {
     heroAttributes.replaceAll((heroAttribute, value) -> value + levelingAttributes.get(heroAttribute));
 
     assertEquals(2, testHero.getLevel());
-    assertEquals(startingHealth + 2, testHero.getHealth(), 0);
+    assertEquals(initialHealth + 2, testHero.getHealth(), 0);
     assertEquals(heroAttributes, testHero.getCharacterAttributes());
 
     // At level 3
@@ -65,7 +64,7 @@ public class LevelUpHeroTest {
     heroAttributes.replaceAll((heroAttribute, value) -> value + levelingAttributes.get(heroAttribute));
 
     assertEquals(3, testHero.getLevel());
-    assertEquals(startingHealth + 4, testHero.getHealth(), 0);
+    assertEquals(initialHealth + 4, testHero.getHealth(), 0);
     assertEquals(heroAttributes, testHero.getCharacterAttributes());
   }
 }

@@ -1,73 +1,70 @@
 package Tests.Components.Items.Equipment.Weapon;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotEquals;
 
-import org.junit.After;
+import java.util.Arrays;
+import java.util.Collection;
+
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.junit.runners.Parameterized;
 
 import Game.Components.Items.Equipment.EquipmentSlot;
-import Game.Components.Items.Equipment.Weapon.*;
+import Game.Components.Items.Equipment.Weapon.Weapon;
+import Game.Components.Items.Equipment.Weapon.WeaponItem;
 
+@RunWith(Parameterized.class)
 public class CreateWeaponTest {
-  // String weaponName = "Crooked bow";
-  // Weapons weapon = Weapons.CROOKED_BOW;
-  // WeaponType weaponType = WeaponType.BOW;
-  // int requiredLevel = 3;
-  // double damageMultiplier = 1.3;
 
-  // Expected constants
-  String weaponName = "Cleaning staff";
-  WeaponItem weapon = WeaponItem.CLEANING_STAFF;
-  WeaponType weaponType = WeaponType.STAFF;
-  int requiredLevel = 17;
-  double damageMultiplier = 4.2;
+  Weapon testWeapon;
+  WeaponItem weaponItem;
 
-  // Test weapon
-  Weapon testWeapon = new Weapon.WeaponBuilder(weapon).build();
+  // Params for constructor
+  @Parameterized.Parameters
 
-  @After
-  public void resetWeapon() {
-    testWeapon = new Weapon.WeaponBuilder(weapon).build();
+  public static Collection<WeaponItem> testParams() {
+
+    return Arrays.asList(
+        WeaponItem.GREATAXE,
+        WeaponItem.EXCALIBUR,
+        WeaponItem.BLOODY_DAGGER,
+        WeaponItem.CROOKED_BOW,
+        WeaponItem.CRACKED_WAND,
+        WeaponItem.CLEANING_STAFF);
+  }
+
+  // Constructor
+  public CreateWeaponTest(WeaponItem weaponItem) {
+
+    this.weaponItem = weaponItem;
+    this.testWeapon = new Weapon.WeaponBuilder(weaponItem).build();
   }
 
   //
 
   @Test
   public void whenWeaponCreated_nameIsCorrect() {
-    assertEquals(weaponName, testWeapon.getName());
-
-    assertNotEquals("98sad7klsjodf", testWeapon.getName());
+    assertEquals(weaponItem.getName(), testWeapon.getName());
   }
 
   @Test
   public void whenWeaponCreated_requiredLevelIsCorrect() {
-    assertEquals(requiredLevel, testWeapon.getLevelRequirement());
-
-    assertNotEquals(1, testWeapon.getLevelRequirement());
-    assertNotEquals(18, testWeapon.getLevelRequirement());
+    assertEquals(weaponItem.getLevelRequirement(), testWeapon.getLevelRequirement());
   }
 
   @Test
   public void whenWeaponCreated_equipmentSlotIsCorrect() {
     assertEquals(EquipmentSlot.WEAPON, testWeapon.getEquipmentSlot());
-
-    assertNotEquals(EquipmentSlot.LEGS, testWeapon.getEquipmentSlot());
   }
 
   @Test
   public void whenWeaponCreated_weaponTypeIsCorrect() {
-    assertEquals(weaponType, testWeapon.getEquipmentType());
-
-    assertNotEquals(WeaponType.HAMMER, testWeapon.getEquipmentType());
+    assertEquals(weaponItem.getWeaponType(), testWeapon.getEquipmentType());
   }
 
   @Test
   public void whenWeaponIsCreated_damageMultiplierIsCorrect() {
-    assertEquals(damageMultiplier, testWeapon.getDamageMultiplier(), 0);
-
-    assertNotEquals(4.1, testWeapon.getDamageMultiplier(), 0);
-    assertNotEquals(4.3, testWeapon.getDamageMultiplier(), 0);
+    assertEquals(weaponItem.getDamageMultiplier(), testWeapon.getDamageMultiplier(), 0);
   }
 
 }

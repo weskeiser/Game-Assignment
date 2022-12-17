@@ -17,9 +17,10 @@ public interface AttributeManager {
   EnumMap<CharacterAttribute, Integer> getDefensiveAttributes();
 
   // TODO: Change to more specific name
+  //
   public static EnumMap<CharacterAttribute, Integer> newAttributeMap(int strength,
       int dexterity, int intelligence) {
-    EnumMap<CharacterAttribute, Integer> attributeMap = new EnumMap<>(CharacterAttribute.class);
+    var attributeMap = new EnumMap<CharacterAttribute, Integer>(CharacterAttribute.class);
     attributeMap.put(CharacterAttribute.STRENGTH, strength);
     attributeMap.put(CharacterAttribute.DEXTERITY, dexterity);
     attributeMap.put(CharacterAttribute.INTELLIGENCE, intelligence);
@@ -34,14 +35,14 @@ public interface AttributeManager {
     // For each equipped item
     equippedItems.forEach((equipmentSlot, charAttrVal) -> {
 
-      // Ignore if weapon
+      // If not weapon
       if (equipmentSlot == EquipmentSlot.WEAPON)
         return;
 
       // Get armor attributes
-      EnumMap<CharacterAttribute, Integer> armorAttributes = ((Armor) charAttrVal).getArmorAttributes();
+      var armorAttributes = ((Armor) charAttrVal).getArmorAttributes();
 
-      // Add each attribute to respective slot in defensiveAttributes
+      // Add each attribute to total (defensiveAttributes)
       armorAttributes.forEach((heroAttrKey, armorAttrVal) -> defensiveAttributes.put(
           heroAttrKey,
           defensiveAttributes.getOrDefault(heroAttrKey, 0) + armorAttrVal));

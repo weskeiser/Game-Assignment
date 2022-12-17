@@ -24,7 +24,7 @@ public interface ArmorItem {
   default void setArmorAttributes(ArmorType armorType, EnumMap<CharacterAttribute, Integer> armorAttributes,
       int levelRequirement) {
 
-    EnumMap<CharacterAttribute, Integer> baseArmorAttributes = armorType.getBaseArmorAttributes();
+    var baseArmorAttributes = armorType.getBaseArmorAttributes();
 
     Arrays.stream(CharacterAttribute.values()).forEach(k -> {
       armorAttributes.put(

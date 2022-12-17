@@ -9,9 +9,14 @@ import Game.Components.Items.Equipment.Armor.Armor;
 import Game.Components.Items.Equipment.Weapon.Weapon;
 
 public interface InventoryManager {
+
   static int MAX_INVENTORY_SIZE = 15;
 
+  int getFreeInventorySlots();
+
   void addToInventory(Item item) throws InventoryException;
+
+  Item findInventoryItem(int index) throws InventoryException;
 
   default void addToInventory(List<Item> inventory, Item item) throws InventoryException {
     if (inventory.size() >= MAX_INVENTORY_SIZE) {
@@ -27,15 +32,12 @@ public interface InventoryManager {
     }
   };
 
-  Item findInventoryItem(int index) throws InventoryException;
-
   default boolean removeFromInventory(List<Item> inventory, Item item) throws InventoryException {
+
     if (!inventory.remove(item))
       throw new InventoryException(InventoryErrMessages.NOT_FOUND);
 
     return true;
   };
-
-  int getFreeInventorySlots();
 
 }
