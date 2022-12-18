@@ -1,8 +1,8 @@
 # Hero Game
 
----
-
 `Noroff Assignment #04`
+
+---
 
 ## Table of Contents
 
