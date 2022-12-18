@@ -1,68 +1,65 @@
-# Hero Game `Noroff Assignment #04`
+# Hero Game
+
+`Noroff Assignment #04`
 
 ---
 
 ## About The Game
 
-A tick based game where the player handles a Hero. The player has the option of choosing a ranger, a rogue, a mage or a warrior as their character.
+A tick based fantasy game with Heroes and Villains. The player plays as a Hero and has the option of choosing a ranger, a rogue, a mage or a warrior as their character. They can equip weapons and armor, manage their items, and engage in combat.
+
+---
 
 ## Game Mechanics
 
 #### Tick System
 
-A game tick is `250ms`
-
 The `gameTimer` is the global time keeper. Game actions are defined in extensions of `TimeTask` implementing extensions of the `GameTask` interface. Game tasks are scheduled and removed with methods on these instances and are ran every game tick.
+
+A game tick is `250ms`
 
 #### Combat
 
 The combat system has been designed with multiple algorithms.
 
-A player can engage in combat with NPC Villains. If multiple Heroes are instantiated, they can also engage in combat with each other, as the game is designed with **multiplayer expansion in mind**.
+A player can engage in combat with NPC `Villains`. A `Hero` can also engage in combat with another, as the game is designed with **multiplayer expansion in mind**.
 
 A character can attack one enemy character at a time, but can be attacked by multiple enemy characters simultaneously.
 
-If a character is attacked, it will automatically attack back if it is not already attacking someone else.
+If not attacking someone else, a character will attack back automatically.
 
-When a character performs an attack, they receive an **8 tick cooldown** time. Cooldown time will be **lower depending on their dexterity** level.
+When a character performs an attack, they receive `attackCooldown`. Base cooldown time is **8 ticks**, with an amount (`attackSpeed`) subtracted from it, depending on their `dexterity` level.
 
-`Defense`
-When an attack is performed the defender will first **attempt to deflect the attack**. The deflection chance depends on their worn armor and the attack type of the attacker. Each armor slot gives a maximum of 15% deflection chance, translating to a **maximum 45% deflection chance** given a level cap of 100 and no added bonuses.
+#####Defense
+When an attack is performed the defender will first **attempt to deflect the attack**.
 
-When calculating the deflection chance, for each armor slot, **only the armorAttribute matching the attackAttribute of the attacker is taken into consideration**.
+The `deflectionChance` depends on the worn armor of the `Defender`, and the attack type of the `Attacker`.
 
-`Attack`
-If the defender fails to deflect the attack, **the attacker's max hit is calculated**. The attacker's max hit depends on their **equipped weapon**, and their **strength attribute**. After the max hit has been calculated, the **actual hit is randomised**. If a roll is in the upper 25th percentile, there will be a re-roll. This contributes to making higher hits more special, and makes the game more unpredictable. The defender then takes the resulting hit, and the **attacker will receive experience equiavelent to the actual hit**, given they are not an NPC.
+Each armor slot gives a maximum of 15% `deflectionChance`, translating to a **maximum 45%** `deflectionChance` given a level cap of 100 and no added bonuses.
 
-`Death`
-When a character receives a final blow, their inventory and equipped items are dropped as loot, and becomes accessible, as Remains, to the player who defeated them.
+When calculating the `deflectionChance`, for each armor slot, only the `armorAttribute` matching the `attackAttribute` of the attacker is taken into consideration.
 
----
+#####Attack
+If the `Defender` fails to deflect the attack, the `maxHit` of the `Attacker` is calculated.
 
----
+The `maxHit` depends on the `equippedWeapon` and `strengthAttribute` of the `Attacker`.
 
----
+After it has been calculated, the `actualHit` is **randomised**. If a roll is in the upper 25th percentile, there will be a re-roll. This contributes to making higher hits more special, and makes the game more unpredictable.Lost in Translation
 
-- Higher armor attribute provides a chance to deflect an attack of same type
-- Maximum 15% deflection chance per attribute per piece (Head, Torso, Legs)
-- Different armor types have different base attributes that act as a multiplier in an algorithm with with armor level requirement to provide protection against attributes of same type when attacked
-- Armor can also invoke special effects
+The `Defender` then takes the resulting hit, and the `Attacker` receives `experience` equivalent to the `actualHit`, given they are not an NPC.
 
-Combat:
-
-1. Whether defender deflected the attack is determined
-2. Max hit of attacker is calculated
-3. Damage is randomised\*
-4. Defender takes damage
-5. Attacker gains experience if not NPC
-
-I have altered the implementation of some of the hard requirements under the assumption they will only draw points if they no longer implement the spirit of the requested feature or that they are a measurably worse implementation.
-
-Some of the requirements from the default approach are negated by the specifications of the alternative approach (Appendix D, point 2).
+#####Death
+When a character receives a `finalBlow`, their `inventory` and `equippedItems` are surrendered and becomes accessible as `Remains` to the player who defeated them. All related combat engagements are removed from the combat tasks.
 
 ---
 
-Notes on modifications
+## Equipment
+
+### Weapons
+
+---
+
+## Modifications
 
 Hero damage has contradictory specifications
 In point 2) is the following specification:
@@ -87,6 +84,12 @@ I have went with the solution of totalAttributes, renamed defensiveAttributes, r
 The task stipulates the getArmorAttributes method belongs to equipment manager. However as the equipment manager is implementd by game characters, I saw it redundant feature, since game characters already have a method to get total attributes and the method would have no practical use. The getArmorAttributes method is instead located at each individual armor type, where it in this implementation logically belongs.
 
 ---
+
+- Different armor types have different base attributes that act as a multiplier in an algorithm with with armor level requirement to provide protection against attributes of same type when attacked
+
+I have altered the implementation of some of the hard requirements under the assumption they will only draw points if they no longer implement the spirit of the requested feature or that they are a measurably worse implementation.
+
+Some of the requirements from the default approach are negated by the specifications of the alternative approach (Appendix D, point 2).
 
 Hard requirements:
 
@@ -122,14 +125,7 @@ Hard requirements:
   Interact with Hero class to satisfy Liscov SP.
   Heroes start with different attributes and level up at different rates as specified
 
-- Display
-  • Name
-  • Class
-  • Level
-  • Total strength
-  • Total dexterity
-  • Total intelligence
-  • Damage
+- Display methods specified in assignment.
 
 - Damage
   Total damage = weaponDamage from equipped weapon + 1% for every point in damaging attribute
@@ -158,50 +154,26 @@ Hard requirements:
   \*\*\*\* RequiredLevel altered to be only required for equipment with the Equippable interface to allow for non level-gated items.
   Unequippable if required level not met.
   Each item have a designated equipment slot
-  Slot is an enum with following values:
-  • Weapon
-  • Head
-  • Body
-  • Legs
 
-- Weapons
-  • Axes
-  • Bows
-  • Daggers
-  • Hammers
-  • Staffs
-  • Swords
-  • Wands
+  Slot is an enum with values specified in assignment.
 
   Encapsulated in WeaponType enum and composed into Weapon class
   Weapons have a weapon type and deal damage.
   Damage is represented as a WeaponDamage field (Located in WeaponItem enum)
   When a weapon is created it is automatically given slot of Weapon
 
-- Armor
-  • Cloth
-  • Leather
-  • Mail
-  • Plate
-
   Encapsulated in ArmorType enum and composed into Armor class
   Has attributes providing bonuses when equipped of type HeroAttribute and should be called ArmorAttribute
   \*\*\*\* HeroAttribute renamed to CharacterAttribute
   \*\*\*\* ArmorAttributes split into baseArmorAttributes dependent on and residing in ArmorType enum, and armorAttributes which resides in each ArmorType enum (ArmorItem implementers) after being calculated based on armor item level requirement.
 
-Certain hero classes can equip certain weapon types:
-• Mages – Staff, Wand
-• Rangers – Bow
-• Rogues – Dagger, Sword
-• Warriors – Axe, Hammer, Sword
+Certain hero classes can equip certain equipment types as specified in assignment.
+
 Custom InvalidWeaponException thrown with appropriate message if wrong type or insufficient level
 \*\*\*\* Split into individual
-Certain hero classes can equip certain armor types:
-• Mages – Cloth
-• Rangers – Leather, Mail
-• Rogues – Leather, Mail
-• Warriors – Mail, Plate
 Custom InvalidArmorException thrown with appropriate message if wrong type or insufficient level
+
+---
 
 - Alternative approach
   A single Hero class
