@@ -1,6 +1,15 @@
 # Hero Game
 
+---
+
 `Noroff Assignment #04`
+
+## Table of Contents
+
+- [About The Game](##about-the-game)
+- [About The Code](##about-the-code)
+- [Modifications](##modifications)
+- [Game Mechanics](##game-mechanics)
 
 ---
 
@@ -9,6 +18,14 @@
 A tick based fantasy game with Heroes and Villains. The player plays as a Hero and has the option of choosing a ranger, a rogue, a mage or a warrior as their character. They can equip weapons and armor, manage their items, and engage in combat.
 
 ---
+
+## About The Code
+
+The alternative approach outlined in Appendix D, point 2 has been chosen for this task. The game has also been slightly expanded.
+
+As a result the there has been some modifications to the specifications in the original approach, the most notable of which are outlined in the [Modifications](##task-modifications) section below.
+
+The same functionality is still present, as required in the alternative approach outline.
 
 ## Game Mechanics
 
@@ -30,7 +47,8 @@ If not attacking someone else, a character will attack back automatically.
 
 When a character performs an attack, they receive `attackCooldown`. Base cooldown time is **8 ticks**, with an amount (`attackSpeed`) subtracted from it, depending on their `dexterity` level.
 
-#####Defense
+##### Defense
+
 When an attack is performed the defender will first **attempt to deflect the attack**.
 
 The `deflectionChance` depends on the worn armor of the `Defender`, and the attack type of the `Attacker`.
@@ -39,7 +57,8 @@ Each armor slot gives a maximum of 15% `deflectionChance`, translating to a **ma
 
 When calculating the `deflectionChance`, for each armor slot, only the `armorAttribute` matching the `attackAttribute` of the attacker is taken into consideration.
 
-#####Attack
+##### Attack
+
 If the `Defender` fails to deflect the attack, the `maxHit` of the `Attacker` is calculated.
 
 The `maxHit` depends on the `equippedWeapon` and `strengthAttribute` of the `Attacker`.
