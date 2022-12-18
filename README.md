@@ -7,9 +7,22 @@
 ## Table of Contents
 
 - [About The Game](https://github.com/weskeiser/Game-Assignment#about-the-game)
+
 - [About The Code](https://github.com/weskeiser/Game-Assignment#about-the-code)
-- [Modifications](https://github.com/weskeiser/Game-Assignment#modifications)
+
 - [Game Mechanics](https://github.com/weskeiser/Game-Assignment#game-mechanics)
+
+  - [Tick System](https://github.com/weskeiser/Game-Assignment#tick-system)
+
+  - [Combat](https://github.com/weskeiser/Game-Assignment#combat)
+    - [Defense](https://github.com/weskeiser/Game-Assignment#defense)
+    - [Attack](https://github.com/weskeiser/Game-Assignment#attack)
+    - [Death](https://github.com/weskeiser/Game-Assignment#death)
+
+- [Modifications](https://github.com/weskeiser/Game-Assignment#modifications)
+  - [Hero Attributes](https://github.com/weskeiser/Game-Assignment#hero-attributes)
+  - [Total Attributes](https://github.com/weskeiser/Game-Assignment#total-attributes)
+  - [Hero Damage](https://github.com/weskeiser/Game-Assignment#hero-damage)
 
 ---
 
@@ -21,9 +34,9 @@ A tick based fantasy game with Heroes and Villains. The player plays as a Hero a
 
 ## About The Code
 
-The alternative approach outlined in Appendix D, point 2 has been chosen for this task. The game has also been slightly expanded.
+The alternative approach outlined in Appendix D, point 2 has been chosen for this task. The game has also been slightly expanded on.
 
-The same functionality is still present, as required in the alternative approach outline, with a few reasoned [modifications](https://github.com/weskeiser/Game-Assignment#task-modifications).
+As required in the alternative approach outline the same functionality is still present. However with a few reasoned [modifications](https://github.com/weskeiser/Game-Assignment#task-modifications).
 
 ---
 
@@ -75,19 +88,19 @@ When a character receives a `finalBlow`, their `inventory` and `equippedItems` a
 
 ## Modifications
 
+### Hero Attributes
+
+HeroAttributes renamed CharacterAttributes
+
 ### Total Attributes
 
 TotalAttributes has been renamed `defensiveAttributes`, representing the total of worn `armorAttributes`, with a custom defenses calculation model laid out in \*\*\*\*. `levelingAttributes` has been left to their intuitive domain; representing the amount by which a Hero's attributes gain levels.
 
 Appendix D, point 2 stipulates the `EquipmentManager` should have a `getArmorAttributes` method. I have moved it to each armor item, where it logically fits in my implementation.
 
-### Hero Attributes
-
-Renamed CharacterAttributes
-
 ### Hero Damage
 
-#####Specification in Appendix A, point 2.0:
+#### Specification in Appendix A, point 2.0:
 
 > • Strength – determines the physical strength of the character.
 > • Dexterity – determines the characters ability to attack with speed and nimbleness.
