@@ -59,13 +59,13 @@ public class CombatAction extends TimerTask implements CombatTask {
 
     var defenderSurvived = defender.takeDamage((int) randomisedMaxHit, attacker);
 
-    System.out.println(defender.getHealth());
-
     if (attacker instanceof Hero) {
       attacker.gainExperience(randomisedMaxHit);
     }
 
     //
+
+    System.out.println(defender.getHealth());
 
     if (!defenderSurvived) {
       attacker.receiveLootAccess(defender.surrenderValuables());
@@ -87,6 +87,7 @@ public class CombatAction extends TimerTask implements CombatTask {
       Optional<Defender> optionalDefender = attacker.getCurrentlyAttacking();
 
       optionalDefender.ifPresent((defender) -> {
+
         // Attackers -> After death: Remove concurrent attackers
         if (defender.getHealth() <= 0) {
           attacker.setCurrentlyAttacking(null);
@@ -97,8 +98,10 @@ public class CombatAction extends TimerTask implements CombatTask {
         var aliveStatus = performAttack(attacker, defender);
 
         if (aliveStatus == DEAD) {
+
           // Attackers -> After death: Remove attacker
           attackIterator.remove();
+
           // Attackers -> After death: Remove defender
           attackers.remove((Attacker) defender);
         }

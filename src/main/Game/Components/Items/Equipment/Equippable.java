@@ -1,8 +1,8 @@
 package main.Game.Components.Items.Equipment;
 
-import main.Game.Components.Items.Item;
+import main.Game.Components.Items.GameItem;
 
-public interface Equippable extends Item {
+public interface Equippable extends GameItem {
 
   EquipmentType getEquipmentType();
 

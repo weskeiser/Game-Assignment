@@ -1,11 +1,8 @@
 package main.Game.GameController;
 
-import main.Game.Components.Exceptions.InventoryException;
-import main.Game.Components.Exceptions.LootException;
 import main.Game.Components.GameCharacters.Hero.Hero;
 import main.Game.Components.GameCharacters.Hero.HeroType;
-import main.Game.Components.GameCharacters.Interfaces.LootableRemains;
-import main.Game.Components.Items.Item;
+import main.Game.Components.Items.Equipment.Equippable;
 
 public class GameController {
 
@@ -25,23 +22,40 @@ public class GameController {
     return new Hero.HeroBuilder(name, HeroType.MAGE).build();
   }
 
-  public void lootRemains(LootableRemains remains, Hero looter, Item lootItem) {
+  public void equip(int inventoryIndex, Hero character) {
     try {
-      if (looter.getFreeInventorySlots() <= 0)
-        throw new LootException(LootException.Messages.FULL_INVENTORY);
-
-      if (looter != remains.getDefeator())
-        throw new LootException(LootException.Messages.NOT_YOURS);
-
-      remains.takeItem(lootItem);
-      looter.addToInventory((Item) lootItem);
-
-    } catch (LootException err) {
-      System.out.println(err.getMessage());
-
-    } catch (InventoryException err) {
-      System.out.println(err.getMessage());
+      character.equip(inventoryIndex);
+    } catch (Throwable err) {
+      System.out.println(err);
     }
   }
+
+  public void equip(Equippable equipment, Hero character) {
+    try {
+      character.equip(equipment);
+    } catch (Throwable err) {
+      System.out.println(err);
+    }
+  }
+
+  // public void lootRemains(LootableRemains remains, Hero looter, Item lootItem)
+  // {
+  // try {
+  // if (looter.getFreeInventorySlots() <= 0)
+  // throw new LootException(LootException.Messages.FULL_INVENTORY);
+
+  // if (looter != remains.getDefeator())
+  // throw new LootException(LootException.Messages.NOT_YOURS);
+
+  // remains.takeItem(lootItem);
+  // looter.addToInventory((Item) lootItem);
+
+  // } catch (LootException err) {
+  // System.out.println(err.getMessage());
+
+  // } catch (InventoryException err) {
+  // System.out.println(err.getMessage());
+  // }
+  // }
 
 }

@@ -1,0 +1,94 @@
+---
+** ITEMS **
+DROP TABLE if exists Items;
+CREATE TABLE if not exists Items(
+ID integer PRIMARY KEY AUTOINCREMENT,
+Type varchar(15),
+Name varchar(30),
+Description varchar(255),
+Weight int(4),
+Value int(10))
+---
+** CONSUMABLES **
+DROP TABLE if exists Consumables;
+CREATE TABLE if not exists Consumables(
+ID integer PRIMARY KEY AUTOINCREMENT,
+Type varchar(15),
+Name varchar(30),
+Description varchar(255),
+Weight int(4),
+Value int(10),
+FOREIGN KEY(ID) REFERENCES ITEMS(ID))
+---
+** WEAPONS **
+DROP TABLE if exists Weapons;
+CREATE TABLE if not exists Weapons(
+ID integer PRIMARY KEY AUTOINCREMENT,
+Range int(4),
+Weapon_type varchar(16),
+FOREIGN KEY(ID) REFERENCES ITEMS(ID))
+---
+** STATS **
+DROP TABLE if exists Stats;
+CREATE TABLE if not exists Stats(
+ID integer PRIMARY KEY AUTOINCREMENT,
+health_max int(5),
+health_min int(5),
+defense_max int(5),
+defense_min int(5),
+magic_max int(5),
+magic_min int(5),
+dexterity_max int(5),
+dexterity_min int(5),
+stealth_max int(5),
+stealth_min int(5),
+FOREIGN KEY(ID) REFERENCES ITEMS(ID))
+---
+** CHARACTER **
+DROP TABLE if exists Character;
+CREATE TABLE if not exists Character(
+username varchar(30) PRIMARY KEY,
+health int(10),
+strength int(10),
+defense int(10),
+magic int(10),
+dexterity int(10),
+stealth int(10),
+class int(10))
+---
+** PLAYER_INVENTORY **
+DROP TABLE if exists Player_inventory;
+CREATE TABLE if not exists Player_inventory(
+UniqueId integer PRIMARY KEY AUTOINCREMENT,
+ItemID integer,
+_healthPotential float(10),
+_defensePotential float(10),
+_magicPotential float(10),
+_dexterityPotential float(10),
+_stealthPotential float(10),
+FOREIGN KEY(ItemID) REFERENCES ITEMS(ID))
+---
+** PLAYER_BODY **
+DROP TABLE if exists Player_body;
+CREATE TABLE if not exists Player_body(
+UniqueId integer PRIMARY KEY AUTOINCREMENT,
+ItemID integer,
+_healthPotential float(10),
+_defensePotential float(10),
+_magicPotential float(10),
+_dexterityPotential float(10),
+_stealthPotential float(10),
+FOREIGN KEY(ItemID) REFERENCES ITEMS(ID))
+---
+** PLAYER_STASH **
+DROP TABLE if exists Player_stash;
+CREATE TABLE if not exists Player_stash(
+UniqueId integer PRIMARY KEY AUTOINCREMENT,
+ItemID integer,
+_healthPotential float(10),
+_defensePotential float(10),
+_magicPotential float(10),
+_dexterityPotential float(10),
+_stealthPotential float(10),
+FOREIGN KEY(ItemID) REFERENCES ITEMS(ID))
+---

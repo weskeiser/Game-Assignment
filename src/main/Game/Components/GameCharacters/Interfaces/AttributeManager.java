@@ -14,10 +14,10 @@ public interface AttributeManager {
 
   void gainExperience(double expGain);
 
+  double getExperience();
+
   EnumMap<CharacterAttribute, Integer> getDefensiveAttributes();
 
-  // TODO: Change to more specific name
-  //
   public static EnumMap<CharacterAttribute, Integer> newAttributeMap(int strength,
       int dexterity, int intelligence) {
     var attributeMap = new EnumMap<CharacterAttribute, Integer>(CharacterAttribute.class);

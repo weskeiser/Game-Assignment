@@ -6,12 +6,8 @@ import main.Game.Components.GameCharacters.Remains.Remains;
 import main.Game.Components.Items.Equipment.EquipmentManager;
 import main.Game.Components.Items.Equipment.Weapon.Weapon;
 
-public interface Attacker {
+public interface Attacker extends Combatant {
   CharacterAttribute getAttackAttribute();
-
-  Optional<Defender> getCurrentlyAttacking();
-
-  void setCurrentlyAttacking(Defender currentlyAttacking);
 
   int getAttackCooldown();
 

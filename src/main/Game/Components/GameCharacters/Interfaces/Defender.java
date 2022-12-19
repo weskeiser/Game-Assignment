@@ -1,20 +1,14 @@
 package main.Game.Components.GameCharacters.Interfaces;
 
-import java.util.Optional;
-
 import main.Game.Components.GameCharacters.Remains.Remains;
 
-public interface Defender {
+public interface Defender extends Combatant {
 
   int getLevel();
 
   Remains surrenderValuables();
 
   double getHealth();
-
-  Optional<Defender> getCurrentlyAttacking();
-
-  void setCurrentlyAttacking(Defender currentlyAttacking);
 
   boolean defend(CharacterAttribute attackType);
 

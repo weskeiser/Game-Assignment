@@ -4,31 +4,25 @@
 
 ---
 
+## About The Game
+
+A tick based fantasy game with Heroes and Villains. The player plays as a Hero and has the option of choosing a ranger, a rogue, a mage or a warrior as their character. They can equip weapons and armor, manage their items, and engage in combat.
+
+---
+
 ## Table of Contents
 
-- [About The Game](https://github.com/weskeiser/Game-Assignment#about-the-game)
-
 - [About The Code](https://github.com/weskeiser/Game-Assignment#about-the-code)
-
 - [Game Mechanics](https://github.com/weskeiser/Game-Assignment#game-mechanics)
-
   - [Tick System](https://github.com/weskeiser/Game-Assignment#tick-system)
-
   - [Combat](https://github.com/weskeiser/Game-Assignment#combat)
     - [Defense](https://github.com/weskeiser/Game-Assignment#defense)
     - [Attack](https://github.com/weskeiser/Game-Assignment#attack)
     - [Death](https://github.com/weskeiser/Game-Assignment#death)
-
 - [Modifications](https://github.com/weskeiser/Game-Assignment#modifications)
-  - [Hero Attributes](https://github.com/weskeiser/Game-Assignment#hero-attributes)
-  - [Total Attributes](https://github.com/weskeiser/Game-Assignment#total-attributes)
   - [Hero Damage](https://github.com/weskeiser/Game-Assignment#hero-damage)
-
----
-
-## About The Game
-
-A tick based fantasy game with Heroes and Villains. The player plays as a Hero and has the option of choosing a ranger, a rogue, a mage or a warrior as their character. They can equip weapons and armor, manage their items, and engage in combat.
+  - [Total Attributes](https://github.com/weskeiser/Game-Assignment#total-attributes)
+  - [Hero Attributes](https://github.com/weskeiser/Game-Assignment#hero-attributes)
 
 ---
 
@@ -88,15 +82,7 @@ When a character receives a `finalBlow`, their `inventory` and `equippedItems` a
 
 ## Modifications
 
-### Hero Attributes
-
-HeroAttributes renamed CharacterAttributes
-
-### Total Attributes
-
-TotalAttributes has been renamed `defensiveAttributes`, representing the total of worn `armorAttributes`, with a custom defenses calculation model laid out in \*\*\*\*. `levelingAttributes` has been left to their intuitive domain; representing the amount by which a Hero's attributes gain levels.
-
-Appendix D, point 2 stipulates the `EquipmentManager` should have a `getArmorAttributes` method. I have moved it to each armor item, where it logically fits in my implementation.
+Listed below are features deviating from the specifications.
 
 ### Hero Damage
 
@@ -121,18 +107,29 @@ If both specifications were to be taken into consideration, `Warrior` would have
 
 ##### To make a balanced combat system I have made some alterations:
 
-_Base damage calculations depend on the strength attribute_, allowing the strength of the character to be determined by it.
+Base damage calculations depend on the `STRENGTH` attribute, allowing the strength of the character to be determined by it.
 
-_Attack speed relies on the dexterity attribute_ (tick penalty when performing an attack), allowing the characters' ability to attack with speed and nimbleness be determined by it.
+Attack speed relies on the `DEXTERITY` attribute (tick penalty when performing an attack), allowing the characters' ability to attack with speed and nimbleness be determined by it.
 
-_Affinity with magic to be determined. Spells probably._
+Summoning a familiar relies on the `INTELLIGENCE` attribute., allowing the affinity with magic be determined by it.
 
-### Notes
+### Total Attributes
 
-Using an EnumMap, empty slots are automatically initialized with null values.
-• Equip – two variants, for equipping armor and weapons \*\*\*\*
+TotalAttributes has been renamed `defensiveAttributes`, representing the total of worn `armorAttributes`, with a custom defenses calculation model laid out in \*\*\*\*. `levelingAttributes` have been left to their intuitive domain; representing the amount by which a Hero's attributes gain levels, and do not contribute to total attributes.
 
-\*\*\*\*Should have methods to add two instances together OR increase one instance by a specified amount.
+Appendix D, point 2 stipulates the `EquipmentManager` should have a `getArmorAttributes` method. I have moved it to each armor item, where it logically fits in my implementation.
+
+### Hero Attributes
+
+HeroAttributes renamed `CharacterAttributes`.
+
+##### Specification in Appendix B, point 5.2:
+
+> This class should have methods to add two instances together and return the sum OR increase the one instance by a specified amount. Which to use is up to you on what best suits your solution.
+
+I see no use for such methods and have not implemented them.
+
+---
 
 Custom InvalidWeaponException thrown with appropriate message if wrong type or insufficient level
 \*\*\*\* Split into individual

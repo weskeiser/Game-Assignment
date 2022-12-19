@@ -5,7 +5,3 @@ public enum CharacterAttribute {
   DEXTERITY,
   INTELLIGENCE;
 }
-
-// add two instances and return sum
-// increase instance by x
-// level up

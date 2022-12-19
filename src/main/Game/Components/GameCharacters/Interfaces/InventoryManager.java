@@ -4,7 +4,7 @@ import java.util.List;
 
 import main.Game.Components.Exceptions.InventoryException;
 import main.Game.Components.Exceptions.InventoryException.InventoryErrMessages;
-import main.Game.Components.Items.Item;
+import main.Game.Components.Items.GameItem;
 import main.Game.Components.Items.Equipment.Armor.Armor;
 import main.Game.Components.Items.Equipment.Weapon.Weapon;
 
@@ -14,11 +14,11 @@ public interface InventoryManager {
 
   int getFreeInventorySlots();
 
-  void addToInventory(Item item) throws InventoryException;
+  void addToInventory(GameItem item) throws InventoryException;
 
-  Item findInventoryItem(int index) throws InventoryException;
+  GameItem findInventoryItem(int index) throws InventoryException;
 
-  default void addToInventory(List<Item> inventory, Item item) throws InventoryException {
+  default void addToInventory(List<GameItem> inventory, GameItem item) throws InventoryException {
     if (inventory.size() >= MAX_INVENTORY_SIZE) {
       throw new InventoryException(InventoryErrMessages.NO_SPACE);
     }
@@ -32,7 +32,7 @@ public interface InventoryManager {
     }
   };
 
-  default boolean removeFromInventory(List<Item> inventory, Item item) throws InventoryException {
+  default boolean removeFromInventory(List<GameItem> inventory, GameItem item) throws InventoryException {
 
     if (!inventory.remove(item))
       throw new InventoryException(InventoryErrMessages.NOT_FOUND);

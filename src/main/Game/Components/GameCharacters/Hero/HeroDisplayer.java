@@ -3,7 +3,7 @@ package main.Game.Components.GameCharacters.Hero;
 import java.util.EnumMap;
 import java.util.List;
 
-import main.Game.Components.Items.Item;
+import main.Game.Components.Items.GameItem;
 import main.Game.Components.Items.Equipment.EquipmentSlot;
 import main.Game.Components.Items.Equipment.Equippable;
 import utils.CLR;
@@ -21,7 +21,7 @@ public interface HeroDisplayer {
 
   void showEquippedItems();
 
-  default void showInventory(List<Item> inventory) {
+  default void showInventory(List<GameItem> inventory) {
     StringBuilder builder = new StringBuilder();
     Object[] inv = inventory.toArray();
 
@@ -33,7 +33,7 @@ public interface HeroDisplayer {
 
     for (int i = 0; i < inv.length; i++) {
       builder.append(CLR.blueC + "~~~~~~~~~~~~~~ " + CLR.redC + (i + 1) + ". ");
-      builder.append(CLR.yellowC + ((Item) inv[i]).getName() + "\n");
+      builder.append(CLR.yellowC + ((GameItem) inv[i]).getName() + "\n");
     }
 
     builder.append(CLR.blueC + "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");

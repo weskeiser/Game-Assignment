@@ -7,7 +7,7 @@ import main.Game.Components.Exceptions.InventoryException;
 import main.Game.Components.Exceptions.InventoryException.InventoryErrMessages;
 import main.Game.Components.GameCharacters.Interfaces.*;
 import main.Game.Components.GameCharacters.Remains.Remains;
-import main.Game.Components.Items.Item;
+import main.Game.Components.Items.GameItem;
 import main.Game.Components.Items.Equipment.*;
 import main.Game.Components.Items.Equipment.Weapon.Weapon;
 import utils.CLR;
@@ -34,11 +34,15 @@ public class Hero
   private List<Remains> lootableRemains = new ArrayList<>();
 
   // Items
-  private List<Item> inventory = new ArrayList<Item>();
+  private List<GameItem> inventory = new ArrayList<GameItem>();
   private EnumMap<EquipmentSlot, Equippable> equippedItems = new EnumMap<>(EquipmentSlot.class);
 
   public String getName() {
     return name;
+  }
+
+  public CharacterType getCharacterType() {
+    return heroType;
   }
 
   @Override
@@ -46,12 +50,9 @@ public class Hero
     return level;
   }
 
+  @Override
   public double getExperience() {
     return experience;
-  }
-
-  public CharacterType getCharacterType() {
-    return heroType;
   }
 
   // Combat related: Attacks
@@ -149,7 +150,7 @@ public class Hero
   @Override
   public Remains surrenderValuables() {
 
-    var loot = new ArrayList<Item>();
+    var loot = new ArrayList<GameItem>();
 
     equippedItems.values().forEach(loot::add);
     inventory.forEach(loot::add);
@@ -163,7 +164,7 @@ public class Hero
   // Item related
 
   @Override
-  public Item findInventoryItem(int index) throws InventoryException {
+  public GameItem findInventoryItem(int index) throws InventoryException {
     try {
       return inventory.get(index);
     } catch (IndexOutOfBoundsException err) {
@@ -172,7 +173,7 @@ public class Hero
   }
 
   @Override
-  public void addToInventory(Item item) throws InventoryException {
+  public void addToInventory(GameItem item) throws InventoryException {
     addToInventory(inventory, item);
   }
 

@@ -60,7 +60,6 @@ public class DefensiveAttributesTest {
   @Test
 
   public void NoArmorEquipped_GetDefensiveAttributes_DefensiveAttributesCorrect() {
-
     assertEquals(AttributeManager.newAttributeMap(0, 0, 0), testHero.getDefensiveAttributes());
   }
 
@@ -71,12 +70,11 @@ public class DefensiveAttributesTest {
     try {
       testHero.addToInventory(expectedBodyArmorOne);
       testHero.equip(expectedBodyArmorOne);
-
     } catch (Throwable err) {
       fail();
     }
 
-    EnumMap<CharacterAttribute, Integer> expectedDefensiveAttributes = expectedBodyArmorOne.getArmorAttributes();
+    var expectedDefensiveAttributes = expectedBodyArmorOne.getArmorAttributes();
 
     assertEquals(expectedDefensiveAttributes, testHero.getDefensiveAttributes());
   }
@@ -91,15 +89,14 @@ public class DefensiveAttributesTest {
 
       testHero.addToInventory(expectedHeadArmorOne);
       testHero.equip(expectedHeadArmorOne);
-
     } catch (Throwable err) {
       fail();
     }
 
-    EnumMap<CharacterAttribute, Integer> expectedDefensiveAttributes = new EnumMap<>(CharacterAttribute.class);
+    var expectedDefensiveAttributes = new EnumMap<>(CharacterAttribute.class);
 
-    EnumMap<CharacterAttribute, Integer> bodyArmorAttributes = expectedBodyArmorOne.getArmorAttributes();
-    EnumMap<CharacterAttribute, Integer> headArmorAttributes = expectedHeadArmorOne.getArmorAttributes();
+    var bodyArmorAttributes = expectedBodyArmorOne.getArmorAttributes();
+    var headArmorAttributes = expectedHeadArmorOne.getArmorAttributes();
 
     for (CharacterAttribute cAttribute : bodyArmorAttributes.keySet()) {
       expectedDefensiveAttributes.put(cAttribute,
@@ -119,12 +116,11 @@ public class DefensiveAttributesTest {
 
       testHero.addToInventory(expectedHeadArmorTwo);
       testHero.equip(expectedHeadArmorTwo);
-
     } catch (Throwable err) {
       fail();
     }
 
-    EnumMap<CharacterAttribute, Integer> expectedDefensiveAttributes = expectedHeadArmorTwo.getArmorAttributes();
+    var expectedDefensiveAttributes = expectedHeadArmorTwo.getArmorAttributes();
 
     assertEquals(expectedDefensiveAttributes, testHero.getDefensiveAttributes());
   }

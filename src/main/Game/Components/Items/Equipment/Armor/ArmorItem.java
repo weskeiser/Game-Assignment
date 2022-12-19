@@ -26,10 +26,9 @@ public interface ArmorItem {
 
     var baseArmorAttributes = armorType.getBaseArmorAttributes();
 
-    Arrays.stream(CharacterAttribute.values()).forEach(k -> {
-      armorAttributes.put(
-          k,
-          (int) (baseArmorAttributes.get(k) * ((double) levelRequirement / 20)));
+    Arrays.stream(CharacterAttribute.values()).forEach(attribute -> {
+
+      armorAttributes.put(attribute, (int) (baseArmorAttributes.get(attribute) * ((double) levelRequirement / 20)));
     });
   };
 }
