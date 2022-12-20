@@ -11,17 +11,20 @@ public class World extends JPanel {
   private int worldX, worldY, worldW, worldH;
 
   private Background background;
-  private Camera camera;
+  // private Camera camera;
+  private HeroAvatar player;
 
-  public World(Camera cam, int worldX, int worldY, int worldW, int worldH) throws IOException {
-    this.camera = cam;
+  public World(HeroAvatar player, int worldX, int worldY, int worldW, int worldH, String backgroundImgPath)
+      throws IOException {
+    // this.camera = cam;
+    this.player = player;
 
     this.worldX = worldX;
     this.worldY = worldY;
     this.worldW = worldW;
     this.worldH = worldH;
 
-    this.background = new Background("src/lib/img/sprites/Background.jpeg", worldX, worldY);
+    this.background = new Background(backgroundImgPath, worldX, worldY);
   }
 
   public Image getImage() {
@@ -49,7 +52,7 @@ public class World extends JPanel {
 
     super.paintComponent(g);
 
-    g.drawImage(background.getImage(), worldX - camera.getX(), worldY - camera.getY(), null);
+    g.drawImage(background.getImage(), worldX - player.getCamX(), worldY - player.getCamY(), null);
   }
 
   @Override

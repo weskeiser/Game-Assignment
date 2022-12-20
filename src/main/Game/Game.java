@@ -19,7 +19,9 @@ public class Game extends JFrame {
 
   public Game() throws IOException {
 
-    Board board = new Board(0, 0, 500, 500, hero);
+    Board board = new Board.BoardBuilder(hero).setDimensions(0, 0, 960, 540)
+        .setBackground("src/lib/img/sprites/Background2.jpg", 0, 0).build();
+
     add(board);
     setSize(board.getBoardWidth(), board.getBoardHeight() + playerHeight);
     setResizable(false);

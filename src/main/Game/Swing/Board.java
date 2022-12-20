@@ -3,15 +3,15 @@ package main.Game.Swing;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.IOException;
+import java.util.ArrayList;
 
 import javax.swing.JPanel;
 import javax.swing.Timer;
 
 import main.Game.Components.GameCharacters.Hero.Hero;
-import main.Game.GameAction.GameTask;
+import main.Game.Components.GameCharacters.Villain.Villain;
 import main.Game.GameAction.Combat.CombatAction;
 import main.Game.Swing.Sprites.Item;
-import main.Game.Swing.Sprites.Player;
 
 public class Board extends JPanel implements ActionListener {
   public static final int playerWidth = 28;
@@ -20,99 +20,61 @@ public class Board extends JPanel implements ActionListener {
   CombatAction combatTasks = new CombatAction.CombatTasksBuilder().build();
   private int boardX, boardY, boardWidth, boardHeight, playerX, playerY;
 
-  int worldWidth = 1000;
-  int worldHeight = 1000;
-
-  private Camera cam;
-  private Player player;
+  int worldWidth = 1920;
+  int worldHeight = 1080;
+  private Item item;
+  private HeroAvatar heroAvatar;
   private World world;
 
-  private Timer timer = new Timer(15, this);
-
   private Hero hero;
-  private Item item;
-  // private PlayerStats playerStats;
+  private ArrayList<Villain> villains;
 
-  public Board(int boardX, int boardY, int boardW, int boardH, Hero hero) throws IOException {
-    this.boardX = boardX;
-    this.boardY = boardY;
-    this.boardWidth = boardW;
-    this.boardHeight = boardH;
+  int backgroundX;
+  int backgroundY;
 
-    this.hero = hero;
-
-    var gameTimer = new java.util.Timer();
-    gameTimer.scheduleAtFixedRate(combatTasks, 0, GameTask.GAME_TICK_LENGTH);
-
-    initGame();
-  }
-
-  public void initGame() throws IOException {
-
-    player = new Player(hero, boardWidth, boardHeight, worldWidth, worldHeight);
-    cam = new Camera(player, boardX, boardY, boardWidth, boardHeight, worldWidth, worldHeight);
-
-    world = new World(cam, 0, 0, worldWidth, worldHeight);
-
-    item = new Item(100, 100);
-
-    addKeyListener(new TAdapter());
-    setPreferredSize(new Dimension(boardHeight, boardWidth));
-    setFocusable(true);
-    setBackground(Color.BLACK);
-
-    timer.start();
-
-  }
+  private Timer timer = new Timer(10, this);
 
   @Override
   protected void paintComponent(Graphics g) {
     g.setColor(Color.WHITE);
-    g.setFont(new Font("Helvetica,", Font.BOLD, 10));
+    g.setFont(new Font("Helvetica,", Font.BOLD, 25));
 
     super.paintComponent(g);
 
     g.setColor(Color.ORANGE);
     world.paintComponent(g);
 
-    int boundaryWidth = boardWidth / 2;
-    int boundaryHeight = boardHeight / 2;
+    playerX = heroAvatar.getSpriteX();
+    playerY = heroAvatar.getSpriteY();
 
-    var outOfCamBoundLeft = player.getX() <= boundaryWidth;
-    var outOfCamBoundRight = player.getX() >= worldWidth - boundaryWidth;
-    var outOfCamBoundTop = player.getY() <= boundaryHeight;
-    var outOfCamBoundBottom = player.getY() >= worldHeight - boundaryHeight;
+    g.drawImage(heroAvatar.getImage(), playerX, playerY, this);
 
-    playerX = outOfCamBoundLeft ? player.getX()
-        : outOfCamBoundRight ? (player.getX() - boardWidth) : boundaryWidth;
-
-    playerY = outOfCamBoundTop ? player.getY()
-        : outOfCamBoundBottom ? (player.getY() - boardHeight) : boundaryHeight;
-
-    g.drawImage(player.getImage(), playerX, playerY, this);
-
-    g.drawImage(item.getImage(), item.getX() - cam.getX(), item.getY() - cam.getY(), this);
+    g.drawImage(item.getImage(), item.getX() - heroAvatar.getCamX(), item.getY() - heroAvatar.getCamY(), this);
 
     g.drawRect(0, 0, boardWidth, boardHeight);
 
-    g.setColor(Color.RED);
+    g.setColor(Color.WHITE);
 
-    g.drawString("[Char p: (" + (player.getX()) + "," + (player.getY()) + ")]",
+    g.drawString("[spriteX: (" + (heroAvatar.getSpriteX()) + ", spriteY:" +
+        (heroAvatar.getSpriteY()) + ")]",
         boardWidth / 2 - playerWidth * 2,
         boardHeight / 2 - playerHeight);
 
     g.drawString("[Peach p: (" + item.getX() + "," + item.getY() + ")]",
-        item.getX() - cam.getX() - item.width * 2,
-        item.getY() - cam.getY() - item.height);
+        item.getX() - heroAvatar.getCamX() - item.width * 2,
+        item.getY() - heroAvatar.getCamY() - item.height);
 
-    g.drawString("CamX:" + cam.getX() + ", CamY:" + cam.getY(), 200, 200);
+    g.drawString("CamX:" + heroAvatar.getCamX() + ", CamY:" +
+        heroAvatar.getCamY(), 200, 200);
 
-    g.drawString("Distance: [" + (player.getX() - item.getX()) + "," +
-        (player.getY() - item.getY()) + "]",
-        item.getX() - 30 - cam.getX(), item.getY() + 30 - cam.getY());
+    g.drawString("Distance: [" + (heroAvatar.getSpriteX() - item.getX()) + "," +
+        (heroAvatar.getSpriteY() - item.getY()) + "]",
+        item.getX() - 30 - heroAvatar.getCamX(), item.getY() + 30 -
+            heroAvatar.getCamY());
 
-    g.drawString("Dis player-edge of world:" + (player.getX() - world.getX()) +
-        "," + (player.getY() - world.getY()),
+    g.drawString("Dis heroAvatar-edge of world:" + (heroAvatar.getSpriteX() -
+        world.getX()) +
+        "," + (heroAvatar.getSpriteY() - world.getY()),
         150, 150);
 
     // playerStats.paintComponent(g);
@@ -122,8 +84,7 @@ public class Board extends JPanel implements ActionListener {
 
   @Override
   public void actionPerformed(ActionEvent e) {
-    cam.move();
-    player.move();
+    heroAvatar.move();
 
     checkCollisions();
     repaint();
@@ -132,14 +93,12 @@ public class Board extends JPanel implements ActionListener {
   private class TAdapter extends KeyAdapter {
     @Override
     public void keyReleased(KeyEvent e) {
-      player.keyReleased(e);
-      cam.keyReleased(e);
+      heroAvatar.keyReleased(e);
     }
 
     @Override
     public void keyPressed(KeyEvent e) {
-      player.keyPressed(e);
-      cam.keyPressed(e);
+      heroAvatar.keyPressed(e);
     }
   }
 
@@ -152,11 +111,84 @@ public class Board extends JPanel implements ActionListener {
   }
 
   public void checkCollisions() {
-    Rectangle r1 = player.getBounds();
+    Rectangle r1 = heroAvatar.getBounds();
     Rectangle r2 = item.getBounds();
     if (r1.intersects(r2)) {
       System.out.println(5);
-      // hero.loseHealth(5);
+    }
+  }
+
+  private Board(BoardBuilder builder) throws IOException {
+    this.boardX = builder.boardX;
+    this.boardY = builder.boardY;
+    this.boardWidth = builder.boardWidth;
+    this.boardHeight = builder.boardHeight;
+
+    this.backgroundX = builder.backgroundX;
+    this.backgroundY = builder.backgroundY;
+
+    this.hero = builder.hero;
+    this.villains = builder.villains;
+
+    this.heroAvatar = new HeroAvatar(hero, boardX, boardY, boardWidth, boardHeight, worldWidth, worldHeight);
+    this.world = new World(heroAvatar, 0, 0, worldWidth, worldHeight, builder.backgroundImgPath);
+    this.item = new Item(100, 100);
+
+    addKeyListener(new TAdapter());
+    setPreferredSize(new Dimension(boardHeight, boardWidth));
+    setFocusable(true);
+    setBackground(Color.BLACK);
+
+    timer.start();
+  }
+
+  public static class BoardBuilder {
+    private int boardX;
+    private int boardY;
+    private int boardWidth;
+    private int boardHeight;
+
+    String backgroundImgPath;
+    int backgroundX;
+    int backgroundY;
+
+    private ArrayList<Villain> villains;
+    private Hero hero;
+
+    public BoardBuilder setVillains(ArrayList<Villain> villains) {
+      this.villains = villains;
+
+      return this;
+    }
+
+    public BoardBuilder setBackground(String path, int backgroundX, int backgroundY) {
+      this.backgroundImgPath = path;
+      this.backgroundX = backgroundX;
+      this.backgroundY = backgroundY;
+
+      return this;
+    }
+
+    public BoardBuilder setDimensions(int boardX, int boardY, int boardWidth, int boardHeight) {
+      this.boardX = boardX;
+      this.boardY = boardY;
+      this.boardWidth = boardWidth;
+      this.boardHeight = boardHeight;
+
+      return this;
+    }
+
+    public BoardBuilder(Hero hero) {
+      this.hero = hero;
+
+      this.boardX = 0;
+      this.boardY = 0;
+      this.boardWidth = 960;
+      this.boardHeight = 540;
+    }
+
+    public Board build() throws IOException {
+      return new Board(this);
     }
   }
 
