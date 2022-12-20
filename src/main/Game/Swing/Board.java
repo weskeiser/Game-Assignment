@@ -16,20 +16,19 @@ import main.Game.GameController.GameController;
 import main.Game.Swing.Sprites.Item;
 
 public class Board extends JPanel implements ActionListener {
-  public static final int playerWidth = 28;
-  public static final int playerHeight = 26;
 
-  private int boardX, boardY, boardWidth, boardHeight, playerX, playerY;
+  private int boardX, boardY, boardWidth, boardHeight;
 
   int worldWidth = 1920;
-  int worldHeight = 1080;
+  int worldHeight = 1120;
   private Item item;
-  private Avatar heroAvatar;
+  private HeroAvatar heroAvatar;
   private World world;
 
-  private HeroStats heroStats;
+  private StatsPanel heroStats;
   private Hero hero;
   private HashSet<Villain> villains;
+  private HashSet<VillainAvatar> villainAvatars = new HashSet<>();
 
   int backgroundX;
   int backgroundY;
@@ -42,29 +41,30 @@ public class Board extends JPanel implements ActionListener {
 
   @Override
   protected void paintComponent(Graphics g) {
-    g.setColor(Color.WHITE);
     g.setFont(new Font("Helvetica,", Font.BOLD, 25));
 
     super.paintComponent(g);
 
-    g.setColor(Color.ORANGE);
     world.paintComponent(g);
 
-    playerX = heroAvatar.getSpriteX();
-    playerY = heroAvatar.getSpriteY();
+    g.drawImage(heroAvatar.getImage(), heroAvatar.getSpriteX(), heroAvatar.getSpriteY(), this);
 
-    g.drawImage(heroAvatar.getImage(), playerX, playerY, this);
+    villainAvatars.forEach(villainAvatar -> {
+      g.drawImage(villainAvatar.getImage(), villainAvatar.getSpriteX(), villainAvatar.getSpriteY(), this);
+    });
 
-    g.drawImage(item.getImage(), item.getX() - heroAvatar.getCamX(), item.getY() - heroAvatar.getCamY(), this);
+    heroStats.paintComponent(g);
+    //
 
-    g.drawRect(0, 0, boardWidth, boardHeight);
+    // g.drawImage(item.getImage(), item.getX() - heroAvatar.getCamX(), item.getY()
+    // - heroAvatar.getCamY(), this);
 
     g.setColor(Color.WHITE);
 
     g.drawString("[spriteX: (" + (heroAvatar.getSpriteX()) + ", spriteY:" +
         (heroAvatar.getSpriteY()) + ")]",
-        boardWidth / 2 - playerWidth * 2,
-        boardHeight / 2 - playerHeight);
+        boardWidth / 2,
+        boardHeight / 2 - 50);
 
     g.drawString("[Peach p: (" + item.getX() + "," + item.getY() + ")]",
         item.getX() - heroAvatar.getCamX() - item.width * 2,
@@ -82,8 +82,6 @@ public class Board extends JPanel implements ActionListener {
         world.getX()) +
         "," + (heroAvatar.getSpriteY() - world.getY()),
         150, 150);
-
-    heroStats.paintComponent(g);
 
     Toolkit.getDefaultToolkit().sync();
   }
@@ -136,15 +134,20 @@ public class Board extends JPanel implements ActionListener {
     this.hero = builder.hero;
     this.villains = builder.villains;
 
-    this.heroStats = new HeroStats(builder.hero);
-    this.heroAvatar = new Avatar(hero, boardX, boardY, boardWidth, boardHeight, worldWidth, worldHeight);
+    this.heroStats = new StatsPanel(builder.hero, boardWidth);
+    this.heroAvatar = new HeroAvatar(hero, boardX, boardY, boardWidth, boardHeight, worldWidth, worldHeight);
     this.world = new World(heroAvatar, 0, 0, worldWidth, worldHeight, builder.backgroundImgPath);
     this.item = new Item(100, 100);
+
+    villains.forEach(villain -> {
+      var villainAvatar = new VillainAvatar(villain, boardX, boardY, boardWidth, boardHeight, worldWidth, worldHeight);
+
+      villainAvatars.add(villainAvatar);
+    });
 
     addKeyListener(new TAdapter());
     setPreferredSize(new Dimension(boardHeight, boardWidth));
     setFocusable(true);
-    setBackground(Color.BLACK);
 
     timer.start();
     gameTimer.scheduleAtFixedRate(combatTasks, 0, GameTask.GAME_TICK_LENGTH);

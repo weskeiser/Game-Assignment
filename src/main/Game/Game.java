@@ -28,17 +28,17 @@ public class Game extends JFrame {
 
   public Game() throws IOException {
 
-    Board board = new Board.BoardBuilder(hero).setDimensions(0, 0, 960, 540)
-        .setBackground("src/lib/img/sprites/Background2.jpg", 0, 0).setVillains(villains).build();
-
-    add(board);
-    setSize(board.getBoardWidth(), board.getBoardHeight() + Board.playerHeight);
-    setResizable(false);
     setTitle("Test Game Title");
     setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-    setLocation((screenSize.width - this.getWidth()) / 2, (screenSize.height -
-        this.getHeight()) / 2 - 100);
+    setLocation((screenSize.width - this.getWidth()) / 2, (screenSize.height - this.getHeight()) / 2 - 100);
+    setResizable(false);
+
+    Board board = new Board.BoardBuilder(hero).setDimensions(0, 0, 960, 540)
+        .setBackground("src/lib/img/sprites/Background2.jpg", 0, 0).setVillains(villains).build();
+    add(board);
+    setSize(board.getBoardWidth(), board.getBoardHeight() + 100);
+
   }
 
   // public Game() throws IOException {

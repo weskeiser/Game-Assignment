@@ -11,9 +11,9 @@ public class World extends JPanel {
   private int worldX, worldY, worldW, worldH;
 
   private Background background;
-  private Avatar avatar;
+  private HeroAvatar avatar;
 
-  public World(Avatar avatar, int worldX, int worldY, int worldW, int worldH, String backgroundImgPath)
+  public World(HeroAvatar avatar, int worldX, int worldY, int worldW, int worldH, String backgroundImgPath)
       throws IOException {
     this.avatar = avatar;
 
