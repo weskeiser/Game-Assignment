@@ -8,7 +8,7 @@ import main.Game.Components.Items.Equipment.Armor.ArmorType;
 import main.Game.Components.Items.Equipment.Weapon.WeaponItem;
 import main.Game.Components.Items.Equipment.Weapon.WeaponType;
 
-public enum HeroType implements CharacterType, HeroInitiator {
+public enum HeroType implements CharacterType, CharacterInitiator {
   WARRIOR() {
     public EnumMap<CharacterAttribute, Integer> init() {
       levelingAttributes = AttributeManager.newAttributeMap(3, 2, 1);

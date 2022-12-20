@@ -9,6 +9,8 @@ import main.Game.Components.Items.Equipment.Weapon.Weapon;
 public interface Attacker extends Combatant {
   CharacterAttribute getAttackAttribute();
 
+  String getName();
+
   int getAttackCooldown();
 
   void gainExperience(double expGain);
@@ -33,7 +35,7 @@ public interface Attacker extends Combatant {
 
     double weaponDamage = equippedWeapon.map(Weapon::getDamageMultiplier).orElse(1.0);
 
-    int strengthAttribute = (attacker).getCharacterAttributes().get(CharacterAttribute.STRENGTH);
+    int strengthAttribute = attacker.getCharacterAttributes().get(CharacterAttribute.STRENGTH);
 
     return weaponDamage * (1 + strengthAttribute / 100);
   }

@@ -6,7 +6,7 @@ import main.Game.Components.Exceptions.InvalidEquipmentException;
 import main.Game.Components.Exceptions.InvalidEquipmentException.EquipmentErrMessages;
 import main.Game.Components.Exceptions.InventoryException;
 import main.Game.Components.Exceptions.InventoryException.InventoryErrMessages;
-import main.Game.Components.GameCharacters.Hero.HeroType;
+import main.Game.Components.GameCharacters.Interfaces.CharacterType;
 import main.Game.Components.GameCharacters.Interfaces.InventoryManager;
 import main.Game.Components.Items.GameItem;
 import main.Game.Components.Items.Equipment.Armor.Armor;
@@ -26,7 +26,7 @@ public interface EquipmentManager {
       List<GameItem> inventory,
       EnumMap<EquipmentSlot, Equippable> equippedItems,
       int heroLevel,
-      HeroType heroType)
+      CharacterType heroType)
       throws InvalidEquipmentException, InventoryException {
 
     if (!inventory.remove(equipment)) {

@@ -3,36 +3,42 @@ package main.Game.Swing;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.IOException;
-import java.util.ArrayList;
+import java.util.HashSet;
 
 import javax.swing.JPanel;
 import javax.swing.Timer;
 
 import main.Game.Components.GameCharacters.Hero.Hero;
 import main.Game.Components.GameCharacters.Villain.Villain;
+import main.Game.GameAction.GameTask;
 import main.Game.GameAction.Combat.CombatAction;
+import main.Game.GameController.GameController;
 import main.Game.Swing.Sprites.Item;
 
 public class Board extends JPanel implements ActionListener {
   public static final int playerWidth = 28;
   public static final int playerHeight = 26;
 
-  CombatAction combatTasks = new CombatAction.CombatTasksBuilder().build();
   private int boardX, boardY, boardWidth, boardHeight, playerX, playerY;
 
   int worldWidth = 1920;
   int worldHeight = 1080;
   private Item item;
-  private HeroAvatar heroAvatar;
+  private Avatar heroAvatar;
   private World world;
 
+  private HeroStats heroStats;
   private Hero hero;
-  private ArrayList<Villain> villains;
+  private HashSet<Villain> villains;
 
   int backgroundX;
   int backgroundY;
 
   private Timer timer = new Timer(10, this);
+
+  GameController gameController = new GameController();
+  CombatAction combatTasks = new CombatAction.CombatTasksBuilder().build();
+  java.util.Timer gameTimer = new java.util.Timer();
 
   @Override
   protected void paintComponent(Graphics g) {
@@ -77,7 +83,7 @@ public class Board extends JPanel implements ActionListener {
         "," + (heroAvatar.getSpriteY() - world.getY()),
         150, 150);
 
-    // playerStats.paintComponent(g);
+    heroStats.paintComponent(g);
 
     Toolkit.getDefaultToolkit().sync();
   }
@@ -130,7 +136,8 @@ public class Board extends JPanel implements ActionListener {
     this.hero = builder.hero;
     this.villains = builder.villains;
 
-    this.heroAvatar = new HeroAvatar(hero, boardX, boardY, boardWidth, boardHeight, worldWidth, worldHeight);
+    this.heroStats = new HeroStats(builder.hero);
+    this.heroAvatar = new Avatar(hero, boardX, boardY, boardWidth, boardHeight, worldWidth, worldHeight);
     this.world = new World(heroAvatar, 0, 0, worldWidth, worldHeight, builder.backgroundImgPath);
     this.item = new Item(100, 100);
 
@@ -140,6 +147,7 @@ public class Board extends JPanel implements ActionListener {
     setBackground(Color.BLACK);
 
     timer.start();
+    gameTimer.scheduleAtFixedRate(combatTasks, 0, GameTask.GAME_TICK_LENGTH);
   }
 
   public static class BoardBuilder {
@@ -152,10 +160,10 @@ public class Board extends JPanel implements ActionListener {
     int backgroundX;
     int backgroundY;
 
-    private ArrayList<Villain> villains;
+    private HashSet<Villain> villains;
     private Hero hero;
 
-    public BoardBuilder setVillains(ArrayList<Villain> villains) {
+    public BoardBuilder setVillains(HashSet<Villain> villains) {
       this.villains = villains;
 
       return this;

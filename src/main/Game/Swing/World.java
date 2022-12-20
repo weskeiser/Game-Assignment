@@ -11,13 +11,11 @@ public class World extends JPanel {
   private int worldX, worldY, worldW, worldH;
 
   private Background background;
-  // private Camera camera;
-  private HeroAvatar player;
+  private Avatar avatar;
 
-  public World(HeroAvatar player, int worldX, int worldY, int worldW, int worldH, String backgroundImgPath)
+  public World(Avatar avatar, int worldX, int worldY, int worldW, int worldH, String backgroundImgPath)
       throws IOException {
-    // this.camera = cam;
-    this.player = player;
+    this.avatar = avatar;
 
     this.worldX = worldX;
     this.worldY = worldY;
@@ -52,7 +50,7 @@ public class World extends JPanel {
 
     super.paintComponent(g);
 
-    g.drawImage(background.getImage(), worldX - player.getCamX(), worldY - player.getCamY(), null);
+    g.drawImage(background.getImage(), worldX - avatar.getCamX(), worldY - avatar.getCamY(), null);
   }
 
   @Override

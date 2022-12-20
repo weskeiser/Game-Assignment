@@ -8,9 +8,9 @@ import java.awt.event.KeyListener;
 import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 
-import main.Game.Components.GameCharacters.Hero.Hero;
+import main.Game.Components.GameCharacters.Interfaces.Combatant;
 
-public class HeroAvatar extends JPanel implements KeyListener {
+public class Avatar extends JPanel implements KeyListener {
   private Image jumpImgLeftUrl = new ImageIcon("src/lib/img/sprites/Jump-left.png").getImage();
   private Image jumpImgRightUrl = new ImageIcon("src/lib/img/sprites/Jump-right.png").getImage();
   private Image stillImageLeftUrl = new ImageIcon("src/lib/img/sprites/Wes-still-left.png").getImage();
@@ -21,12 +21,13 @@ public class HeroAvatar extends JPanel implements KeyListener {
   private int camX, camY, camWidth, camHeight;
   private int spriteX, spriteY;
 
-  private Hero hero;
+  private Combatant character;
   private double currentHealth;
 
   Direction movementDirection = Direction.NONE;
 
-  public HeroAvatar(Hero hero, int boardX, int boardY, int boardW, int boardH, int worldWidth, int worldHeight) {
+  public Avatar(Combatant character, int boardX, int boardY, int boardW, int boardH, int worldWidth,
+      int worldHeight) {
     this.spriteX = boardW / 2;
     this.spriteY = boardH / 2;
 
@@ -38,7 +39,7 @@ public class HeroAvatar extends JPanel implements KeyListener {
     this.worldWidth = worldWidth;
     this.worldHeight = worldHeight;
 
-    this.hero = hero;
+    this.character = character;
 
     addKeyListener(this);
     setFocusable(true);
@@ -105,64 +106,75 @@ public class HeroAvatar extends JPanel implements KeyListener {
     int bottomCamEdge = worldHeight - camHeight;
     int rightCamEdge = worldWidth - camWidth;
 
-    boolean withinBoundsLeft = spriteX <= worldWidth - halfCamWidth && camX > leftCamEdge && camX < camWidth
+    boolean withinBoundsLeft = camX > leftCamEdge && camX <= camWidth
         || camX > camWidth && spriteX <= halfCamWidth;
 
-    boolean withinBoundsRight = spriteX >= halfCamWidth && camX < camWidth;
+    boolean withinBoundsRight = spriteX >= halfCamWidth && camX <= camWidth;
+
+    boolean withinBoundsBottom = camY < bottomCamEdge && camY >= 100 && spriteY >= 270;
+
+    boolean withinBoundsTop = camY > 100 && camY <= bottomCamEdge && spriteY <= 270;
 
     switch (movementDirection) {
+      case NONE:
+        return;
+
       case LEFT:
-        if (withinBoundsLeft)
-          camX -= 25;
+        if (withinBoundsLeft || withinBoundsRight)
+          camX -= 2;
         break;
 
       case RIGHT:
         if (withinBoundsRight)
-          camX += 25;
+          camX += 2;
         break;
 
       case DOWN:
-        if (camY < bottomCamEdge && camY >= 100 && spriteY >= 270)
-          camY += 25;
+        if (withinBoundsBottom)
+          camY += 2;
         break;
 
       case UP:
-        if (camY > 100 && camY <= bottomCamEdge + 10 && spriteY <= 270)
-          camY -= 25;
+        System.out.println(bottomCamEdge);
+        if (withinBoundsTop)
+          camY -= 2;
         break;
+
     }
 
   }
 
   public void moveSprite() {
     int halfCamWidth = camWidth / 2;
-
     int rightCamEdge = worldWidth - camWidth;
-
     int bottomCamEdge = worldHeight - camHeight;
 
     boolean isLeftOfLeftCamEdge = camX <= 0;
 
     switch (movementDirection) {
 
+      case NONE:
+        return;
+
       case LEFT:
         if (isLeftOfLeftCamEdge && spriteX > 26 || camX >= rightCamEdge && spriteX > halfCamWidth)
-          spriteX -= 25;
+          spriteX -= 2;
         break;
 
       case RIGHT:
         if (isLeftOfLeftCamEdge || camX >= rightCamEdge && spriteX < rightCamEdge - 60)
-          spriteX += 25;
+          spriteX += 2;
         break;
 
       case DOWN:
         if (camY >= bottomCamEdge - 26 && spriteY < bottomCamEdge - 100 || camY <= 100)
-          spriteY += 25;
+          spriteY += 2;
         break;
 
       case UP:
-        if (camY > bottomCamEdge)
-          spriteY -= 25;
+        System.out.println(bottomCamEdge);
+        if (camY >= bottomCamEdge)
+          spriteY -= 2;
         break;
 
     }
@@ -172,7 +184,7 @@ public class HeroAvatar extends JPanel implements KeyListener {
   @Override
   public void keyPressed(KeyEvent e) {
 
-    int key = e.getKeyCode();
+    var key = e.getKeyCode();
 
     switch (key) {
 
@@ -201,7 +213,7 @@ public class HeroAvatar extends JPanel implements KeyListener {
 
     movementDirection = Direction.NONE;
 
-    int key = e.getKeyCode();
+    var key = e.getKeyCode();
 
     switch (key) {
       case KeyEvent.VK_H:

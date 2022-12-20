@@ -5,22 +5,22 @@ import java.util.*;
 import main.Game.Components.Exceptions.InvalidEquipmentException;
 import main.Game.Components.Exceptions.InventoryException;
 import main.Game.Components.Exceptions.InventoryException.InventoryErrMessages;
-import main.Game.Components.GameCharacters.Hero.HeroType;
 import main.Game.Components.GameCharacters.Interfaces.*;
 import main.Game.Components.GameCharacters.Remains.Remains;
 import main.Game.Components.Items.GameItem;
 import main.Game.Components.Items.Equipment.*;
 import main.Game.Components.Items.Equipment.Armor.Armor;
 import main.Game.Components.Items.Equipment.Weapon.Weapon;
+import utils.CLR;
 
 public class Villain implements InventoryManager, EquipmentManager, Attacker, Defender {
 
   private String name;
-  private HeroType heroType;
+  private VillainType villainType;
 
-  private int level = 1;
+  private int level = 600;
   private double health = 10;
-  private EnumMap<CharacterAttribute, Integer> villainAttributes;
+  private EnumMap<CharacterAttribute, Integer> characterAttributes;
 
   // Combat
   private int attackCooldown = 0;
@@ -32,12 +32,13 @@ public class Villain implements InventoryManager, EquipmentManager, Attacker, De
   private List<GameItem> inventory = new ArrayList<GameItem>();
   private EnumMap<EquipmentSlot, Equippable> equippedItems = new EnumMap<>(EquipmentSlot.class);
 
+  @Override
   public String getName() {
     return name;
   }
 
   public CharacterType getCharacterType() {
-    return heroType;
+    return villainType;
   }
 
   @Override
@@ -69,12 +70,12 @@ public class Villain implements InventoryManager, EquipmentManager, Attacker, De
 
   @Override
   public CharacterAttribute getAttackAttribute() {
-    return heroType.getAttackAttribute();
+    return villainType.getAttackAttribute();
   }
 
   @Override
   public int getAttackSpeed() {
-    var dexterityAttributeLevel = villainAttributes.get(CharacterAttribute.DEXTERITY);
+    var dexterityAttributeLevel = characterAttributes.get(CharacterAttribute.DEXTERITY);
 
     return dexterityAttributeLevel / 100;
   }
@@ -177,7 +178,7 @@ public class Villain implements InventoryManager, EquipmentManager, Attacker, De
   @Override
   public void equip(Equippable equipment) throws InvalidEquipmentException, InventoryException {
 
-    equip(equipment, inventory, equippedItems, level, heroType);
+    equip(equipment, inventory, equippedItems, level, villainType);
   }
 
   @Override
@@ -185,7 +186,7 @@ public class Villain implements InventoryManager, EquipmentManager, Attacker, De
 
     var itemExistingInInventory = (Equippable) findInventoryItem(inventoryIndex);
 
-    equip(itemExistingInInventory, inventory, equippedItems, level, heroType);
+    equip(itemExistingInInventory, inventory, equippedItems, level, villainType);
   }
 
   @Override
@@ -202,15 +203,13 @@ public class Villain implements InventoryManager, EquipmentManager, Attacker, De
   @Override
   public Optional<Weapon> getEquippedWeapon() {
 
-    var equippedWeapon = (Weapon) equippedItems.get(EquipmentSlot.WEAPON);
-
-    return Optional.ofNullable(equippedWeapon);
+    return Optional.ofNullable((Weapon) equippedItems.get(EquipmentSlot.WEAPON));
   }
 
   // Attributes related
   @Override
   public EnumMap<CharacterAttribute, Integer> getCharacterAttributes() {
-    return villainAttributes;
+    return characterAttributes;
   }
 
   public EnumMap<CharacterAttribute, Integer> getDefensiveAttributes(
@@ -229,9 +228,9 @@ public class Villain implements InventoryManager, EquipmentManager, Attacker, De
       var armorAttributes = ((Armor) charAttrVal).getArmorAttributes();
 
       // Add each attribute to total (defensiveAttributes)
-      armorAttributes.forEach((heroAttrKey, armorAttrVal) -> defensiveAttributes.put(
-          heroAttrKey,
-          defensiveAttributes.getOrDefault(heroAttrKey, 0) + armorAttrVal));
+      armorAttributes.forEach((armorAttrKey, armorAttrVal) -> defensiveAttributes.put(
+          armorAttrKey,
+          defensiveAttributes.getOrDefault(armorAttrKey, 0) + armorAttrVal));
     });
 
     if (defensiveAttributes.isEmpty()) {
@@ -248,20 +247,103 @@ public class Villain implements InventoryManager, EquipmentManager, Attacker, De
   public void gainExperience(double expGain) {
   };
 
+  public void display() {
+    StringBuilder displayBuilder = new StringBuilder();
+    displayBuilder
+        .append("\n" + CLR.redC + "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
+        .append("\n" + CLR.redC + "/~/~/" + "   >> "
+            + CLR.resetC + name
+            + CLR.redC + " <<   |  "
+            + CLR.resetC + "lvl."
+            + CLR.yellowC + level + " "
+            + CLR.resetC + villainType.toString());
+    System.out.println(displayBuilder.toString());
+
+    StringBuilder keyBuilder = new StringBuilder();
+    StringBuilder valueBuilder = new StringBuilder();
+    keyBuilder.append(CLR.redC + "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+    keyBuilder.append("\n" + CLR.blueC + "    ~");
+
+    // Attributes
+    characterAttributes.forEach((k, v) -> {
+      keyBuilder.append(" " + CLR.greenC + k + CLR.blueC + " ~");
+      valueBuilder.append(CLR.yellowC + v + "           ");
+    });
+
+    System.out.println(keyBuilder.toString() + "\n         " + valueBuilder.toString());
+
+    // Inventory
+    StringBuilder builder = new StringBuilder();
+    Object[] inv = inventory.toArray();
+
+    builder.append(CLR.blueC + "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+
+    builder.append("\n" + CLR.blueC + "~~~~~~~~~~~~~~" + CLR.resetC + " INVENTORY " + CLR.redC + "(" + CLR.resetC
+        + inv.length + "/15"
+        + CLR.redC + ")" + CLR.blueC + " ~~~~~~~~~~~~~~\n");
+
+    for (int i = 0; i < inv.length; i++) {
+      builder.append(CLR.blueC + "~~~~~~~~~~~~~~ " + CLR.redC + (i + 1) + ". ");
+      builder.append(CLR.yellowC + ((GameItem) inv[i]).getName() + "\n");
+    }
+
+    builder.append(CLR.blueC + "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+
+    System.out.println(builder.toString());
+
+    System.out.println();
+
+    // Equipment
+
+    StringBuilder equipmentBuilder = new StringBuilder();
+
+    equipmentBuilder.append(CLR.blueC + "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+
+    equipmentBuilder.append(
+        "\n" + CLR.blueC + "~~~~~~~~~~~~~~    " + CLR.resetC + " EQUIPPED " + CLR.blueC + "    ~~~~~~~~~~~~~~\n");
+
+    equippedItems
+        .forEach((k, v) -> equipmentBuilder.append(CLR.blueC + "~~~~~~~~~~~~~~ " + CLR.redC + k.toString() + ": ")
+            .append(CLR.yellowC + v.getName() + "\n"));
+
+    equipmentBuilder.append(CLR.blueC + "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+
+    System.out.println(equipmentBuilder.toString());
+
+  }
+
   private Villain(VillainBuilder builder) {
     name = builder.name;
-    heroType = builder.heroType;
+    villainType = builder.villainType;
 
-    villainAttributes = heroType.init();
+    characterAttributes = villainType.init();
+
+    try {
+      addToInventory(builder.weapon);
+      equip(builder.weapon);
+    } catch (InvalidEquipmentException err) {
+      System.out.println(err.getMessage());
+    } catch (InventoryException err) {
+      System.out.println(err.getMessage());
+
+    }
   }
 
   public static class VillainBuilder {
     private String name;
-    private HeroType heroType;
+    private VillainType villainType;
 
-    public VillainBuilder(String name, HeroType heroType) {
+    Weapon weapon;
+
+    public VillainBuilder provideWeapon(Weapon weapon) {
+      this.weapon = weapon;
+
+      return this;
+    }
+
+    public VillainBuilder(String name, VillainType villainType) {
       this.name = name;
-      this.heroType = heroType;
+      this.villainType = villainType;
     }
 
     public Villain build() {
