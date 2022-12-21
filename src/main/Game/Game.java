@@ -1,43 +1,54 @@
 package main.Game;
 
-import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.io.IOException;
-import java.util.HashSet;
-import java.util.List;
 
 import javax.swing.JFrame;
 
 import main.Game.Components.GameCharacters.Hero.Hero;
-import main.Game.Components.GameCharacters.Hero.HeroType;
 import main.Game.Components.GameCharacters.Villain.Villain;
 import main.Game.Components.GameCharacters.Villain.VillainType;
 import main.Game.Components.Items.Equipment.Weapon.WeaponItem;
 import main.Game.GameController.GameController;
-import main.Game.Swing.Board;
+import main.Game.Swing.Panels.Board;
 
 public class Game extends JFrame {
+  // HashSet<Villain> villains = gameController.newGang(
+  // new HashSet<String>(List.of("Villian 1", "Villian 2", "Villian 3")),
+  // VillainType.HULK, WeaponItem.GREATAXE);
 
   GameController gameController = new GameController();
 
-  Hero hero = new Hero.HeroBuilder("Trollie", HeroType.MAGE).build();
-  HashSet<Villain> villains = gameController.newGang(
-      new HashSet<String>(List.of("Villian 1", "Villian 2", "Villian 3")), VillainType.HULK, WeaponItem.GREATAXE);
+  // CombatAction combatTasks = new CombatAction.CombatTasksBuilder().build();
+  // Timer gameTimer = new Timer();
+
+  Hero hero = gameController.newMage("Trollie");
+
+  Villain villian = gameController.newVillain("Villian", VillainType.HULK, WeaponItem.GREATAXE);
+
+  Board board = new Board.BoardBuilder(hero)
+      .setBackground("src/lib/img/sprites/Background2.jpg", 1920, 1120)
+      .setDimensions(0, 0, 960, 540)
+      .setVillain(villian)
+      .build();
 
   //
 
   public Game() throws IOException {
 
-    setTitle("Test Game Title");
-    setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-    Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-    setLocation((screenSize.width - this.getWidth()) / 2, (screenSize.height - this.getHeight()) / 2 - 100);
-    setResizable(false);
+    applyBoardSettings();
 
-    Board board = new Board.BoardBuilder(hero).setDimensions(0, 0, 960, 540)
-        .setBackground("src/lib/img/sprites/Background2.jpg", 0, 0).setVillains(villains).build();
     add(board);
+    setTitle("Test Game Title");
     setSize(board.getBoardWidth(), board.getBoardHeight() + 100);
+
+  }
+
+  public void applyBoardSettings() {
+    var screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+    setLocation((screenSize.width - this.getWidth()) / 2 - 300, (screenSize.height - this.getHeight()) / 2 - 100);
+    setResizable(false);
+    setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
   }
 

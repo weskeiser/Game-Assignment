@@ -57,6 +57,10 @@ public class Hero
 
   // Combat related: Attacks
 
+  public double performSpell() {
+    return 5;
+  }
+
   @Override
   public double getHealth() {
     return health;

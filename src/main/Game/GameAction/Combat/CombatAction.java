@@ -116,12 +116,10 @@ public class CombatAction extends TimerTask implements CombatTask {
   public static class CombatTasksBuilder {
     private HashSet<Attacker> attackers;
 
-    // Default
     public CombatTasksBuilder() {
       this.attackers = new HashSet<Attacker>();
     }
 
-    // For use in instances
     public CombatTasksBuilder setAttackers(HashSet<Attacker> attackers) {
       this.attackers = attackers;
       return this;

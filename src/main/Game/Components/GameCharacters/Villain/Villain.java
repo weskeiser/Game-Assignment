@@ -18,7 +18,7 @@ public class Villain implements InventoryManager, EquipmentManager, Attacker, De
   private String name;
   private VillainType villainType;
 
-  private int level = 600;
+  private int level = 1;
   private double health = 10;
   private EnumMap<CharacterAttribute, Integer> characterAttributes;
 

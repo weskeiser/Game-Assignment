@@ -8,4 +8,8 @@ public interface Combatant {
 
   void setCurrentlyAttacking(Defender currentlyAttacking);
 
+  int getLevel();
+
+  double getHealth();
+
 }

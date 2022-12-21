@@ -2,16 +2,17 @@ package main.Game.Swing;
 
 import java.awt.Image;
 
-public interface Avatar {
-  int getCamX();
+import main.Game.Components.GameCharacters.Interfaces.Combatant;
 
-  int getCamY();
+public interface Avatar {
+
+  Combatant getCharacter();
 
   int getSpriteX();
 
   int getSpriteY();
 
-  void loadImage(Direction movementDirection);
+  void loadWalkingImage(Direction movementDirection);
 
   Image getImage();
 
