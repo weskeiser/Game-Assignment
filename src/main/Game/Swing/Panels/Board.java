@@ -3,12 +3,14 @@ package main.Game.Swing.Panels;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.IOException;
+import java.util.Optional;
 
 import javax.swing.JPanel;
 import javax.swing.Timer;
 import javax.swing.event.MouseInputAdapter;
 
 import main.Game.Components.GameCharacters.Hero.Hero;
+import main.Game.Components.GameCharacters.Interfaces.Defender;
 import main.Game.Components.GameCharacters.Villain.Villain;
 import main.Game.GameAction.GameTask;
 import main.Game.GameAction.Combat.CombatAction;
@@ -30,6 +32,7 @@ public class Board extends JPanel implements ActionListener {
 
   HealthBars healthBars;
   InventoryPanel inventoryPanel;
+  EquipmentPanel equipmentPanel;
 
   CombatAction combatTasks = new CombatAction.CombatTasksBuilder().build();;
 
@@ -55,6 +58,10 @@ public class Board extends JPanel implements ActionListener {
       inventoryPanel.paintComponent(g);
     }
 
+    if (equipmentPanel != null) {
+      equipmentPanel.paintComponent(g);
+    }
+
     if (enemyProfile != null) {
       enemyProfile.paintComponent(g);
     }
@@ -72,7 +79,7 @@ public class Board extends JPanel implements ActionListener {
         boardWidth / 2,
         boardHeight / 4);
 
-    g.drawString("CamX:" + heroAvatar.getCamX() + ", CamY:" +
+    g.drawString("camX:" + heroAvatar.getCamX() + ", camY:" +
         heroAvatar.getCamY(), 100, boardHeight / 4);
 
     Toolkit.getDefaultToolkit().sync();
@@ -83,16 +90,37 @@ public class Board extends JPanel implements ActionListener {
   @Override
   public void actionPerformed(ActionEvent e) {
     heroAvatar.move();
-    // villainAvatar.move();
+    villainAvatar.move();
+
+    if (!hero.getCurrentlyAttacking().isEmpty()) {
+
+      if (checkIfWithinDistance(220)) {
+        combatTasks.disengageAttacker(hero);
+        combatTasks.disengageAttacker(villain);
+
+        healthBars.removeAvatar(heroAvatar);
+        healthBars.removeAvatar(villainAvatar);
+
+        villainAvatar.startRoaming();
+
+        enemyProfile = null;
+      }
+    }
 
     repaint();
   }
 
-  private class keyAdapter extends KeyAdapter {
-    @Override
-    public void keyPressed(KeyEvent e) {
-      heroAvatar.keyPressed(e);
-    }
+  private boolean checkIfWithinDistance(int distance) {
+    int villainXleft = villainAvatar.getSpriteX();
+    int villainWidth = villainAvatar.getWidth();
+    int villainYleft = villainAvatar.getSpriteY();
+    int villainHeight = villainAvatar.getHeight();
+
+    int distanceX = heroAvatar.getXDistanceFromTarget(villainXleft - villainWidth + 80);
+    int distanceY = heroAvatar.getYDistanceFromTarget(villainYleft - villainHeight);
+
+    return distanceX > distance || distanceX < -distance || distanceY > distance || distanceY < -distance;
+
   }
 
   // Clicks
@@ -110,32 +138,38 @@ public class Board extends JPanel implements ActionListener {
       var mouseY = e.getY();
 
       // Attack villain
-      if (villainBounds.contains(mouseX, mouseY)) {
+      if (villainBounds.contains(mouseX, mouseY) && !checkIfWithinDistance(220)) {
 
-        combatTasks.newAttack(hero, villain);
+        Optional<Defender> heroCurrentlyAttacking = hero.getCurrentlyAttacking();
 
-        healthBars.addAvatar(heroAvatar);
-        healthBars.addAvatar(villainAvatar);
+        if (heroCurrentlyAttacking.isEmpty()) {
+          combatTasks.newAttack(hero, villain);
 
-        enemyProfile = new EnemyProfile(villain, boardWidth);
+          healthBars.addAvatar(heroAvatar);
+          healthBars.addAvatar(villainAvatar);
+
+          villainAvatar.stopRoaming();
+
+          enemyProfile = new EnemyProfile(villain, boardWidth);
+        }
+
       }
 
       // Profile photo
 
       if (heroProfile.getProfilePhotoPosition().contains(mouseX, mouseY)) {
-        System.out.println("Bom kraesjjjj");
         toggleInventory();
+        toggleEquipmentPanel();
       }
     }
   }
 
-  private void toggleInventory() {
-    if (inventoryPanel == null) {
-      inventoryPanel = new InventoryPanel(hero, boardWidth, boardHeight);
-    } else {
-      inventoryPanel = null;
-    }
+  private void toggleEquipmentPanel() {
+    equipmentPanel = equipmentPanel == null ? equipmentPanel = new EquipmentPanel(hero, boardWidth, boardHeight) : null;
+  }
 
+  private void toggleInventory() {
+    inventoryPanel = inventoryPanel == null ? inventoryPanel = new InventoryPanel(hero, boardWidth, boardHeight) : null;
   }
 
   public int getBoardWidth() {
@@ -168,7 +202,6 @@ public class Board extends JPanel implements ActionListener {
     healthBars = new HealthBars(heroAvatar);
 
     addKeyListener(heroAvatar);
-    addKeyListener(new keyAdapter());
     addMouseListener(new mouseAdapter());
 
     setPreferredSize(new Dimension(boardHeight, boardWidth));

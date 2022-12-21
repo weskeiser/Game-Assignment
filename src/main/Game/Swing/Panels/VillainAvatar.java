@@ -56,6 +56,24 @@ public class VillainAvatar extends JPanel implements Avatar {
     }
   }
 
+  public void stopRoaming() {
+    roamTask.cancel();
+    image = idleRightImg;
+    movementDirection = Direction.NONE;
+  }
+
+  public void startRoaming() {
+    this.roamTask = new TimerTask() {
+      @Override
+      public void run() {
+        changeDirection();
+      }
+    };
+
+    roamTimer.scheduleAtFixedRate(roamTask, 300, 6000);
+
+  }
+
   public VillainAvatar(Combatant character, int boardX, int boardY, int boardW, int boardH) {
     String villainType = "skeleton";
 
@@ -64,12 +82,7 @@ public class VillainAvatar extends JPanel implements Avatar {
 
     this.character = character;
 
-    this.roamTask = new TimerTask() {
-      @Override
-      public void run() {
-        changeDirection();
-      }
-    };
+    startRoaming();
 
     setFocusable(true);
 
@@ -84,8 +97,6 @@ public class VillainAvatar extends JPanel implements Avatar {
         "src/lib/img/characters/villain/" + villainType + "-idle-right.gif").getImage();
 
     image = idleLeftImg;
-
-    roamTimer.scheduleAtFixedRate(roamTask, 300, 6000);
 
   }
 
@@ -114,6 +125,10 @@ public class VillainAvatar extends JPanel implements Avatar {
 
   public Image getImage() {
     return image;
+  }
+
+  public int getWidth() {
+    return image.getWidth(null);
   }
 
   public Rectangle getRelativeBounds(int heroCamX, int heroCamY) {

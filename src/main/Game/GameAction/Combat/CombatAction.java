@@ -28,6 +28,7 @@ public class CombatAction extends TimerTask implements CombatTask {
 
   public void disengageAttacker(Attacker attacker) {
     attackers.remove(attacker);
+    attacker.setCurrentlyAttacking(null);
   }
 
   public double randomiseHit(double maxHit) {

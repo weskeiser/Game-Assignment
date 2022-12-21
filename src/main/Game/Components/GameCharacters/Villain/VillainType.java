@@ -9,7 +9,7 @@ import main.Game.Components.Items.Equipment.Armor.ArmorType;
 import main.Game.Components.Items.Equipment.Weapon.WeaponType;
 
 public enum VillainType implements CharacterType, CharacterInitiator {
-  HULK() {
+  SKELESPEAR() {
     public EnumMap<CharacterAttribute, Integer> init() {
 
       attackAttribute = CharacterAttribute.STRENGTH;

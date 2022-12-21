@@ -21,7 +21,7 @@ public class HealthBars extends JPanel {
     avatars.add(avatar);
   }
 
-  public void remove(Avatar avatar) {
+  public void removeAvatar(Avatar avatar) {
     avatars.remove(avatar);
   }
 

@@ -12,4 +12,6 @@ public interface Combatant {
 
   double getHealth();
 
+  String getName();
+
 }

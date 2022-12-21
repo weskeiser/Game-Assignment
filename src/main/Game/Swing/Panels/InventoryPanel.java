@@ -16,14 +16,14 @@ public class InventoryPanel extends JPanel {
   private final int boardHeight;
 
   private final int slotWidth = 60;
-  private final int smallSpacing = 30;
+  private final int smallSpacing = 28;
   private final int bigSpacing = 90;
 
   public InventoryPanel(Hero hero, int boardWidth, int boardHeight) {
     this.hero = hero;
 
-    inventoryX = boardWidth / 2 + 50;
-    inventoryY = 50;
+    inventoryX = boardWidth / 2 + 80;
+    inventoryY = 150;
 
     this.boardWidth = boardWidth;
     this.boardHeight = boardHeight;
@@ -35,7 +35,7 @@ public class InventoryPanel extends JPanel {
     super.paintComponent(g);
 
     g.setColor(Color.lightGray);
-    g.drawRect(inventoryX, inventoryY, boardWidth / 2 - 100, boardHeight - 100);
+    g.drawRect(inventoryX, inventoryY, boardWidth / 2 - 100, boardHeight - 200);
 
     var itemX = inventoryX + smallSpacing;
     var itemY = inventoryY + smallSpacing;

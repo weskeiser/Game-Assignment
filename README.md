@@ -32,6 +32,13 @@ The alternative approach outlined in Appendix D, point 2 has been chosen for thi
 
 As required in the alternative approach outline the same functionality is still present. However with a few reasoned [modifications](https://github.com/weskeiser/Game-Assignment#task-modifications).
 
+The last couple of days of the assignment I decided to rush making a GUI for the game. It is unfinished and I have not had time to document it. It is however very amusing, and you can try it by running a debug session.
+
+Move around: WASD keys.
+Open equipment and inventory: Click the profile picture in the bottom right.
+Attack: Click on the opponent.
+Disengage: Run away from the opponent.
+
 ---
 
 ## Game Mechanics
@@ -130,7 +137,3 @@ HeroAttributes renamed `CharacterAttributes`.
 I see no use for such methods and have not implemented them.
 
 ---
-
-Custom InvalidWeaponException thrown with appropriate message if wrong type or insufficient level
-\*\*\*\* Split into individual
-Custom InvalidArmorException thrown with appropriate message if wrong type or insufficient level

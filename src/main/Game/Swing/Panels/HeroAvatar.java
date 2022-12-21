@@ -123,11 +123,11 @@ public class HeroAvatar extends JPanel implements Avatar, KeyListener, MouseList
   }
 
   public int getXDistanceFromTarget(int targetX) {
-    return targetX - spriteX;
+    return targetX - (spriteX + camX);
   }
 
   public int getYDistanceFromTarget(int targetY) {
-    return targetY - spriteY;
+    return targetY - (spriteY + camY);
   }
 
   public void move() {

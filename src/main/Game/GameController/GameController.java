@@ -12,6 +12,10 @@ import main.Game.Components.Items.Equipment.Weapon.WeaponItem;
 
 public class GameController {
 
+  public Weapon newWeapon(WeaponItem weaponItem) {
+    return new Weapon.WeaponBuilder(weaponItem).build();
+  }
+
   public Hero newWarrior(String name) {
     return new Hero.HeroBuilder(name, HeroType.WARRIOR).build();
   }
