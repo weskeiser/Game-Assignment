@@ -29,6 +29,7 @@ public class Hero
 
   // Combat
   private int attackCooldown = 0;
+  private int manaCooldown = 0;
   private Defender currentlyAttacking = null;
   private Attacker defeatedBy = null;
   private List<Remains> lootableRemains = new ArrayList<>();
@@ -57,8 +58,20 @@ public class Hero
 
   // Combat related: Attacks
 
-  public double performSpell() {
-    return 5;
+  public void performSpell(Defender defender) {
+    if (manaCooldown > 0)
+      return;
+
+    if (currentlyAttacking != defender)
+      return;
+
+    if (defender.defend(CharacterAttribute.INTELLIGENCE))
+      return;
+
+    defender.takeDamage(1, this);
+
+    manaCooldown = 1000 / heroAttributes.get(CharacterAttribute.INTELLIGENCE);
+
   }
 
   @Override

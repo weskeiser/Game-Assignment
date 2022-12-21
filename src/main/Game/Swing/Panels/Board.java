@@ -92,9 +92,10 @@ public class Board extends JPanel implements ActionListener {
     heroAvatar.move();
     villainAvatar.move();
 
+    // Disengage attack if attacking
     if (!hero.getCurrentlyAttacking().isEmpty()) {
 
-      if (checkIfWithinDistance(220)) {
+      if (checkIfWithinDistance(220, villainAvatar)) {
         combatTasks.disengageAttacker(hero);
         combatTasks.disengageAttacker(villain);
 
@@ -110,7 +111,7 @@ public class Board extends JPanel implements ActionListener {
     repaint();
   }
 
-  private boolean checkIfWithinDistance(int distance) {
+  private boolean checkIfWithinDistance(int distance, VillainAvatar villainAvatar) {
     int villainXleft = villainAvatar.getSpriteX();
     int villainWidth = villainAvatar.getWidth();
     int villainYleft = villainAvatar.getSpriteY();
@@ -138,9 +139,22 @@ public class Board extends JPanel implements ActionListener {
       var mouseY = e.getY();
 
       // Attack villain
-      if (villainBounds.contains(mouseX, mouseY) && !checkIfWithinDistance(220)) {
+      if (villainBounds.contains(mouseX, mouseY) && !checkIfWithinDistance(220, villainAvatar)) {
 
         Optional<Defender> heroCurrentlyAttacking = hero.getCurrentlyAttacking();
+
+        heroCurrentlyAttacking.ifPresentOrElse((defender) -> {
+          hero.performSpell(defender);
+        }, () -> {
+          combatTasks.newAttack(hero, villain);
+
+          healthBars.addAvatar(heroAvatar);
+          healthBars.addAvatar(villainAvatar);
+
+          villainAvatar.stopRoaming();
+
+          enemyProfile = new EnemyProfile(villain, boardWidth);
+        });
 
         if (heroCurrentlyAttacking.isEmpty()) {
           combatTasks.newAttack(hero, villain);
@@ -152,7 +166,6 @@ public class Board extends JPanel implements ActionListener {
 
           enemyProfile = new EnemyProfile(villain, boardWidth);
         }
-
       }
 
       // Profile photo

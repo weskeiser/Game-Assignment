@@ -9,6 +9,8 @@ import main.Game.Components.Items.Equipment.Weapon.Weapon;
 public interface Attacker extends Combatant {
   CharacterAttribute getAttackAttribute();
 
+  void performSpell(Defender defender);
+
   int getAttackCooldown();
 
   void gainExperience(double expGain);

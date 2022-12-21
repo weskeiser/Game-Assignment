@@ -18,6 +18,7 @@ A tick based fantasy game with Heroes and Villains. The player plays as a Hero a
   - [Combat](https://github.com/weskeiser/Game-Assignment#combat)
     - [Defense](https://github.com/weskeiser/Game-Assignment#defense)
     - [Attack](https://github.com/weskeiser/Game-Assignment#attack)
+    - [Spells](https://github.com/weskeiser/Game-Assignment#spells)
     - [Death](https://github.com/weskeiser/Game-Assignment#death)
 - [Modifications](https://github.com/weskeiser/Game-Assignment#modifications)
   - [Hero Damage](https://github.com/weskeiser/Game-Assignment#hero-damage)
@@ -32,11 +33,13 @@ The alternative approach outlined in Appendix D, point 2 has been chosen for thi
 
 As required in the alternative approach outline the same functionality is still present. However with a few reasoned [modifications](https://github.com/weskeiser/Game-Assignment#task-modifications).
 
-The last couple of days of the assignment I decided to rush making a GUI for the game. It is unfinished and I have not had time to document it. It is however very amusing, and you can try it by running a debug session.
+The last couple of days of the assignment I decided to rush making a GUI for the game. It is unfinished and I have not had time to document it. It is however very amusing, and you can try it by running a debug session. The code is under /Swing.
 
-Move around: WASD keys.
-Open equipment and inventory: Click the profile picture in the bottom right.
-Attack: Click on the opponent.
+Move around: `WASD` keys.
+
+Open `equipment` and `inventory`: Click the profile picture in the bottom right.
+
+Attack: Get within range and `click` on the opponent.
 Disengage: Run away from the opponent.
 
 ---
@@ -48,6 +51,8 @@ Disengage: Run away from the opponent.
 The `gameTimer` is the global time keeper. Game actions are defined in extensions of `TimeTask` implementing extensions of the `GameTask` interface. Game tasks are scheduled and removed with methods on these instances and are ran every game tick.
 
 A game tick is `250ms`
+
+There is also a seperate tick system for the GUI with 10ms ticks.
 
 ### Combat
 
@@ -80,6 +85,10 @@ The `maxHit` depends on the `equippedWeapon` and `strengthAttribute` of the `Att
 After it has been calculated, the `actualHit` is **randomised**. If a roll is in the upper 25th percentile, there will be a re-roll. This contributes to making higher hits more special, and makes the game more unpredictable.Lost in Translation
 
 The `Defender` then takes the resulting hit, and the `Attacker` receives `experience` equivalent to the `actualHit`, given they are not an NPC.
+
+#### Spells
+
+A player can `performSpell` if they have sufficient mana. At this point in time spells always hit 1, however the `manaCooldown` time is less depending on the intelligence attribute. When defending against spells, a player's intelligence attribute is used for the calculations.
 
 #### Death
 

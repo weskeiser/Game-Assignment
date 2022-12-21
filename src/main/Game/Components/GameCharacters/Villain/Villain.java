@@ -24,6 +24,7 @@ public class Villain implements InventoryManager, EquipmentManager, Attacker, De
 
   // Combat
   private int attackCooldown = 0;
+  private int manaCooldown = 0;
   private Defender currentlyAttacking = null;
   private Attacker defeatedBy = null;
   private List<Remains> lootableRemains = new ArrayList<>();
@@ -31,6 +32,23 @@ public class Villain implements InventoryManager, EquipmentManager, Attacker, De
   // Items
   private List<GameItem> inventory = new ArrayList<GameItem>();
   private EnumMap<EquipmentSlot, Equippable> equippedItems = new EnumMap<>(EquipmentSlot.class);
+
+  @Override
+  public void performSpell(Defender defender) {
+    if (manaCooldown > 0)
+      return;
+
+    if (currentlyAttacking != defender)
+      return;
+
+    if (defender.defend(CharacterAttribute.INTELLIGENCE))
+      return;
+
+    defender.takeDamage(1, this);
+
+    manaCooldown = 1000 / characterAttributes.get(CharacterAttribute.INTELLIGENCE);
+
+  }
 
   @Override
   public String getName() {
