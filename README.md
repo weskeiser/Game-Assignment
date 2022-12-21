@@ -13,6 +13,7 @@ A tick based fantasy game with Heroes and Villains. The player plays as a Hero a
 ## Table of Contents
 
 - [About The Code](https://github.com/weskeiser/Game-Assignment#about-the-code)
+- [GUI](https://github.com/weskeiser/Game-Assignment#GUI)
 - [Game Mechanics](https://github.com/weskeiser/Game-Assignment#game-mechanics)
   - [Tick System](https://github.com/weskeiser/Game-Assignment#tick-system)
   - [Combat](https://github.com/weskeiser/Game-Assignment#combat)
@@ -33,7 +34,11 @@ The alternative approach outlined in Appendix D, point 2 has been chosen for thi
 
 As required in the alternative approach outline the same functionality is still present. However with a few reasoned [modifications](https://github.com/weskeiser/Game-Assignment#task-modifications).
 
-The last couple of days of the assignment I decided to rush making a GUI for the game. It is unfinished and I have not had time to document it. It is however very amusing, and you can try it by running a debug session. The code is under /Swing.
+---
+
+## GUI
+
+The last couple of days of the assignment I rushed a GUI for the game. It is unfinished and I have not had time to document it. It is however very amusing, and you can try it by running a debug session. The code is under /Swing.
 
 Move around: `WASD` keys.
 
