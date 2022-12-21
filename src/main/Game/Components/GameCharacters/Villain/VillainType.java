@@ -3,7 +3,6 @@ package main.Game.Components.GameCharacters.Villain;
 import java.util.EnumMap;
 import java.util.EnumSet;
 
-import main.Game.Components.GameCharacters.Hero.CharacterInitiator;
 import main.Game.Components.GameCharacters.Interfaces.*;
 import main.Game.Components.Items.Equipment.Armor.ArmorType;
 import main.Game.Components.Items.Equipment.Weapon.WeaponType;

@@ -1,4 +1,4 @@
-package main.Game.Components.GameCharacters.Hero;
+package main.Game.Components.GameCharacters.Interfaces;
 
 import java.util.EnumMap;
 import java.util.List;

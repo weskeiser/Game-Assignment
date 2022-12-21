@@ -74,13 +74,15 @@ public class Board extends JPanel implements ActionListener {
 
     g.setColor(Color.WHITE);
 
-    g.drawString("[spriteX: (" + (heroAvatar.getSpriteX()) + ", spriteY:" +
-        (heroAvatar.getSpriteY()) + ")]",
-        boardWidth / 2,
-        boardHeight / 4);
+    // x and y coordinates overlay
 
-    g.drawString("camX:" + heroAvatar.getCamX() + ", camY:" +
-        heroAvatar.getCamY(), 100, boardHeight / 4);
+    // g.drawString("[spriteX: (" + (heroAvatar.getSpriteX()) + ", spriteY:" +
+    // (heroAvatar.getSpriteY()) + ")]",
+    // boardWidth / 2,
+    // boardHeight / 4);
+
+    // g.drawString("camX:" + heroAvatar.getCamX() + ", camY:" +
+    // heroAvatar.getCamY(), 100, boardHeight / 4);
 
     Toolkit.getDefaultToolkit().sync();
   }

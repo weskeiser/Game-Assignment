@@ -37,7 +37,7 @@ public class GameController {
         .provideWeapon(new Weapon.WeaponBuilder(weaponItem).build()).build();
   }
 
-  public HashSet<Villain> newGang(HashSet<String> names, VillainType villainType, WeaponItem weaponItem) {
+  public HashSet<Villain> gangOfVillains(HashSet<String> names, VillainType villainType, WeaponItem weaponItem) {
 
     var gang = new HashSet<Villain>();
 
@@ -61,25 +61,4 @@ public class GameController {
       System.out.println(err);
     }
   }
-
-  // public void lootRemains(LootableRemains remains, Hero looter, Item lootItem)
-  // {
-  // try {
-  // if (looter.getFreeInventorySlots() <= 0)
-  // throw new LootException(LootException.Messages.FULL_INVENTORY);
-
-  // if (looter != remains.getDefeator())
-  // throw new LootException(LootException.Messages.NOT_YOURS);
-
-  // remains.takeItem(lootItem);
-  // looter.addToInventory((Item) lootItem);
-
-  // } catch (LootException err) {
-  // System.out.println(err.getMessage());
-
-  // } catch (InventoryException err) {
-  // System.out.println(err.getMessage());
-  // }
-  // }
-
 }
